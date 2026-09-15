@@ -8,6 +8,10 @@ export function App() {
 
   useEffect(() => {
     setTheme(theme)
+    const platform = window.markora?.platform ?? navigator.platform.toLowerCase()
+    if (platform.includes('mac')) {
+      document.documentElement.setAttribute('data-platform', 'darwin')
+    }
   }, [setTheme, theme])
 
   return <AppShell />

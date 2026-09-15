@@ -1,4 +1,5 @@
 import { useAppStore } from '@/store/useAppStore'
+import { ViewControls } from './ViewControls'
 import './TitleBar.css'
 
 export function TitleBar() {
@@ -13,9 +14,7 @@ export function TitleBar() {
         <img src="/markora-icon.png" alt="" className="titlebar-icon" width={18} height={18} />
         <span className="titlebar-logo">Markora</span>
       </div>
-      <div className="titlebar-status">
-        <span className="titlebar-dot" aria-hidden="true" />
-      </div>
+      <ViewControls />
     </header>
   )
 }

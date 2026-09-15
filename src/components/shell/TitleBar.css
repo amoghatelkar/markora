@@ -4,11 +4,14 @@
   justify-content: space-between;
   height: var(--titlebar-height);
   padding: 0 var(--space-7);
-  padding-left: 80px;
   border-bottom: var(--border-subtle);
   background: var(--color-bg-base);
   flex-shrink: 0;
   -webkit-app-region: drag;
+}
+
+html[data-platform='darwin'] .titlebar {
+  padding-left: 80px;
 }
 
 .titlebar--minimal {
@@ -36,18 +39,4 @@
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
   color: var(--color-text-secondary);
-}
-
-.titlebar-status {
-  display: flex;
-  align-items: center;
-  -webkit-app-region: no-drag;
-}
-
-.titlebar-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-success);
-  opacity: 0.8;
 }
