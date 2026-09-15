@@ -3,10 +3,16 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
 import Link from '@tiptap/extension-link'
+import Image from '@tiptap/extension-image'
+import Table from '@tiptap/extension-table'
+import TableRow from '@tiptap/extension-table-row'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
 import Placeholder from '@tiptap/extension-placeholder'
 import { useAppStore, useActiveDocument } from '@/store/useAppStore'
 import { useEditorStore } from '@/store/useEditorStore'
 import { markdownToHtml, htmlToMarkdown } from '@/lib/markdown'
+import { runFormatAction, createEditorCommands, getActiveBlockLabel } from '@/lib/editorFormat'
 import { Toolbar } from '@/components/shell/Toolbar'
 import './Editor.css'
 
@@ -18,6 +24,7 @@ export function Editor() {
   const zenMode = useAppStore((s) => s.zenMode)
   const registerCommands = useEditorStore((s) => s.registerCommands)
   const unregisterCommands = useEditorStore((s) => s.unregisterCommands)
+  const setBlockLabel = useEditorStore((s) => s.setBlockLabel)
 
   const editor = useEditor({
     extensions: [
@@ -26,6 +33,11 @@ export function Editor() {
       }),
       Underline,
       Link.configure({ openOnClick: false }),
+      Image,
+      Table.configure({ resizable: true }),
+      TableRow,
+      TableHeader,
+      TableCell,
       Placeholder.configure({
         placeholder: 'Start writing…',
       }),
@@ -39,57 +51,37 @@ export function Editor() {
     },
     onUpdate: ({ editor: ed }) => {
       if (doc) updateDocumentContent(doc.id, htmlToMarkdown(ed.getHTML()))
+      setBlockLabel(getActiveBlockLabel(ed))
+    },
+    onSelectionUpdate: ({ editor: ed }) => {
+      setBlockLabel(getActiveBlockLabel(ed))
     },
   })
 
   const handleFormat = useCallback(
     (action: string) => {
       if (!editor) return
-      const chain = editor.chain().focus()
-      switch (action) {
-        case 'bold': chain.toggleBold().run(); break
-        case 'italic': chain.toggleItalic().run(); break
-        case 'strike': chain.toggleStrike().run(); break
-        case 'code': chain.toggleCode().run(); break
-        case 'link': chain.setLink({ href: 'https://' }).run(); break
-        case 'bulletList': chain.toggleBulletList().run(); break
-        case 'orderedList': chain.toggleOrderedList().run(); break
-        case 'blockquote': chain.toggleBlockquote().run(); break
-        case 'codeBlock': chain.toggleCodeBlock().run(); break
-        case 'undo': editor.commands.undo(); break
-        case 'redo': editor.commands.redo(); break
-      }
+      runFormatAction(editor, action)
+      setBlockLabel(getActiveBlockLabel(editor))
     },
-    [editor]
+    [editor, setBlockLabel]
   )
 
   useEffect(() => {
     if (!editor) return
 
-    registerCommands({
-      undo: () => editor.commands.undo(),
-      redo: () => editor.commands.redo(),
-      cut: () => document.execCommand('cut'),
-      copy: () => document.execCommand('copy'),
-      paste: () => document.execCommand('paste'),
-      bold: () => editor.chain().focus().toggleBold().run(),
-      italic: () => editor.chain().focus().toggleItalic().run(),
-      strike: () => editor.chain().focus().toggleStrike().run(),
-      code: () => editor.chain().focus().toggleCode().run(),
-      link: () => editor.chain().focus().setLink({ href: 'https://' }).run(),
-      bulletList: () => editor.chain().focus().toggleBulletList().run(),
-      orderedList: () => editor.chain().focus().toggleOrderedList().run(),
-      blockquote: () => editor.chain().focus().toggleBlockquote().run(),
-      codeBlock: () => editor.chain().focus().toggleCodeBlock().run(),
-    })
+    const commands = createEditorCommands(editor)
+    registerCommands(commands)
+    setBlockLabel(commands.getBlockLabel())
 
     return () => unregisterCommands()
-  }, [editor, registerCommands, unregisterCommands])
+  }, [editor, registerCommands, unregisterCommands, setBlockLabel])
 
   useEffect(() => {
     if (!editor || !doc || showMarkdownSource) return
     editor.commands.setContent(markdownToHtml(doc.content), false)
-  }, [doc?.id, showMarkdownSource, editor])
+    setBlockLabel(getActiveBlockLabel(editor))
+  }, [doc?.id, showMarkdownSource, editor, setBlockLabel])
 
   useEffect(() => {
     if (!editor || !doc || !showMarkdownSource) return

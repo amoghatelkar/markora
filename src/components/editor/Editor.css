@@ -136,6 +136,37 @@
   text-underline-offset: 2px;
 }
 
+.editor-prose img {
+  max-width: 100%;
+  border-radius: var(--radius-md);
+}
+
+.editor-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: var(--text-sm);
+}
+
+.editor-prose th,
+.editor-prose td {
+  border: var(--border-default);
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+}
+
+.editor-prose th {
+  background: var(--color-bg-surface);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+}
+
+.editor-prose hr {
+  border: none;
+  border-top: var(--border-default);
+  margin: 1.5em 0;
+}
+
 .editor-prose .is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;

@@ -1,6 +1,8 @@
 import { useAppStore } from '@/store/useAppStore'
-import { useEditorStore } from '@/store/useEditorStore'
+import { useEditorStore, type EditorCommands } from '@/store/useEditorStore'
 import { formatShortcut } from '@/lib/shortcuts'
+
+type EditorAction = Exclude<keyof EditorCommands, 'setHeading' | 'getBlockLabel'>
 
 export interface MenuItem {
   id: string
@@ -21,7 +23,7 @@ export function getMenus(): MenuDefinition[] {
   const store = useAppStore.getState()
   const editor = useEditorStore.getState().commands
 
-  const runEditor = (fn: keyof NonNullable<typeof editor>) => {
+  const runEditor = (fn: EditorAction) => {
     editor?.[fn]?.()
   }
 
@@ -154,12 +156,17 @@ export function getMenus(): MenuDefinition[] {
           id: 'insert-table',
           label: 'Table',
           shortcut: formatShortcut('Mod+Alt+T'),
-          action: () => store.showToast('Table inserted'),
+          action: () => runEditor('insertTable'),
         },
         {
           id: 'insert-image',
           label: 'Image',
-          action: () => store.showToast('Image insertion'),
+          action: () => runEditor('insertImage'),
+        },
+        {
+          id: 'insert-hr',
+          label: 'Horizontal Rule',
+          action: () => runEditor('insertHorizontalRule'),
         },
         {
           id: 'insert-link',
@@ -172,6 +179,49 @@ export function getMenus(): MenuDefinition[] {
       id: 'format',
       label: 'Format',
       items: [
+        {
+          id: 'paragraph',
+          label: 'Paragraph',
+          shortcut: formatShortcut('Mod+Alt+0'),
+          action: () => runEditor('setParagraph'),
+        },
+        {
+          id: 'heading-1',
+          label: 'Heading 1',
+          shortcut: formatShortcut('Mod+Alt+1'),
+          action: () => editor?.setHeading(1),
+        },
+        {
+          id: 'heading-2',
+          label: 'Heading 2',
+          shortcut: formatShortcut('Mod+Alt+2'),
+          action: () => editor?.setHeading(2),
+        },
+        {
+          id: 'heading-3',
+          label: 'Heading 3',
+          shortcut: formatShortcut('Mod+Alt+3'),
+          action: () => editor?.setHeading(3),
+        },
+        {
+          id: 'heading-4',
+          label: 'Heading 4',
+          shortcut: formatShortcut('Mod+Alt+4'),
+          action: () => editor?.setHeading(4),
+        },
+        {
+          id: 'heading-5',
+          label: 'Heading 5',
+          shortcut: formatShortcut('Mod+Alt+5'),
+          action: () => editor?.setHeading(5),
+        },
+        {
+          id: 'heading-6',
+          label: 'Heading 6',
+          shortcut: formatShortcut('Mod+Alt+6'),
+          action: () => editor?.setHeading(6),
+        },
+        { id: 'sep-1', label: '', separator: true },
         {
           id: 'bold',
           label: 'Bold',
@@ -195,7 +245,7 @@ export function getMenus(): MenuDefinition[] {
           shortcut: formatShortcut('Mod+E'),
           action: () => runEditor('code'),
         },
-        { id: 'sep-1', label: '', separator: true },
+        { id: 'sep-2', label: '', separator: true },
         {
           id: 'bullet-list',
           label: 'Bullet List',
