@@ -1,0 +1,33 @@
+[data-theme='dark'] {
+  --markora-bg-base: #0a0a0a;
+  --markora-bg-surface: #111111;
+  --markora-bg-elevated: #161616;
+  --markora-bg-hover: rgba(255, 255, 255, 0.04);
+  --markora-bg-active: rgba(255, 255, 255, 0.07);
+  --markora-bg-input: #1a1a1a;
+
+  --markora-border-subtle: rgba(255, 255, 255, 0.06);
+  --markora-border-default: rgba(255, 255, 255, 0.1);
+  --markora-border-strong: rgba(255, 255, 255, 0.16);
+
+  --markora-text-primary: #ededed;
+  --markora-text-secondary: #a1a1a1;
+  --markora-text-tertiary: #737373;
+  --markora-text-muted: #525252;
+  --markora-text-inverse: #0a0a0a;
+
+  --markora-accent: #3b82f6;
+  --markora-accent-hover: #60a5fa;
+  --markora-accent-muted: rgba(59, 130, 246, 0.15);
+
+  --markora-success: #22c55e;
+  --markora-warning: #eab308;
+  --markora-error: #ef4444;
+
+  --markora-focus-ring: rgba(59, 130, 246, 0.5);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-overlay: 0 16px 48px rgba(0, 0, 0, 0.6);
+}

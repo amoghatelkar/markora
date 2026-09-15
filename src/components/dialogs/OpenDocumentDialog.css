@@ -1,0 +1,75 @@
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+}
+
+.dialog {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-9);
+  background: var(--color-bg-elevated);
+  border: var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-overlay);
+}
+
+.dialog-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-7);
+}
+
+.dialog-search {
+  width: 100%;
+  padding: var(--space-5) var(--space-6);
+  background: var(--color-bg-input);
+  border: var(--border-default);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-6);
+}
+
+.dialog-search::placeholder {
+  color: var(--color-text-muted);
+}
+
+.dialog-search:focus {
+  border-color: var(--color-border-strong);
+}
+
+.dialog-list {
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: var(--space-8);
+}
+
+.dialog-list-item {
+  display: block;
+  width: 100%;
+  padding: var(--space-5) var(--space-6);
+  text-align: left;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  transition: background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.dialog-list-item:hover,
+.dialog-list-item--selected {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-4);
+}

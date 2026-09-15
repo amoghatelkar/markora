@@ -1,0 +1,44 @@
+.statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--statusbar-height);
+  padding: 0 var(--space-7);
+  border-top: var(--border-subtle);
+  background: var(--color-bg-surface);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.statusbar--zen {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  background: transparent;
+  border-top: none;
+}
+
+.statusbar--zen:hover {
+  opacity: 1;
+  background: var(--color-bg-surface);
+  border-top: var(--border-subtle);
+}
+
+.statusbar-left,
+.statusbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.statusbar-sep {
+  opacity: 0.4;
+}
+
+.statusbar-saved {
+  color: var(--color-success);
+}

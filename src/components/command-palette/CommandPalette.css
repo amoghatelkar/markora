@@ -1,0 +1,114 @@
+.cmd-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 15vh;
+  z-index: var(--z-command-palette);
+}
+
+.cmd-palette {
+  width: 100%;
+  max-width: 520px;
+  background: var(--color-bg-elevated);
+  border: var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-overlay);
+  overflow: hidden;
+}
+
+.cmd-input-wrapper {
+  padding: var(--space-6);
+  border-bottom: var(--border-subtle);
+}
+
+.cmd-input {
+  width: 100%;
+  font-size: var(--text-md);
+  color: var(--color-text-primary);
+  padding: var(--space-4) 0;
+}
+
+.cmd-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.cmd-list {
+  max-height: 360px;
+  overflow-y: auto;
+  padding: var(--space-4);
+}
+
+.cmd-group {
+  margin-bottom: var(--space-4);
+}
+
+.cmd-group:last-child {
+  margin-bottom: 0;
+}
+
+.cmd-group-label {
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-muted);
+}
+
+.cmd-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  text-align: left;
+  transition: background var(--duration-instant) var(--ease-out),
+    color var(--duration-instant) var(--ease-out);
+}
+
+.cmd-item:hover,
+.cmd-item--selected {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.cmd-item-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.cmd-item-arrow {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.cmd-item-shortcut {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  padding: var(--space-1) var(--space-4);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-xs);
+  border: var(--border-subtle);
+}
+
+.cmd-highlight {
+  background: var(--color-accent-muted);
+  color: var(--color-accent);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.cmd-empty {
+  padding: var(--space-9);
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

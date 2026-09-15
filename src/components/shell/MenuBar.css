@@ -1,0 +1,23 @@
+.menubar {
+  display: flex;
+  align-items: center;
+  height: var(--menubar-height);
+  padding: 0 var(--space-4);
+  border-bottom: var(--border-subtle);
+  background: var(--color-bg-base);
+  flex-shrink: 0;
+}
+
+.menubar-item {
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-xs);
+  transition: background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.menubar-item:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
