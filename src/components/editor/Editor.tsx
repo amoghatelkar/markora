@@ -104,23 +104,29 @@ export function Editor() {
   const widthVar = `--editor-width-${editorWidth}`
 
   return (
-    <div className={`editor ${zenMode ? 'editor--zen' : ''}`}>
-      <Toolbar onFormat={handleFormat} />
+    <div className={`editor ${zenMode ? 'editor--zen' : ''} ${showMarkdownSource ? 'editor--source' : ''}`}>
+      {!showMarkdownSource && <Toolbar onFormat={handleFormat} />}
       <div className="editor-scroll">
         <div
           className="editor-canvas"
           style={{ maxWidth: `var(${widthVar})` }}
         >
-          {showMarkdownSource ? (
-            <textarea
-              className="editor-source"
-              value={doc.content}
-              onChange={(e) => updateDocumentContent(doc.id, e.target.value)}
-              spellCheck={false}
-            />
-          ) : (
-            <EditorContent editor={editor} />
-          )}
+          <article className="editor-document">
+            {showMarkdownSource ? (
+              <div className="editor-source-wrap">
+                <div className="editor-source-label">Markdown</div>
+                <textarea
+                  className="editor-source"
+                  value={doc.content}
+                  onChange={(e) => updateDocumentContent(doc.id, e.target.value)}
+                  spellCheck={false}
+                  aria-label="Markdown source"
+                />
+              </div>
+            ) : (
+              <EditorContent editor={editor} />
+            )}
+          </article>
         </div>
       </div>
     </div>

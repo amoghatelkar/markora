@@ -26,6 +26,8 @@
   --color-error: var(--markora-error);
 
   --color-focus-ring: var(--markora-focus-ring);
+  --color-document-bg: var(--markora-document-bg);
+  --shadow-document: var(--markora-shadow-document);
 
   /* ── Spacing ── */
   --space-0: 0;

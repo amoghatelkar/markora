@@ -3,7 +3,7 @@
   flex-direction: column;
   flex: 1;
   min-width: 0;
-  background: var(--color-bg-base);
+  background: var(--color-bg-surface);
 }
 
 .editor--zen {
@@ -15,20 +15,37 @@
   overflow-y: auto;
   display: flex;
   justify-content: center;
+  padding: var(--space-9) var(--space-7);
 }
 
 .editor-canvas {
   width: 100%;
-  padding: var(--editor-padding-y) var(--editor-padding-x);
   margin: 0 auto;
+}
+
+.editor-document {
+  background: var(--color-document-bg);
+  border: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-document);
+  padding: var(--space-12) var(--space-11);
+  min-height: calc(100vh - 220px);
+  user-select: text;
+  cursor: text;
+}
+
+.editor--source .editor-document {
+  padding: var(--space-7);
+  min-height: calc(100vh - 180px);
 }
 
 .editor-prose {
   outline: none;
-  min-height: 60vh;
+  min-height: 50vh;
   font-size: var(--text-md);
   line-height: var(--leading-relaxed);
   color: var(--color-text-primary);
+  caret-color: var(--color-accent);
 }
 
 .editor-prose > * + * {
@@ -40,6 +57,7 @@
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
+  color: var(--color-text-primary);
   margin-top: 0;
   margin-bottom: 0.5em;
 }
@@ -49,6 +67,7 @@
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
+  color: var(--color-text-primary);
   margin-top: 1.5em;
   margin-bottom: 0.4em;
 }
@@ -56,6 +75,7 @@
 .editor-prose h3 {
   font-size: var(--text-lg);
   font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
   margin-top: 1.25em;
   margin-bottom: 0.3em;
 }
@@ -124,13 +144,39 @@
   height: 0;
 }
 
+.editor-source-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-height: 50vh;
+}
+
+.editor-source-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-muted);
+  padding-bottom: var(--space-4);
+  border-bottom: var(--border-subtle);
+}
+
 .editor-source {
+  flex: 1;
   width: 100%;
-  min-height: 60vh;
+  min-height: 48vh;
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   line-height: var(--leading-relaxed);
   color: var(--color-text-primary);
+  background: transparent;
+  border: none;
   resize: none;
   tab-size: 2;
+  user-select: text;
+  caret-color: var(--color-accent);
+}
+
+.editor-source:focus {
+  outline: none;
 }
