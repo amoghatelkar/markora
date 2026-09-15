@@ -1,0 +1,17 @@
+{
+  "name": "Markora",
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "dev-server",
+      "command": "npm run dev -- --host 0.0.0.0",
+      "description": "Vite development server for the Markora web app"
+    }
+  ],
+  "ports": [
+    {
+      "name": "vite",
+      "port": 5173
+    }
+  ]
+}
