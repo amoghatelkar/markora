@@ -1,0 +1,136 @@
+.editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  background: var(--color-bg-base);
+}
+
+.editor--zen {
+  background: var(--color-bg-base);
+}
+
+.editor-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.editor-canvas {
+  width: 100%;
+  padding: var(--editor-padding-y) var(--editor-padding-x);
+  margin: 0 auto;
+}
+
+.editor-prose {
+  outline: none;
+  min-height: 60vh;
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-primary);
+}
+
+.editor-prose > * + * {
+  margin-top: 0.75em;
+}
+
+.editor-prose h1 {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+.editor-prose h2 {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  margin-top: 1.5em;
+  margin-bottom: 0.4em;
+}
+
+.editor-prose h3 {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  margin-top: 1.25em;
+  margin-bottom: 0.3em;
+}
+
+.editor-prose p {
+  color: var(--color-text-secondary);
+}
+
+.editor-prose strong {
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.editor-prose em {
+  font-style: italic;
+}
+
+.editor-prose code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 2px 5px;
+  background: var(--color-bg-hover);
+  border-radius: var(--radius-xs);
+  color: var(--color-text-primary);
+}
+
+.editor-prose pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  padding: var(--space-7);
+  background: var(--color-bg-surface);
+  border: var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+.editor-prose pre code {
+  padding: 0;
+  background: none;
+}
+
+.editor-prose blockquote {
+  border-left: 2px solid var(--color-border-strong);
+  padding-left: var(--space-7);
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+.editor-prose ul,
+.editor-prose ol {
+  padding-left: 1.5em;
+  color: var(--color-text-secondary);
+}
+
+.editor-prose a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.editor-prose .is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  height: 0;
+}
+
+.editor-source {
+  width: 100%;
+  min-height: 60vh;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-primary);
+  resize: none;
+  tab-size: 2;
+}
