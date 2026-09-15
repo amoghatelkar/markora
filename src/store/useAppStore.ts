@@ -53,14 +53,21 @@ function createDocument(title?: string, content?: string): Document {
   }
 }
 
-const SAMPLE_CONTENT = `<h1>My Document</h1>
-<p>This is the document content. Markora provides a premium writing experience with carefully tuned typography, generous margins, and a calm interface designed for focus.</p>
-<h2>Introduction</h2>
-<p>Welcome to Markora — your Markdown workspace. Start writing something meaningful.</p>
-<h2>Features</h2>
-<p>Use <strong>bold</strong>, <em>italic</em>, and <code>inline code</code> to format your text. Press <code>⌘K</code> to open the command palette.</p>
-<h2>Getting Started</h2>
-<p>Explore the sidebar for document outline navigation. Toggle focus mode to minimize distractions.</p>`
+const SAMPLE_CONTENT = `# My Document
+
+This is the document content. Markora provides a premium writing experience with carefully tuned typography, generous margins, and a calm interface designed for focus.
+
+## Introduction
+
+Welcome to Markora — your Markdown workspace. Start writing something meaningful.
+
+## Features
+
+Use **bold**, *italic*, and \`inline code\` to format your text. Press \`⌘K\` to open the command palette.
+
+## Getting Started
+
+Explore the sidebar for document outline navigation. Toggle focus mode to minimize distractions.`
 
 export const useAppStore = create<AppState>((set, get) => ({
   theme: 'dark',

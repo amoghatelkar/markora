@@ -13,6 +13,7 @@ export function WelcomeScreen() {
   return (
     <div className="welcome">
       <div className="welcome-content animate-fade-in">
+        <img src="/markora-icon.png" alt="" className="welcome-icon" width={64} height={64} />
         <h1 className="welcome-title">Markora</h1>
         <p className="welcome-subtitle">Your Markdown workspace.</p>
 

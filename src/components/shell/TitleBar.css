@@ -23,6 +23,12 @@
 .titlebar-drag {
   display: flex;
   align-items: center;
+  gap: var(--space-4);
+}
+
+.titlebar-icon {
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
 }
 
 .titlebar-logo {
