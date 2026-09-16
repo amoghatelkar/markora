@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Markora — a premium Markdown document editor for macOS, Windows, and Linux."
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>Markora — Your Markdown workspace</title>
+    <link rel="icon" type="image/png" href="/markora-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <a class="brand" href="/">
+          <img src="/markora-icon.png" width="28" height="28" alt="" />
+          <span>Markora</span>
+        </a>
+        <nav class="header-nav">
+          <a href="#download">Download</a>
+          <a href="#features">Features</a>
+          <a href="https://github.com/amoghatelkar/markora" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-badge">v<span id="app-version">0.1.0</span></div>
+          <h1>Write in Markdown.<br />Feel like a pro.</h1>
+          <p class="hero-lead">
+            Markora is a calm, premium document editor built for focused writing — with
+            beautiful typography, distraction-free modes, and a fast command palette.
+          </p>
+          <div class="hero-actions">
+            <a id="primary-download" class="btn btn-primary" href="#download">
+              Download for your computer
+            </a>
+            <a class="btn btn-secondary" href="https://github.com/amoghatelkar/markora" target="_blank" rel="noopener noreferrer">
+              View on GitHub
+            </a>
+          </div>
+        </section>
+
+        <section id="download" class="download-section">
+          <div class="section-head">
+            <h2>Download Markora</h2>
+            <p>Choose your platform. All builds are free and open source.</p>
+          </div>
+          <div id="download-grid" class="download-grid"></div>
+          <p class="download-note">
+            Need another format? Browse all releases on
+            <a id="releases-link" href="#" target="_blank" rel="noopener noreferrer">GitHub Releases</a>.
+          </p>
+        </section>
+
+        <section id="features" class="features">
+          <div class="section-head">
+            <h2>Built for writers who care about craft</h2>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <h3>Premium design</h3>
+              <p>Minimal interface, sophisticated dark mode, and typography tuned for long-form writing.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Markdown native</h3>
+              <p>Switch between rendered view and source instantly. Your documents stay in clean Markdown.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Command palette</h3>
+              <p>Press ⌘K to search actions, toggle themes, and navigate without leaving the keyboard.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Focus & Zen</h3>
+              <p>Hide chrome, center your document, and write without visual noise when you need depth.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© <span id="year"></span> Markora</span>
+        <a href="https://github.com/amoghatelkar/markora" target="_blank" rel="noopener noreferrer">Source code</a>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
