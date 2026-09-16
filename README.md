@@ -16,6 +16,10 @@ Markora features a premium design system built on centralized design tokens, sop
 - **Resizable sidebar** — Document outline with collapsible panel
 - **Context menus** — Polished custom menus with platform shortcuts
 
+## Website (Vercel)
+
+The marketing and download page lives in [`website/`](website/). Deploy the repo on Vercel (root `vercel.json` builds the `website` folder). See [website/README.md](website/README.md).
+
 ## Development
 
 ```bash
