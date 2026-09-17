@@ -271,6 +271,36 @@ main {
   color: var(--accent);
 }
 
+.download-banner {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid rgba(234, 179, 8, 0.35);
+  border-radius: var(--radius);
+  background: rgba(234, 179, 8, 0.08);
+  font-size: 14px;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+.download-banner strong {
+  color: var(--text);
+}
+
+.download-banner code {
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.download-banner a {
+  color: var(--accent);
+}
+
+.btn-download--muted {
+  opacity: 0.85;
+}
+
 .features {
   max-width: var(--max);
   margin: 0 auto;
