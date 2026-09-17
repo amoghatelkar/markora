@@ -47,6 +47,11 @@ async function main() {
     const release = await res.json()
     const assets = release.assets ?? []
 
+    const slim = (asset) =>
+      asset
+        ? { name: asset.name, browser_download_url: asset.browser_download_url }
+        : null
+
     const payload = {
       generatedAt: new Date().toISOString(),
       release: {
@@ -54,9 +59,9 @@ async function main() {
         version: release.tag_name.replace(/^v/, ''),
         pageUrl: release.html_url,
         assets: {
-          mac: pickMacAsset(assets),
-          windows: pickWindowsAsset(assets),
-          linux: pickLinuxAsset(assets),
+          mac: slim(pickMacAsset(assets)),
+          windows: slim(pickWindowsAsset(assets)),
+          linux: slim(pickLinuxAsset(assets)),
         },
       },
     }

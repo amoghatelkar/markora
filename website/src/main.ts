@@ -1,11 +1,5 @@
 import './style.css'
-import {
-  APP_VERSION,
-  RELEASES_PAGE,
-  detectOS,
-  getDownloadOptions,
-  type DownloadOption,
-} from './config'
+import { RELEASES_PAGE, detectOS, type DownloadOption } from './config'
 import { resolveDownloads } from './releases'
 
 function iconFor(id: DownloadOption['id']): string {
@@ -100,12 +94,33 @@ function mountDownloads(downloads: DownloadOption[], unavailableFallback = false
   }
 }
 
+function setPrimaryFromGrid() {
+  const os = detectOS()
+  const primaryBtn = document.getElementById('primary-download') as HTMLAnchorElement | null
+  const grid = document.getElementById('download-grid')
+  if (!primaryBtn || !grid) return
+
+  const links = Array.from(grid.querySelectorAll<HTMLAnchorElement>('.btn-download'))
+  const labels = ['mac', 'windows', 'linux']
+  const idx = labels.indexOf(os)
+  const link = links[idx >= 0 ? idx : 0]
+  if (link?.href) {
+    primaryBtn.href = link.href
+    primaryBtn.target = '_blank'
+    primaryBtn.rel = 'noopener noreferrer'
+    const label = os === 'mac' ? 'macOS' : os === 'windows' ? 'Windows' : os === 'linux' ? 'Linux' : 'your computer'
+    primaryBtn.textContent = os === 'unknown' ? 'Download Markora' : `Download for ${label}`
+  }
+}
+
 async function init() {
   const releasesLink = document.getElementById('releases-link') as HTMLAnchorElement | null
   if (releasesLink) releasesLink.href = RELEASES_PAGE
 
   const yearEl = document.getElementById('year')
   if (yearEl) yearEl.textContent = String(new Date().getFullYear())
+
+  setPrimaryFromGrid()
 
   const versionEl = document.getElementById('app-version')
   const latest = await resolveDownloads()
@@ -117,8 +132,9 @@ async function init() {
     return
   }
 
-  if (versionEl) versionEl.textContent = APP_VERSION
-  mountDownloads(getDownloadOptions(APP_VERSION), true)
 }
 
-init()
+init().catch((err) => {
+  console.error('Markora download init failed:', err)
+  setPrimaryFromGrid()
+})
