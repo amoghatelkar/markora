@@ -1,4 +1,5 @@
 import { GITHUB_REPO, RELEASES_PAGE, type DownloadOption, type OSType } from './config'
+import buildData from './release-data.json'
 
 interface GitHubAsset {
   name: string
@@ -13,28 +14,56 @@ interface GitHubRelease {
 
 const PLATFORM_META: Record<
   OSType,
-  { label: string; description: string; match: (name: string) => boolean }
+  { label: string; description: string }
 > = {
   mac: {
     label: 'macOS',
     description: 'Apple Silicon & Intel · .dmg',
-    match: (name) => /\.dmg$/i.test(name),
   },
   windows: {
     label: 'Windows',
     description: 'Windows 10+ · .exe installer',
-    match: (name) => /\.(exe|msi)$/i.test(name),
   },
   linux: {
     label: 'Linux',
     description: 'AppImage · x64',
-    match: (name) => /\.appimage$/i.test(name),
   },
   unknown: {
     label: 'Download',
     description: '',
-    match: () => false,
   },
+}
+
+function pickWindowsAsset(assets: GitHubAsset[]): GitHubAsset | undefined {
+  const setup = assets.find((a) => /setup/i.test(a.name) && /\.exe$/i.test(a.name))
+  if (setup) return setup
+  return assets.find(
+    (a) =>
+      /\.exe$/i.test(a.name) &&
+      !/^elevate\.exe$/i.test(a.name) &&
+      !/^markora\.exe$/i.test(a.name)
+  )
+}
+
+function pickMacAsset(assets: GitHubAsset[]): GitHubAsset | undefined {
+  return assets.find((a) => /\.dmg$/i.test(a.name))
+}
+
+function pickLinuxAsset(assets: GitHubAsset[]): GitHubAsset | undefined {
+  return assets.find((a) => /\.appimage$/i.test(a.name))
+}
+
+function pickAsset(id: OSType, assets: GitHubAsset[]): GitHubAsset | undefined {
+  switch (id) {
+    case 'mac':
+      return pickMacAsset(assets)
+    case 'windows':
+      return pickWindowsAsset(assets)
+    case 'linux':
+      return pickLinuxAsset(assets)
+    default:
+      return undefined
+  }
 }
 
 function assetToOption(id: OSType, asset: GitHubAsset): DownloadOption {
@@ -45,6 +74,46 @@ function assetToOption(id: OSType, asset: GitHubAsset): DownloadOption {
     description: meta.description,
     fileName: asset.name,
     url: asset.browser_download_url,
+  }
+}
+
+function fromAssets(
+  assets: GitHubAsset[],
+  version: string,
+  releasesPage: string
+): { downloads: DownloadOption[]; version: string; releasesPage: string } | null {
+  const downloads: DownloadOption[] = []
+
+  for (const id of ['mac', 'windows', 'linux'] as OSType[]) {
+    const asset = pickAsset(id, assets)
+    if (asset) downloads.push(assetToOption(id, asset))
+  }
+
+  if (downloads.length === 0) return null
+
+  return { downloads, version, releasesPage }
+}
+
+export function getBuildTimeDownloads(): {
+  downloads: DownloadOption[]
+  version: string
+  releasesPage: string
+} | null {
+  const release = buildData.release
+  if (!release) return null
+
+  const downloads: DownloadOption[] = []
+  for (const id of ['mac', 'windows', 'linux'] as OSType[]) {
+    const asset = release.assets[id]
+    if (asset) downloads.push(assetToOption(id, asset))
+  }
+
+  if (downloads.length === 0) return null
+
+  return {
+    downloads,
+    version: release.version,
+    releasesPage: release.pageUrl,
   }
 }
 
@@ -63,22 +132,20 @@ export async function fetchLatestDownloads(): Promise<{
     if (!res.ok) return null
 
     const release = (await res.json()) as GitHubRelease
-    const downloads: DownloadOption[] = []
-
-    for (const id of ['mac', 'windows', 'linux'] as OSType[]) {
-      const asset = release.assets.find((a) => PLATFORM_META[id].match(a.name))
-      if (asset) downloads.push(assetToOption(id, asset))
-    }
-
-    if (downloads.length === 0) return null
-
     const version = release.tag_name.replace(/^v/, '')
-    return {
-      downloads,
-      version,
-      releasesPage: release.html_url || RELEASES_PAGE,
-    }
+
+    return fromAssets(release.assets, version, release.html_url || RELEASES_PAGE)
   } catch {
     return null
   }
+}
+
+export async function resolveDownloads(): Promise<{
+  downloads: DownloadOption[]
+  version: string
+  releasesPage: string
+} | null> {
+  const baked = getBuildTimeDownloads()
+  if (baked) return baked
+  return fetchLatestDownloads()
 }

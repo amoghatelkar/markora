@@ -1,13 +1,12 @@
 import './style.css'
 import {
   APP_VERSION,
-  GITHUB_REPO,
   RELEASES_PAGE,
   detectOS,
   getDownloadOptions,
   type DownloadOption,
 } from './config'
-import { fetchLatestDownloads } from './releases'
+import { resolveDownloads } from './releases'
 
 function iconFor(id: DownloadOption['id']): string {
   switch (id) {
@@ -29,8 +28,12 @@ function renderDownloadCard(option: DownloadOption, recommended: boolean, unavai
   const href = unavailable ? RELEASES_PAGE : option.url
   const btnClass = unavailable ? 'btn btn-download btn-download--muted' : 'btn btn-download'
   const btnText = unavailable
-    ? 'Not published yet — see GitHub'
+    ? 'View releases on GitHub'
     : `Download ${option.fileName}`
+
+  const linkAttrs = unavailable
+    ? 'target="_blank" rel="noopener noreferrer"'
+    : 'target="_blank" rel="noopener noreferrer"'
 
   card.innerHTML = `
     <div class="download-card-top">
@@ -40,7 +43,7 @@ function renderDownloadCard(option: DownloadOption, recommended: boolean, unavai
         <p>${option.description}</p>
       </div>
     </div>
-    <a class="${btnClass}" href="${href}" ${unavailable ? 'target="_blank" rel="noopener noreferrer"' : 'download'}>
+    <a class="${btnClass}" href="${href}" ${linkAttrs}>
       ${btnText}
     </a>
   `
@@ -53,10 +56,10 @@ function renderUnavailableBanner() {
   banner.className = 'download-banner'
   banner.innerHTML = `
     <p>
-      <strong>Desktop builds are not on GitHub yet.</strong>
-      Create a release (tag <code>v${APP_VERSION}</code>) with your installer files, or run the
-      <a href="https://github.com/${GITHUB_REPO}/actions" target="_blank" rel="noopener noreferrer">Release workflow</a>
-      after merging the latest changes.
+      <strong>Installers could not be loaded.</strong>
+      Open
+      <a href="${RELEASES_PAGE}" target="_blank" rel="noopener noreferrer">GitHub Releases</a>
+      to download <code>Markora-${APP_VERSION}.dmg</code>, <code>Markora-Setup-${APP_VERSION}.exe</code>, or <code>Markora-${APP_VERSION}.AppImage</code>.
     </p>
   `
   return banner
@@ -70,6 +73,9 @@ function mountDownloads(downloads: DownloadOption[], unavailableFallback = false
 
   if (grid) {
     grid.innerHTML = ''
+    const existingBanner = section?.querySelector('.download-banner')
+    existingBanner?.remove()
+
     if (unavailableFallback && section) {
       section.insertBefore(renderUnavailableBanner(), grid)
     }
@@ -80,15 +86,15 @@ function mountDownloads(downloads: DownloadOption[], unavailableFallback = false
 
   const primaryBtn = document.getElementById('primary-download') as HTMLAnchorElement | null
   if (primaryBtn && primary) {
+    primaryBtn.target = '_blank'
+    primaryBtn.rel = 'noopener noreferrer'
+    primaryBtn.removeAttribute('download')
+
     if (unavailableFallback) {
       primaryBtn.href = RELEASES_PAGE
-      primaryBtn.removeAttribute('download')
-      primaryBtn.target = '_blank'
-      primaryBtn.rel = 'noopener noreferrer'
       primaryBtn.textContent = 'View GitHub Releases'
     } else {
       primaryBtn.href = primary.url
-      primaryBtn.setAttribute('download', '')
       primaryBtn.textContent = `Download for ${primary.label}`
     }
   }
@@ -102,7 +108,7 @@ async function init() {
   if (yearEl) yearEl.textContent = String(new Date().getFullYear())
 
   const versionEl = document.getElementById('app-version')
-  const latest = await fetchLatestDownloads()
+  const latest = await resolveDownloads()
 
   if (latest) {
     if (versionEl) versionEl.textContent = latest.version
