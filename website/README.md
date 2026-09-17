@@ -37,9 +37,11 @@ If no release exists yet, buttons show a notice instead of linking to a 404.
 
 After merging the Release workflow (`.github/workflows/release.yml`):
 
+**Important:** Bump `version` in the root `package.json` to match the tag before releasing (e.g. `0.1.1` → tag `v0.1.1`). Otherwise installer filenames may not match the tag.
+
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.1.1
+git push origin v0.1.1
 ```
 
 GitHub Actions builds macOS, Windows, and Linux installers and attaches them to the release. Redeploy Vercel if needed; the site picks up assets automatically.
