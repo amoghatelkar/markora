@@ -45,15 +45,18 @@
     "icon": "public/markora-icon.png",
     "linux": {
       "target": "AppImage",
-      "icon": "public/markora-icon.png"
+      "icon": "public/markora-icon.png",
+      "artifactName": "Markora-${version}.${ext}"
     },
     "mac": {
       "target": "dmg",
-      "icon": "public/markora-icon.png"
+      "icon": "public/markora-icon.png",
+      "artifactName": "Markora-${version}.${ext}"
     },
     "win": {
       "target": "nsis",
-      "icon": "public/markora-icon.png"
+      "icon": "public/markora-icon.png",
+      "artifactName": "Markora-Setup-${version}.${ext}"
     }
   },
   "devDependencies": {

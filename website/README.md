@@ -27,20 +27,33 @@ Open http://localhost:5173
 
 ## Download links
 
-Desktop installers are linked from GitHub Releases. Update `APP_VERSION` in `src/config.ts` when you publish a new release.
+The site loads **real download URLs** from the GitHub API:
 
-Build desktop apps from the repo root:
+`GET /repos/amoghatelkar/markora/releases/latest`
+
+If no release exists yet, buttons show a notice instead of linking to a 404.
+
+### Publish installers (recommended)
+
+After merging the Release workflow (`.github/workflows/release.yml`):
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+GitHub Actions builds macOS, Windows, and Linux installers and attaches them to the release. Redeploy Vercel if needed; the site picks up assets automatically.
+
+### Manual upload
 
 ```bash
 npm run build:desktop
 ```
 
-Upload artifacts from `release/` to a GitHub release tagged `v0.1.0` (matching the version in config).
+Create a GitHub release tagged `v0.1.0` and upload files from `release/`:
 
-Expected file names:
+- `Markora-0.1.0.dmg`
+- `Markora-Setup-0.1.0.exe`
+- `Markora-0.1.0.AppImage`
 
-- `Markora-0.1.0.dmg` (macOS)
-- `Markora-Setup-0.1.0.exe` (Windows)
-- `Markora-0.1.0.AppImage` (Linux)
-
-If your electron-builder output names differ, adjust `getDownloadOptions()` in `src/config.ts`.
+Update `APP_VERSION` in `src/config.ts` when the version changes (fallback copy only).
