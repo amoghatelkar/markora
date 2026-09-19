@@ -1,5 +1,6 @@
 import './style.css'
-import { RELEASES_PAGE, detectOS, type DownloadOption } from './config'
+import { initTheme } from './theme'
+import { APP_VERSION, RELEASES_PAGE, detectOS, type DownloadOption } from './config'
 import { resolveDownloads } from './releases'
 
 function iconFor(id: DownloadOption['id']): string {
@@ -114,6 +115,8 @@ function setPrimaryFromGrid() {
 }
 
 async function init() {
+  initTheme()
+
   const releasesLink = document.getElementById('releases-link') as HTMLAnchorElement | null
   if (releasesLink) releasesLink.href = RELEASES_PAGE
 

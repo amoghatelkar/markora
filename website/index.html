@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark" data-theme-pref="system">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,52 +7,84 @@
       name="description"
       content="Markora — a premium Markdown document editor for macOS, Windows, and Linux."
     />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#08080c" />
     <title>Markora — Your Markdown workspace</title>
     <link rel="icon" type="image/png" href="/markora-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
+    <div class="page-bg" aria-hidden="true"></div>
     <div class="page">
       <header class="header">
         <a class="brand" href="/">
-          <img src="/markora-icon.png" width="28" height="28" alt="" />
+          <img src="/markora-icon.png" width="32" height="32" alt="" />
           <span>Markora</span>
         </a>
-        <nav class="header-nav">
+        <nav class="header-nav" aria-label="Primary">
           <a href="#download">Download</a>
           <a href="#features">Features</a>
           <a href="https://github.com/amoghatelkar/markora" target="_blank" rel="noopener noreferrer">GitHub</a>
         </nav>
+        <div class="header-actions">
+          <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+            <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true"></span>
+            <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true"></span>
+          </button>
+        </div>
       </header>
 
       <main>
         <section class="hero">
-          <div class="hero-badge">v<span id="app-version">0.1.1</span></div>
-          <h1>Write in Markdown.<br />Feel like a pro.</h1>
-          <p class="hero-lead">
-            Markora is a calm, premium document editor built for focused writing — with
-            beautiful typography, distraction-free modes, and a fast command palette.
-          </p>
-          <div class="hero-actions">
-            <a id="primary-download" class="btn btn-primary" href="#download">
-              Download for your computer
-            </a>
-            <a class="btn btn-secondary" href="https://github.com/amoghatelkar/markora" target="_blank" rel="noopener noreferrer">
-              View on GitHub
-            </a>
+          <div class="hero-inner">
+            <div class="hero-copy">
+              <div class="hero-badge">v<span id="app-version">0.1.1</span> · Open source</div>
+              <h1>Write in Markdown.<br /><em>Feel</em> like a pro.</h1>
+              <p class="hero-lead">
+                A calm, premium document editor for focused writing — beautiful typography,
+                distraction-free modes, and a fast command palette on every platform.
+              </p>
+              <div class="hero-actions">
+                <a id="primary-download" class="btn btn-primary" href="#download">
+                  Download for your computer
+                </a>
+                <a class="btn btn-secondary" href="https://github.com/amoghatelkar/markora" target="_blank" rel="noopener noreferrer">
+                  View on GitHub
+                </a>
+              </div>
+              <ul class="hero-highlights">
+                <li>Dark &amp; light themes</li>
+                <li>Markdown source view</li>
+                <li>macOS · Windows · Linux</li>
+              </ul>
+            </div>
+            <div class="hero-preview" aria-hidden="true">
+              <div class="preview-window">
+                <div class="preview-chrome">
+                  <span class="preview-dot"></span>
+                  <span class="preview-dot"></span>
+                  <span class="preview-dot"></span>
+                  <span class="preview-title">Focus.md</span>
+                </div>
+                <div class="preview-body">
+                  <p class="preview-h">The craft of writing</p>
+                  <p class="preview-p">Markora keeps your words in clean Markdown while the interface stays out of the way.</p>
+                  <p class="preview-p muted">Press ⌘K for the command palette…</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
         <section id="download" class="download-section">
           <div class="section-head">
+            <p class="section-eyebrow">Get started</p>
             <h2>Download Markora</h2>
-            <p>Choose your platform. All builds are free and open source.</p>
+            <p>Free builds for desktop. No account required.</p>
           </div>
           <div id="download-grid" class="download-grid">
 
@@ -150,42 +182,59 @@
             <a id="releases-link" href="https://github.com/amoghatelkar/markora/releases/tag/v0.1.1" target="_blank" rel="noopener noreferrer">GitHub Releases</a>.
           </p>
           <div class="install-help">
-            <h3>After downloading</h3>
-            <ul>
-              <li>
-                <strong>macOS:</strong> Drag <strong>Markora</strong> from the .dmg into <strong>Applications</strong>.
-                If macOS says the app is <em>damaged</em> or <em>corrupted</em>, the download may have failed — use the button above
-                (or <a href="https://github.com/amoghatelkar/markora/releases/latest" target="_blank" rel="noopener noreferrer">GitHub Releases</a>)
-                and confirm the file is about 100&nbsp;MB, not a few kilobytes.
-                Then run in Terminal: <code>xattr -cr /Applications/Markora.app</code>, or right-click the app → <em>Open</em> → <em>Open</em>.
-                Markora is not Apple-notarized yet; this is expected for open-source builds.
-              </li>
-              <li><strong>Windows:</strong> If SmartScreen appears, choose <em>More info</em> → <em>Run anyway</em> (app is not signed yet).</li>
-              <li><strong>Linux:</strong> Mark the AppImage executable: <code>chmod +x Markora-*.AppImage</code></li>
-            </ul>
+            <h3>First launch</h3>
+            <p class="install-help-lead">One-time security steps — all in menus, no Terminal.</p>
+            <div class="install-grid">
+              <article class="install-card">
+                <h4>macOS</h4>
+                <ol>
+                  <li>Open the .dmg (~100&nbsp;MB) and drag Markora to Applications.</li>
+                  <li>Right-click Markora → <strong>Open</strong> → <strong>Open</strong>.</li>
+                </ol>
+              </article>
+              <article class="install-card">
+                <h4>Windows</h4>
+                <ol>
+                  <li>Run the installer.</li>
+                  <li>SmartScreen: <strong>More info</strong> → <strong>Run anyway</strong>.</li>
+                </ol>
+              </article>
+              <article class="install-card">
+                <h4>Linux</h4>
+                <ol>
+                  <li>AppImage → Properties → allow executing.</li>
+                  <li>Double-click to launch.</li>
+                </ol>
+              </article>
+            </div>
           </div>
         </section>
 
         <section id="features" class="features">
           <div class="section-head">
+            <p class="section-eyebrow">Product</p>
             <h2>Built for writers who care about craft</h2>
           </div>
           <div class="feature-grid">
             <article class="feature-card">
+              <span class="feature-icon" aria-hidden="true">◆</span>
               <h3>Premium design</h3>
-              <p>Minimal interface, sophisticated dark mode, and typography tuned for long-form writing.</p>
+              <p>Refined dark and light themes, subtle depth, and typography tuned for long-form work.</p>
             </article>
             <article class="feature-card">
+              <span class="feature-icon" aria-hidden="true">⌁</span>
               <h3>Markdown native</h3>
-              <p>Switch between rendered view and source instantly. Your documents stay in clean Markdown.</p>
+              <p>Switch between rendered view and source instantly. Your documents stay portable.</p>
             </article>
             <article class="feature-card">
+              <span class="feature-icon" aria-hidden="true">⌘</span>
               <h3>Command palette</h3>
-              <p>Press ⌘K to search actions, toggle themes, and navigate without leaving the keyboard.</p>
+              <p>Press ⌘K to search actions, toggle themes, and navigate without the mouse.</p>
             </article>
             <article class="feature-card">
-              <h3>Focus & Zen</h3>
-              <p>Hide chrome, center your document, and write without visual noise when you need depth.</p>
+              <span class="feature-icon" aria-hidden="true">◎</span>
+              <h3>Focus &amp; Zen</h3>
+              <p>Hide chrome and center your document when you need uninterrupted depth.</p>
             </article>
           </div>
         </section>

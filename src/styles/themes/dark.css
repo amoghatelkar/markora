@@ -1,7 +1,7 @@
 [data-theme='dark'] {
-  --markora-bg-base: #0a0a0a;
-  --markora-bg-surface: #111111;
-  --markora-bg-elevated: #161616;
+  --markora-bg-base: #08080c;
+  --markora-bg-surface: #0e0e14;
+  --markora-bg-elevated: #14141c;
   --markora-bg-hover: rgba(255, 255, 255, 0.04);
   --markora-bg-active: rgba(255, 255, 255, 0.07);
   --markora-bg-input: #1a1a1a;
@@ -16,9 +16,9 @@
   --markora-text-muted: #525252;
   --markora-text-inverse: #0a0a0a;
 
-  --markora-accent: #3b82f6;
-  --markora-accent-hover: #60a5fa;
-  --markora-accent-muted: rgba(59, 130, 246, 0.15);
+  --markora-accent: #818cf8;
+  --markora-accent-hover: #a5b4fc;
+  --markora-accent-muted: rgba(129, 140, 248, 0.18);
 
   --markora-success: #22c55e;
   --markora-warning: #eab308;
@@ -26,8 +26,8 @@
 
   --markora-focus-ring: rgba(59, 130, 246, 0.5);
 
-  --markora-document-bg: #141414;
-  --markora-shadow-document: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --markora-document-bg: #12121a;
+  --markora-shadow-document: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05);
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
