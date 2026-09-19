@@ -53,6 +53,18 @@ function createDocument(title?: string, content?: string): Document {
   }
 }
 
+const THEME_KEY = 'markora-theme'
+
+function readStoredTheme(): Theme {
+  try {
+    const v = localStorage.getItem(THEME_KEY)
+    if (v === 'light' || v === 'dark') return v
+  } catch {
+    /* ignore */
+  }
+  return 'dark'
+}
+
 const SAMPLE_CONTENT = `# My Document
 
 This is the document content. Markora provides a premium writing experience with carefully tuned typography, generous margins, and a calm interface designed for focus.
@@ -70,7 +82,7 @@ Use **bold**, *italic*, and \`inline code\` to format your text. Press \`⌘K\` 
 Explore the sidebar for document outline navigation. Toggle focus mode to minimize distractions.`
 
 export const useAppStore = create<AppState>((set, get) => ({
-  theme: 'dark',
+  theme: readStoredTheme(),
   documents: [],
   activeDocumentId: null,
   sidebarOpen: true,
@@ -88,6 +100,11 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   setTheme: (theme) => {
     document.documentElement.setAttribute('data-theme', theme)
+    try {
+      localStorage.setItem(THEME_KEY, theme)
+    } catch {
+      /* ignore */
+    }
     set({ theme })
   },
 

@@ -18,7 +18,7 @@ Markora features a premium design system built on centralized design tokens, sop
 
 ## Website (Vercel)
 
-The marketing and download page lives in [`website/`](website/). Deploy the repo on Vercel (root `vercel.json` builds the `website` folder). See [website/README.md](website/README.md).
+The marketing and download page lives in [`website/`](website/). The **online editor** is served at `/app/` on the same Vercel deploy (`npm run build:web` + root `vercel.json`). See [website/README.md](website/README.md).
 
 ## Development
 
