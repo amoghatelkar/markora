@@ -46,6 +46,18 @@ npm run build
 | Zen mode | `⌘⇧Z` / `Ctrl+Shift+Z` |
 | Toggle Markdown source | `⌘⇧M` / `Ctrl+Shift+M` |
 
+## Desktop app (macOS)
+
+Download the `.dmg` from [GitHub Releases](https://github.com/amoghatelkar/markora/releases/latest) or the [website](https://markora.opensourceapp.org/#download). Installers are built in CI and are **not** notarized with an Apple Developer ID yet.
+
+If macOS blocks launch (“developer cannot be verified”, “damaged”, or “corrupted”):
+
+1. Make sure the `.dmg` downloaded fully (roughly 100&nbsp;MB). A tiny file usually means a bad or 404 link — re-download from Releases.
+2. Open Terminal and run: `xattr -cr /Applications/Markora.app`
+3. Or right-click **Markora** in Applications → **Open** → **Open** once.
+
+Build locally: `npm run build:desktop` (requires macOS for a `.dmg`).
+
 ## Tech Stack
 
 - React 18 + TypeScript
