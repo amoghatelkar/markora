@@ -32,6 +32,9 @@ html[data-platform='darwin'] .titlebar {
 .titlebar-icon {
   border-radius: var(--radius-xs);
   flex-shrink: 0;
+  display: block;
+  background: transparent;
+  object-fit: contain;
 }
 
 .titlebar-logo {

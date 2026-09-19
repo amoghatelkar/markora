@@ -1,4 +1,5 @@
 import { useRef, useCallback } from 'react'
+import { useIsMobileLayout } from '@/hooks/useMediaQuery'
 import { Search } from 'lucide-react'
 import { useAppStore, useOutline } from '@/store/useAppStore'
 import './Sidebar.css'
@@ -7,10 +8,12 @@ export function Sidebar() {
   const sidebarOpen = useAppStore((s) => s.sidebarOpen)
   const sidebarWidth = useAppStore((s) => s.sidebarWidth)
   const setSidebarWidth = useAppStore((s) => s.setSidebarWidth)
+  const setSidebarOpen = useAppStore((s) => s.setSidebarOpen)
   const focusMode = useAppStore((s) => s.focusMode)
   const zenMode = useAppStore((s) => s.zenMode)
   const outline = useOutline()
   const isResizing = useRef(false)
+  const isMobile = useIsMobileLayout()
 
   const handleMouseDown = useCallback(() => {
     isResizing.current = true
@@ -27,7 +30,10 @@ export function Sidebar() {
   if (!sidebarOpen || focusMode || zenMode) return null
 
   return (
-    <aside className="sidebar" style={{ width: sidebarWidth }}>
+    <aside
+      className="sidebar"
+      style={{ width: isMobile ? undefined : sidebarWidth }}
+    >
       <div className="sidebar-search">
         <Search size={14} strokeWidth={1.5} className="sidebar-search-icon" />
         <input
@@ -50,6 +56,7 @@ export function Sidebar() {
                 className="sidebar-outline-item"
                 type="button"
                 style={{ paddingLeft: `${(item.level - 1) * 12 + 12}px` }}
+                onClick={() => isMobile && setSidebarOpen(false)}
               >
                 {item.text}
               </button>

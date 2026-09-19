@@ -1,0 +1,218 @@
+/* Mobile / narrow web editor (online app and small windows) */
+
+html[data-layout='mobile'] {
+  --titlebar-height: 48px;
+  --tabbar-height: 40px;
+  --toolbar-height: 44px;
+  --statusbar-height: 32px;
+}
+
+html[data-layout='mobile'] body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html[data-layout='mobile'] #root {
+  width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
+html[data-layout='mobile'] .titlebar {
+  padding: env(safe-area-inset-top) max(var(--space-5), env(safe-area-inset-right)) 0
+    max(var(--space-5), env(safe-area-inset-left));
+  min-height: var(--titlebar-height);
+  height: auto;
+  gap: var(--space-4);
+  background: color-mix(in srgb, var(--color-bg-base) 92%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-app-region: no-drag;
+}
+
+html[data-layout='mobile'] html[data-platform='darwin'] .titlebar,
+html[data-layout='mobile'][data-platform='darwin'] .titlebar {
+  padding-left: max(var(--space-5), env(safe-area-inset-left));
+}
+
+html[data-layout='mobile'] .titlebar-mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+html[data-layout='mobile'] .titlebar-mobile-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  background: var(--color-bg-surface);
+  border: var(--border-subtle);
+}
+
+html[data-layout='mobile'] .titlebar-mobile-btn:active {
+  background: var(--color-bg-active);
+}
+
+html[data-layout='mobile'] .view-controls .segmented-control {
+  font-size: var(--text-xs);
+}
+
+html[data-layout='mobile'] .menubar {
+  display: none;
+}
+
+html[data-layout='mobile'] .tabbar {
+  padding-left: max(var(--space-3), env(safe-area-inset-left));
+  padding-right: max(var(--space-3), env(safe-area-inset-right));
+}
+
+html[data-layout='mobile'] .tab {
+  max-width: 140px;
+  min-height: 36px;
+  padding: 0 var(--space-6);
+}
+
+html[data-layout='mobile'] .tab-close {
+  opacity: 1;
+  width: 28px;
+  height: 28px;
+}
+
+html[data-layout='mobile'] .toolbar {
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
+  gap: var(--space-3);
+  -webkit-overflow-scrolling: touch;
+}
+
+html[data-layout='mobile'] .toolbar-btn {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+html[data-layout='mobile'] .app-shell-body {
+  position: relative;
+  min-height: 0;
+}
+
+html[data-layout='mobile'] .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: var(--z-overlay);
+  width: min(88vw, 320px) !important;
+  max-width: 320px;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: var(--shadow-overlay);
+  border-right: var(--border-default);
+}
+
+html[data-layout='mobile'] .sidebar-resizer {
+  display: none;
+}
+
+html[data-layout='mobile'] .sidebar-outline-item {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+html[data-layout='mobile'] .sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-overlay) - 1);
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+html[data-layout='mobile'] .editor-scroll {
+  padding: var(--space-6) var(--space-4);
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
+}
+
+html[data-layout='mobile'] .editor-document {
+  padding: var(--space-8) var(--space-6);
+  min-height: 50vh;
+  border-radius: var(--radius-lg);
+}
+
+html[data-layout='mobile'] .editor-prose {
+  font-size: var(--text-lg);
+  line-height: 1.7;
+}
+
+html[data-layout='mobile'] .statusbar {
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: max(var(--space-5), env(safe-area-inset-left));
+  padding-right: max(var(--space-5), env(safe-area-inset-right));
+}
+
+html[data-layout='mobile'] .statusbar-right .statusbar-sep,
+html[data-layout='mobile'] .statusbar-right span:nth-child(n + 3) {
+  display: none;
+}
+
+html[data-layout='mobile'] .welcome {
+  padding: var(--space-7) var(--space-5);
+  padding-bottom: max(var(--space-9), env(safe-area-inset-bottom));
+}
+
+html[data-layout='mobile'] .welcome-content {
+  max-width: 100%;
+  padding: var(--space-9) var(--space-7);
+}
+
+html[data-layout='mobile'] .welcome-actions {
+  flex-direction: column;
+  width: 100%;
+}
+
+html[data-layout='mobile'] .welcome-actions .btn {
+  width: 100%;
+}
+
+html[data-layout='mobile'] .cmd-overlay {
+  align-items: flex-end;
+  padding: 0;
+}
+
+html[data-layout='mobile'] .cmd-palette {
+  max-width: none;
+  width: 100%;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+html[data-layout='mobile'] .cmd-list {
+  max-height: min(50vh, 360px);
+}
+
+html[data-layout='mobile'] .dialog-overlay {
+  align-items: flex-end;
+  padding: var(--space-4);
+  padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+}
+
+html[data-layout='mobile'] .dialog {
+  max-width: none;
+  width: 100%;
+  border-radius: var(--radius-xl) var(--radius-xl) var(--radius-lg) var(--radius-lg);
+}
+
+html[data-layout='mobile'] .view-controls-btn {
+  width: 40px;
+  height: 40px;
+}
+
+.titlebar-mobile-actions {
+  display: none;
+}

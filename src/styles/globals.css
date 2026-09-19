@@ -2,6 +2,7 @@
 @import './themes/dark.css';
 @import './themes/light.css';
 @import './animations.css';
+@import './mobile.css';
 
 *,
 *::before,
@@ -29,10 +30,12 @@ body {
 }
 
 #root {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 button {

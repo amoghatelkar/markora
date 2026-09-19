@@ -41,6 +41,11 @@
   z-index: var(--z-popover);
 }
 
+.toolbar-dropdown-menu--portal {
+  position: fixed;
+  margin: 0;
+}
+
 .toolbar-dropdown-item {
   display: flex;
   align-items: center;
