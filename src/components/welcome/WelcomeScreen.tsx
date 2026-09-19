@@ -1,4 +1,5 @@
 import { useAppStore } from '@/store/useAppStore'
+import { assetUrl } from '@/lib/assetUrl'
 import { Button } from '@/components/ui/Button'
 import { formatShortcut } from '@/lib/shortcuts'
 import './WelcomeScreen.css'
@@ -13,7 +14,7 @@ export function WelcomeScreen() {
   return (
     <div className="welcome">
       <div className="welcome-content animate-fade-in">
-        <img src="/markora-icon.png" alt="" className="welcome-icon" width={64} height={64} />
+        <img src={assetUrl('markora-icon.png')} alt="" className="welcome-icon" width={64} height={64} />
         <h1 className="welcome-title">Markora</h1>
         <p className="welcome-subtitle">Your Markdown workspace.</p>
 

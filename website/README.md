@@ -18,7 +18,7 @@ Open http://localhost:5173
 
 1. Import the GitHub repo in Vercel.
 2. Leave the **Root Directory** as the repository root (default).
-3. Vercel uses the root `vercel.json`, which builds the `website/` folder.
+3. Vercel uses the root `vercel.json`, which builds the marketing site and bundles the **online editor** at `/app/`.
 
 ### Option B — Website folder only
 
