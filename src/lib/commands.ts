@@ -15,11 +15,33 @@ export function getCommands(): Command[] {
     },
     {
       id: 'open-document',
-      label: 'Open Document',
+      label: 'Open…',
       category: 'File',
       shortcut: 'Mod+O',
-      keywords: ['open', 'file'],
-      action: () => store.setOpenDialogOpen(true),
+      keywords: ['open', 'file', 'explorer'],
+      action: () => {
+        void store.openDocumentFromSystem()
+      },
+    },
+    {
+      id: 'save-document',
+      label: 'Save',
+      category: 'File',
+      shortcut: 'Mod+S',
+      keywords: ['save', 'write', 'disk'],
+      action: () => {
+        void store.saveActiveDocument()
+      },
+    },
+    {
+      id: 'save-document-as',
+      label: 'Save As…',
+      category: 'File',
+      shortcut: 'Mod+Shift+S',
+      keywords: ['save', 'export', 'copy'],
+      action: () => {
+        void store.saveActiveDocumentAs()
+      },
     },
     {
       id: 'toggle-markdown-source',

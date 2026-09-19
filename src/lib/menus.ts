@@ -40,9 +40,35 @@ export function getMenus(): MenuDefinition[] {
         },
         {
           id: 'open-document',
-          label: 'Open Document…',
+          label: 'Open…',
           shortcut: formatShortcut('Mod+O'),
+          action: () => {
+            void store.openDocumentFromSystem()
+          },
+        },
+        {
+          id: 'open-sample',
+          label: 'Open Sample…',
           action: () => store.setOpenDialogOpen(true),
+        },
+        { id: 'sep-save', label: '', separator: true },
+        {
+          id: 'save-document',
+          label: 'Save',
+          shortcut: formatShortcut('Mod+S'),
+          action: () => {
+            void store.saveActiveDocument()
+          },
+          disabled: !store.activeDocumentId,
+        },
+        {
+          id: 'save-document-as',
+          label: 'Save As…',
+          shortcut: formatShortcut('Mod+Shift+S'),
+          action: () => {
+            void store.saveActiveDocumentAs()
+          },
+          disabled: !store.activeDocumentId,
         },
         { id: 'sep-1', label: '', separator: true },
         {

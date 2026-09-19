@@ -27,7 +27,13 @@ export function useKeyboardShortcuts() {
         return
       }
 
-      if (isInput && !matchesShortcut(e, 'Mod+S')) return
+      if (
+        isInput &&
+        !matchesShortcut(e, 'Mod+S') &&
+        !matchesShortcut(e, 'Mod+Shift+S')
+      ) {
+        return
+      }
 
       const commands = getCommands()
       for (const cmd of commands) {

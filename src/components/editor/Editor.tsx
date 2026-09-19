@@ -1,4 +1,4 @@
-import { useCallback, useEffect, type CSSProperties } from 'react'
+import { useCallback, useEffect, useRef, type CSSProperties } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -26,6 +26,15 @@ export function Editor() {
   const registerCommands = useEditorStore((s) => s.registerCommands)
   const unregisterCommands = useEditorStore((s) => s.unregisterCommands)
   const setBlockLabel = useEditorStore((s) => s.setBlockLabel)
+  const sourceRef = useRef<HTMLTextAreaElement>(null)
+
+  const syncSourceHeight = useCallback(() => {
+    const el = sourceRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    const min = Math.max(320, Math.floor(window.innerHeight * 0.35))
+    el.style.height = `${Math.max(el.scrollHeight, min)}px`
+  }, [])
 
   const editor = useEditor({
     extensions: [
@@ -92,29 +101,43 @@ export function Editor() {
     }
   }, [showMarkdownSource])
 
+  useEffect(() => {
+    if (!showMarkdownSource) return
+    syncSourceHeight()
+  }, [showMarkdownSource, doc?.content, editorZoom, syncSourceHeight])
+
+  useEffect(() => {
+    if (!showMarkdownSource) return
+    const onResize = () => syncSourceHeight()
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [showMarkdownSource, syncSourceHeight])
+
   if (!doc) return null
 
   const widthVar = `--editor-width-${editorWidth}`
+  const canvasStyle: CSSProperties = {
+    maxWidth: `var(${widthVar})`,
+    zoom: editorZoom / 100,
+  }
 
   return (
     <div className={`editor ${zenMode ? 'editor--zen' : ''} ${showMarkdownSource ? 'editor--source' : ''}`}>
       {!showMarkdownSource && <Toolbar onFormat={handleFormat} />}
       <div className="editor-scroll">
-        <div
-          className="editor-canvas"
-          style={{ maxWidth: `var(${widthVar})` }}
-        >
-          <article
-            className="editor-document"
-            style={{ '--editor-zoom': editorZoom / 100 } as CSSProperties}
-          >
+        <div className="editor-canvas" style={canvasStyle}>
+          <article className="editor-document">
             {showMarkdownSource ? (
               <div className="editor-source-wrap">
                 <div className="editor-source-label">Markdown</div>
                 <textarea
+                  ref={sourceRef}
                   className="editor-source"
                   value={doc.content}
-                  onChange={(e) => updateDocumentContent(doc.id, e.target.value)}
+                  onChange={(e) => {
+                    updateDocumentContent(doc.id, e.target.value)
+                    syncSourceHeight()
+                  }}
                   spellCheck={false}
                   aria-label="Markdown source"
                 />

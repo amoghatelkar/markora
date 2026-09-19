@@ -1,5 +1,6 @@
 import { useAppStore, useActiveDocument } from '@/store/useAppStore'
 import { countWords, countCharacters } from '@/lib/wordCount'
+import { EditorZoomControl } from './EditorZoomControl'
 import './StatusBar.css'
 
 export function StatusBar() {
@@ -21,6 +22,9 @@ export function StatusBar() {
         <span>{words.toLocaleString()} words</span>
         <span className="statusbar-sep">·</span>
         <span>{chars.toLocaleString()} characters</span>
+      </div>
+      <div className="statusbar-center">
+        <EditorZoomControl />
       </div>
       <div className="statusbar-right">
         <span>Markdown</span>

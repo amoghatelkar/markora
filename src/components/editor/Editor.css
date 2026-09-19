@@ -63,7 +63,7 @@
 .editor-prose {
   outline: none;
   min-height: 40vh;
-  font-size: calc(var(--text-md) * var(--editor-zoom, 1));
+  font-size: var(--text-md);
   line-height: var(--leading-relaxed);
   color: var(--color-text-primary);
   caret-color: var(--color-accent);
@@ -82,7 +82,7 @@
 }
 
 .editor-prose h1 {
-  font-size: calc(var(--text-3xl) * var(--editor-zoom, 1));
+  font-size: var(--text-3xl);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
@@ -92,7 +92,7 @@
 }
 
 .editor-prose h2 {
-  font-size: calc(var(--text-xl) * var(--editor-zoom, 1));
+  font-size: var(--text-xl);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
@@ -102,7 +102,7 @@
 }
 
 .editor-prose h3 {
-  font-size: calc(var(--text-lg) * var(--editor-zoom, 1));
+  font-size: var(--text-lg);
   font-weight: var(--weight-medium);
   color: var(--color-text-primary);
   margin-top: 1.25em;
@@ -208,7 +208,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  min-height: 50vh;
+  width: 100%;
 }
 
 .editor-source-label {
@@ -222,16 +222,17 @@
 }
 
 .editor-source {
-  flex: 1;
+  display: block;
   width: 100%;
-  min-height: 48vh;
+  min-height: 35vh;
   font-family: var(--font-mono);
-  font-size: calc(var(--text-sm) * var(--editor-zoom, 1));
+  font-size: var(--text-sm);
   line-height: var(--leading-relaxed);
   color: var(--color-text-primary);
   background: transparent;
   border: none;
   resize: none;
+  overflow: hidden;
   tab-size: 2;
   user-select: text;
   caret-color: var(--color-accent);

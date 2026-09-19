@@ -1,0 +1,53 @@
+.editor-zoom {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.editor-zoom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  transition: background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.editor-zoom-btn:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.editor-zoom-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.editor-zoom-slider {
+  width: 88px;
+  height: 4px;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.editor-zoom-value {
+  min-width: 40px;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+  text-align: left;
+}
+
+.editor-zoom-value:hover {
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 720px) {
+  .editor-zoom-slider {
+    width: 64px;
+  }
+}
