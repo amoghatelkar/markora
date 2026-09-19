@@ -38,8 +38,12 @@ html[data-platform='darwin'] .titlebar {
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
+<<<<<<< HEAD
   letter-spacing: 0.04em;
   text-transform: uppercase;
+=======
+  letter-spacing: var(--tracking-tight);
+>>>>>>> origin/cursor/online-app-a799
   color: inherit;
   text-decoration: none;
   color: var(--color-text-secondary);

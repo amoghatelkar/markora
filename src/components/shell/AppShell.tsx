@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
+import { useIsMobileLayout } from '@/hooks/useMediaQuery'
 import { TitleBar } from './TitleBar'
 import { MenuBar } from './MenuBar'
 import { TabBar } from './TabBar'
@@ -16,11 +17,22 @@ import './AppShell.css'
 
 export function AppShell() {
   useKeyboardShortcuts()
+  const isMobile = useIsMobileLayout()
 
   const showWelcome = useAppStore((s) => s.showWelcome)
   const activeDocumentId = useAppStore((s) => s.activeDocumentId)
   const zenMode = useAppStore((s) => s.zenMode)
   const showToast = useAppStore((s) => s.showToast)
+  const sidebarOpen = useAppStore((s) => s.sidebarOpen)
+  const setSidebarOpen = useAppStore((s) => s.setSidebarOpen)
+
+  useEffect(() => {
+    document.documentElement.dataset.layout = isMobile ? 'mobile' : 'desktop'
+  }, [isMobile])
+
+  useEffect(() => {
+    if (isMobile) setSidebarOpen(false)
+  }, [isMobile, setSidebarOpen])
 
   const [contextMenu, setContextMenu] = useState<{
     x: number
@@ -58,6 +70,14 @@ export function AppShell() {
       <TabBar />
 
       <div className="app-shell-body">
+        {isMobile && sidebarOpen && !zenMode && (
+          <button
+            type="button"
+            className="sidebar-backdrop"
+            aria-label="Close outline"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
         <Sidebar />
         <main className="app-shell-main">
           {showWelcome && !activeDocumentId ? <WelcomeScreen /> : <Editor />}

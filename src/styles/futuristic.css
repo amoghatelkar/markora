@@ -133,11 +133,6 @@
   opacity: 0.8;
 }
 
-.welcome-content {
-  position: relative;
-  overflow: hidden;
-}
-
 .welcome-title {
   font-family: var(--font-display);
   background: linear-gradient(135deg, var(--color-text-primary), var(--markora-accent));
