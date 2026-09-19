@@ -25,5 +25,9 @@ export function matchesShortcut(e: KeyboardEvent, keys: string): boolean {
   if (needsMod !== mod) return false
   if (needsShift !== e.shiftKey) return false
   if (needsAlt !== e.altKey) return false
-  return e.key.toLowerCase() === key
+
+  const pressed = e.key.toLowerCase()
+  if (pressed === key) return true
+  if (key === '=' && (pressed === '=' || pressed === '+')) return true
+  return false
 }
