@@ -28,6 +28,7 @@ interface AppState {
   updateDocumentContent: (id: string, content: string) => void
   markDocumentSaved: (id: string) => void
   toggleSidebar: () => void
+  setSidebarOpen: (open: boolean) => void
   setSidebarWidth: (width: number) => void
   toggleFocusMode: () => void
   toggleZenMode: () => void
@@ -178,6 +179,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
+
+  setSidebarOpen: (open) => set({ sidebarOpen: open }),
 
   setSidebarWidth: (width) =>
     set({ sidebarWidth: Math.max(180, Math.min(400, width)) }),
