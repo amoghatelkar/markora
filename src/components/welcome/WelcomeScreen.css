@@ -3,17 +3,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-base);
+  padding: var(--space-9);
+  background: transparent;
 }
 
 .welcome-content {
   text-align: center;
-  max-width: 360px;
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-11) var(--space-10);
+  border-radius: var(--radius-xl);
+  border: var(--border-subtle);
+  background: color-mix(in srgb, var(--color-bg-elevated) 88%, transparent);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(12px);
 }
 
 .welcome-icon {
   margin-bottom: var(--space-7);
   border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .welcome-title {
@@ -21,13 +30,14 @@
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
   color: var(--color-text-primary);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
 }
 
 .welcome-subtitle {
   font-size: var(--text-md);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   margin-bottom: var(--space-10);
+  line-height: var(--leading-relaxed);
 }
 
 .welcome-actions {
@@ -48,6 +58,8 @@
 
 .welcome-recent {
   text-align: left;
+  padding-top: var(--space-7);
+  border-top: var(--border-subtle);
 }
 
 .welcome-recent-label {
@@ -62,16 +74,19 @@
 .welcome-recent-item {
   display: block;
   width: 100%;
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-5) var(--space-6);
   text-align: left;
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
   transition: background var(--duration-fast) var(--ease-out),
-    color var(--duration-fast) var(--ease-out);
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
 }
 
 .welcome-recent-item:hover {
   background: var(--color-bg-hover);
+  border-color: var(--color-border-subtle);
   color: var(--color-text-primary);
 }

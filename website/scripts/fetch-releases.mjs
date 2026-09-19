@@ -67,9 +67,16 @@ function patchIndexHtml(release, assets) {
   if (html.includes('<!-- RELEASE_DOWNLOADS -->')) {
     html = html.replace('<!-- RELEASE_DOWNLOADS -->', grid.trim())
   } else {
+    // Match through the grid's closing tag (not the first nested </div>).
+    const gridBlock =
+      /<div id="download-grid" class="download-grid">[\s\S]*?<\/div>\s*(?=<p class="download-note")/
+    if (!gridBlock.test(html)) {
+      console.warn('Could not patch download grid — add <!-- RELEASE_DOWNLOADS --> to index.html')
+      return
+    }
     html = html.replace(
-      /<div id="download-grid" class="download-grid">[\s\S]*?<\/div>/,
-      `<div id="download-grid" class="download-grid">\n${grid}\n          </div>`
+      gridBlock,
+      `<div id="download-grid" class="download-grid">\n${grid}\n          </div>\n          `
     )
   }
 
