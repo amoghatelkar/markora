@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, type CSSProperties } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -19,6 +19,7 @@ import './Editor.css'
 export function Editor() {
   const doc = useActiveDocument()
   const editorWidth = useAppStore((s) => s.editorWidth)
+  const editorZoom = useAppStore((s) => s.editorZoom)
   const showMarkdownSource = useAppStore((s) => s.showMarkdownSource)
   const updateDocumentContent = useAppStore((s) => s.updateDocumentContent)
   const zenMode = useAppStore((s) => s.zenMode)
@@ -103,7 +104,10 @@ export function Editor() {
           className="editor-canvas"
           style={{ maxWidth: `var(${widthVar})` }}
         >
-          <article className="editor-document">
+          <article
+            className="editor-document"
+            style={{ '--editor-zoom': editorZoom / 100 } as CSSProperties}
+          >
             {showMarkdownSource ? (
               <div className="editor-source-wrap">
                 <div className="editor-source-label">Markdown</div>

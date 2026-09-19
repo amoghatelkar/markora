@@ -13,6 +13,7 @@ interface AppState {
   commandPaletteOpen: boolean
   showWelcome: boolean
   editorWidth: EditorWidth
+  editorZoom: number
   showMarkdownSource: boolean
   saveStatus: SaveStatus
   recentCommands: string[]
@@ -34,6 +35,10 @@ interface AppState {
   toggleZenMode: () => void
   setCommandPaletteOpen: (open: boolean) => void
   setEditorWidth: (width: EditorWidth) => void
+  setEditorZoom: (zoom: number) => void
+  zoomIn: () => void
+  zoomOut: () => void
+  resetEditorZoom: () => void
   toggleMarkdownSource: () => void
   setSaveStatus: (status: SaveStatus) => void
   addRecentCommand: (id: string) => void
@@ -93,6 +98,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   commandPaletteOpen: false,
   showWelcome: true,
   editorWidth: 'comfortable',
+  editorZoom: 100,
   showMarkdownSource: false,
   saveStatus: 'saved',
   recentCommands: [],
@@ -192,6 +198,17 @@ export const useAppStore = create<AppState>((set, get) => ({
   setCommandPaletteOpen: (open) => set({ commandPaletteOpen: open }),
 
   setEditorWidth: (width) => set({ editorWidth: width }),
+
+  setEditorZoom: (zoom) =>
+    set({ editorZoom: Math.min(200, Math.max(50, Math.round(zoom))) }),
+
+  zoomIn: () =>
+    set((s) => ({ editorZoom: Math.min(200, s.editorZoom + 10) })),
+
+  zoomOut: () =>
+    set((s) => ({ editorZoom: Math.max(50, s.editorZoom - 10) })),
+
+  resetEditorZoom: () => set({ editorZoom: 100 }),
 
   toggleMarkdownSource: () =>
     set((s) => ({ showMarkdownSource: !s.showMarkdownSource })),
