@@ -51,7 +51,9 @@
     "mac": {
       "target": "dmg",
       "icon": "public/markora-icon.png",
-      "artifactName": "Markora-${version}.${ext}"
+      "artifactName": "Markora-${version}.${ext}",
+      "identity": "-",
+      "gatekeeperAssess": false
     },
     "win": {
       "target": "nsis",

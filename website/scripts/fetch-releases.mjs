@@ -64,7 +64,14 @@ function patchIndexHtml(release, assets) {
   let html = readFileSync(indexPath, 'utf8')
   const grid = buildGridHtml(assets)
 
-  html = html.replace('<!-- RELEASE_DOWNLOADS -->', grid.trim())
+  if (html.includes('<!-- RELEASE_DOWNLOADS -->')) {
+    html = html.replace('<!-- RELEASE_DOWNLOADS -->', grid.trim())
+  } else {
+    html = html.replace(
+      /<div id="download-grid" class="download-grid">[\s\S]*?<\/div>/,
+      `<div id="download-grid" class="download-grid">\n${grid}\n          </div>`
+    )
+  }
 
   const version = release.tag_name.replace(/^v/, '')
   html = html.replace(
