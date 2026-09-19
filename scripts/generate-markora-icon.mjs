@@ -19,11 +19,11 @@ for (let i = 0; i < width * height; i++) {
 
   const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
 
-  if (lum < 28) {
-    out[o] = r
-    out[o + 1] = g
-    out[o + 2] = b
-    out[o + 3] = a
+  if (lum < 36) {
+    out[o] = 0
+    out[o + 1] = 0
+    out[o + 2] = 0
+    out[o + 3] = 0
     continue
   }
 

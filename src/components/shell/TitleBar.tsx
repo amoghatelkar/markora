@@ -1,10 +1,7 @@
 import { PanelLeft, Search } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { assetUrl } from '@/lib/assetUrl'
-<<<<<<< HEAD
-=======
 import { useIsMobileLayout } from '@/hooks/useMediaQuery'
->>>>>>> origin/cursor/online-app-a799
 import { ViewControls } from './ViewControls'
 import './TitleBar.css'
 
@@ -20,8 +17,6 @@ export function TitleBar() {
   return (
     <header className={`titlebar ${focusMode ? 'titlebar--minimal' : ''}`}>
       <div className="titlebar-drag">
-<<<<<<< HEAD
-=======
         {isMobile && (
           <div className="titlebar-mobile-actions">
             <button
@@ -42,7 +37,6 @@ export function TitleBar() {
             </button>
           </div>
         )}
->>>>>>> origin/cursor/online-app-a799
         <img src={assetUrl('markora-icon.png')} alt="" className="titlebar-icon" width={18} height={18} />
         {import.meta.env.BASE_URL === '/app/' ? (
           <a className="titlebar-logo" href="/">Markora</a>
