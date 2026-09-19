@@ -397,6 +397,12 @@ main {
   font-size: 16px;
 }
 
+.section-head a {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .download-grid {
   display: grid;
   grid-template-columns: 1fr;
