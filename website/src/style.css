@@ -517,6 +517,42 @@ main {
   opacity: 0.85;
 }
 
+.install-help-lead {
+  margin: 0 0 1rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.install-steps {
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  background: var(--surface-elevated);
+}
+
+.install-steps summary {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.install-steps ol {
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.install-steps li {
+  margin-bottom: 0.35rem;
+  line-height: 1.45;
+}
+
+.install-help-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
 .install-help {
   margin-top: 36px;
   padding: 24px;
