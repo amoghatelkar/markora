@@ -8,8 +8,6 @@
 }
 
 .welcome-content {
-  position: relative;
-  overflow: hidden;
   text-align: center;
   width: 100%;
   max-width: 420px;
@@ -27,7 +25,7 @@
   display: block;
   background: transparent;
   object-fit: contain;
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-accent) 25%, transparent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .welcome-title {

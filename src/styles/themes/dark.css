@@ -1,43 +1,36 @@
 [data-theme='dark'] {
-  --markora-bg-base: #04040a;
-  --markora-bg-surface: #080812;
-  --markora-bg-elevated: #0c0c18;
-  --markora-bg-hover: rgba(167, 139, 250, 0.08);
-  --markora-bg-active: rgba(34, 211, 238, 0.12);
-  --markora-bg-input: #0a0a14;
+  --markora-bg-base: #08080c;
+  --markora-bg-surface: #0e0e14;
+  --markora-bg-elevated: #14141c;
+  --markora-bg-hover: rgba(255, 255, 255, 0.04);
+  --markora-bg-active: rgba(255, 255, 255, 0.07);
+  --markora-bg-input: #1a1a1a;
 
-  --markora-border-subtle: rgba(167, 139, 250, 0.12);
-  --markora-border-default: rgba(34, 211, 238, 0.18);
-  --markora-border-strong: rgba(167, 139, 250, 0.35);
+  --markora-border-subtle: rgba(255, 255, 255, 0.06);
+  --markora-border-default: rgba(255, 255, 255, 0.1);
+  --markora-border-strong: rgba(255, 255, 255, 0.16);
 
-  --markora-text-primary: #f0f4ff;
-  --markora-text-secondary: #a8b4d4;
-  --markora-text-tertiary: #6b7a9e;
-  --markora-text-muted: #4a5568;
-  --markora-text-inverse: #04040a;
+  --markora-text-primary: #ededed;
+  --markora-text-secondary: #a1a1a1;
+  --markora-text-tertiary: #737373;
+  --markora-text-muted: #525252;
+  --markora-text-inverse: #0a0a0a;
 
-  --markora-accent: #22d3ee;
-  --markora-accent-hover: #67e8f9;
-  --markora-accent-muted: rgba(34, 211, 238, 0.14);
-  --markora-accent-secondary: #a78bfa;
+  --markora-accent: #818cf8;
+  --markora-accent-hover: #a5b4fc;
+  --markora-accent-muted: rgba(129, 140, 248, 0.18);
 
-  --markora-success: #34d399;
-  --markora-warning: #fbbf24;
-  --markora-error: #f87171;
+  --markora-success: #22c55e;
+  --markora-warning: #eab308;
+  --markora-error: #ef4444;
 
-  --markora-focus-ring: rgba(34, 211, 238, 0.55);
+  --markora-focus-ring: rgba(59, 130, 246, 0.5);
 
-  --markora-document-bg: #0a0a12;
-  --markora-shadow-document:
-    0 0 0 1px rgba(167, 139, 250, 0.15),
-    0 0 40px rgba(34, 211, 238, 0.06),
-    0 24px 48px rgba(0, 0, 0, 0.45);
+  --markora-document-bg: #12121a;
+  --markora-shadow-document: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05);
 
-  --markora-shell-glow: rgba(167, 139, 250, 0.22);
-  --markora-shell-glow-2: rgba(34, 211, 238, 0.12);
-
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
-  --shadow-overlay: 0 24px 64px rgba(0, 0, 0, 0.65), 0 0 48px rgba(34, 211, 238, 0.08);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-overlay: 0 16px 48px rgba(0, 0, 0, 0.6);
 }

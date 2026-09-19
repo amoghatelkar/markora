@@ -46,8 +46,7 @@
   --space-13: 64px;
 
   /* ── Typography ── */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-display: 'Syne', var(--font-sans);
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', ui-monospace, monospace;
 
   --text-xs: 11px;
