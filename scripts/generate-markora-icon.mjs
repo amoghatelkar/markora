@@ -50,12 +50,17 @@ for (let i = 0; i < width * height; i++) {
     continue
   }
 
-  let t = Math.min(1, (lum - 30) / 165)
-  t = Math.pow(t, 0.78)
+  let t = Math.min(1, (lum - 28) / 150)
+  t = Math.pow(t, 0.62)
 
   const maxCh = Math.max(r, g, b)
-  if (maxCh > 200) {
-    t = Math.min(1, t + (maxCh - 200) / 220)
+  if (maxCh > 185) {
+    t = Math.min(1, t + (maxCh - 185) / 140)
+  }
+
+  const sat = Math.max(r, g, b) - Math.min(r, g, b)
+  if (sat > 12 && lum > 60) {
+    t = Math.min(1, t + sat / 400)
   }
 
   const [nr, ng, nb] = metallicRgb(t)
@@ -68,8 +73,9 @@ for (let i = 0; i < width * height; i++) {
 let pipeline = sharp(out, { raw: { width, height, channels } })
 
 pipeline = pipeline
-  .modulate({ brightness: 1.04, saturation: 0.92 })
-  .sharpen({ sigma: 0.6, m1: 0.5, m2: 0.25 })
+  .modulate({ brightness: 1.06, saturation: 0.88 })
+  .linear(1.08, -(255 * 0.04))
+  .sharpen({ sigma: 0.85, m1: 0.65, m2: 0.35 })
 
 const png = await pipeline.png({ compressionLevel: 9 }).toBuffer()
 
