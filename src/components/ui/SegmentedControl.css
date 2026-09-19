@@ -24,7 +24,7 @@
 }
 
 .segmented-item--active {
-  background: var(--color-bg-elevated);
-  color: var(--color-text-primary);
-  box-shadow: var(--shadow-sm);
+  background: var(--markora-accent-muted);
+  color: var(--color-accent);
+  box-shadow: 0 0 12px var(--markora-accent-muted);
 }

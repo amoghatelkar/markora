@@ -8,6 +8,8 @@
 }
 
 .welcome-content {
+  position: relative;
+  overflow: hidden;
   text-align: center;
   width: 100%;
   max-width: 420px;
