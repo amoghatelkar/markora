@@ -46,17 +46,13 @@ npm run build
 | Zen mode | `⌘⇧Z` / `Ctrl+Shift+Z` |
 | Toggle Markdown source | `⌘⇧M` / `Ctrl+Shift+M` |
 
-## Desktop app (macOS)
+## Desktop app
 
-Download the `.dmg` from [GitHub Releases](https://github.com/amoghatelkar/markora/releases/latest) or the [website](https://markora.opensourceapp.org/#download). Installers are built in CI and are **not** notarized with an Apple Developer ID yet.
+Download installers from [GitHub Releases](https://github.com/amoghatelkar/markora/releases/latest) or the [website](https://markora.opensourceapp.org/#download).
 
-If macOS blocks launch (“developer cannot be verified”, “damaged”, or “corrupted”):
+**macOS without Terminal:** open the `.dmg`, copy Markora to Applications, then **right-click → Open → Open** the first time only. Step-by-step for all platforms: [docs/DESKTOP_INSTALL.md](docs/DESKTOP_INSTALL.md).
 
-1. Make sure the `.dmg` downloaded fully (roughly 100&nbsp;MB). A tiny file usually means a bad or 404 link — re-download from Releases.
-2. Open Terminal and run: `xattr -cr /Applications/Markora.app`
-3. Or right-click **Markora** in Applications → **Open** → **Open** once.
-
-Build locally: `npm run build:desktop` (requires macOS for a `.dmg`).
+Build locally: `npm run build:desktop` (macOS required for a `.dmg`). Maintainers: [docs/CODE_SIGNING.md](docs/CODE_SIGNING.md) for notarized builds that open with a normal double-click.
 
 ## Tech Stack
 

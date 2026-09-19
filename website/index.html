@@ -55,8 +55,7 @@
             <p>Choose your platform. All builds are free and open source.</p>
           </div>
           <div id="download-grid" class="download-grid">
-
-            <article class="download-card">
+<article class="download-card">
               <div class="download-card-top">
                 <span class="download-os-icon" aria-hidden="true">⌘</span>
                 <div>
@@ -104,65 +103,45 @@
               >Download Markora-0.1.0.AppImage</a>
             </article>
           </div>
-              </div>
-              <a
-                class="btn btn-download"
-                href="https://github.com/amoghatelkar/markora/releases/download/v0.1.1/Markora-0.1.0.dmg"
-                target="_blank"
-                rel="noopener noreferrer"
-              >Download Markora-0.1.0.dmg</a>
-            </article>
-
-            <article class="download-card">
-              <div class="download-card-top">
-                <span class="download-os-icon" aria-hidden="true">⊞</span>
-                <div>
-                  <h3>Windows</h3>
-                  <p>Windows 10+ · .exe installer</p>
-                </div>
-              </div>
-              <a
-                class="btn btn-download"
-                href="https://github.com/amoghatelkar/markora/releases/download/v0.1.1/Markora-Setup-0.1.0.exe"
-                target="_blank"
-                rel="noopener noreferrer"
-              >Download Markora-Setup-0.1.0.exe</a>
-            </article>
-
-            <article class="download-card">
-              <div class="download-card-top">
-                <span class="download-os-icon" aria-hidden="true">◆</span>
-                <div>
-                  <h3>Linux</h3>
-                  <p>AppImage · x64</p>
-                </div>
-              </div>
-              <a
-                class="btn btn-download"
-                href="https://github.com/amoghatelkar/markora/releases/download/v0.1.1/Markora-0.1.0.AppImage"
-                target="_blank"
-                rel="noopener noreferrer"
-              >Download Markora-0.1.0.AppImage</a>
-            </article>
-          </div>
           <p class="download-note">
             Need another format? Browse all releases on
             <a id="releases-link" href="https://github.com/amoghatelkar/markora/releases/tag/v0.1.1" target="_blank" rel="noopener noreferrer">GitHub Releases</a>.
           </p>
           <div class="install-help">
-            <h3>After downloading</h3>
-            <ul>
-              <li>
-                <strong>macOS:</strong> Drag <strong>Markora</strong> from the .dmg into <strong>Applications</strong>.
-                If macOS says the app is <em>damaged</em> or <em>corrupted</em>, the download may have failed — use the button above
-                (or <a href="https://github.com/amoghatelkar/markora/releases/latest" target="_blank" rel="noopener noreferrer">GitHub Releases</a>)
-                and confirm the file is about 100&nbsp;MB, not a few kilobytes.
-                Then run in Terminal: <code>xattr -cr /Applications/Markora.app</code>, or right-click the app → <em>Open</em> → <em>Open</em>.
-                Markora is not Apple-notarized yet; this is expected for open-source builds.
-              </li>
-              <li><strong>Windows:</strong> If SmartScreen appears, choose <em>More info</em> → <em>Run anyway</em> (app is not signed yet).</li>
-              <li><strong>Linux:</strong> Mark the AppImage executable: <code>chmod +x Markora-*.AppImage</code></li>
-            </ul>
+            <h3>First launch (no Terminal required)</h3>
+            <p class="install-help-lead">
+              Markora is not yet distributed with paid Apple/Microsoft signatures, so each OS shows a one-time security step.
+              Use the steps below — all menus and dialogs.
+            </p>
+            <details class="install-steps" open>
+              <summary><strong>macOS</strong></summary>
+              <ol>
+                <li>Download the <strong>.dmg</strong> above (~100&nbsp;MB). A tiny file means the download failed — try
+                  <a href="https://github.com/amoghatelkar/markora/releases/latest" target="_blank" rel="noopener noreferrer">GitHub Releases</a>.</li>
+                <li>Open the .dmg and drag <strong>Markora</strong> into <strong>Applications</strong>.</li>
+                <li>In Finder, open <strong>Applications</strong>.</li>
+                <li><strong>Right-click</strong> Markora → <strong>Open</strong> (do not double-click the first time).</li>
+                <li>Click <strong>Open</strong> in the dialog. Later launches work with a normal double-click.</li>
+              </ol>
+              <p class="install-help-note">
+                If you already tried to open it: <strong>System Settings</strong> → <strong>Privacy &amp; Security</strong> →
+                <strong>Open Anyway</strong>.
+              </p>
+            </details>
+            <details class="install-steps">
+              <summary><strong>Windows</strong></summary>
+              <ol>
+                <li>Run <strong>Markora-Setup-*.exe</strong> from the download.</li>
+                <li>If SmartScreen appears: <strong>More info</strong> → <strong>Run anyway</strong>.</li>
+              </ol>
+            </details>
+            <details class="install-steps">
+              <summary><strong>Linux</strong></summary>
+              <ol>
+                <li>Right-click the AppImage → <strong>Properties</strong> → enable <strong>Allow executing file as program</strong>.</li>
+                <li>Double-click the AppImage to start Markora.</li>
+              </ol>
+            </details>
           </div>
         </section>
 
