@@ -1,6 +1,6 @@
 {
   "name": "markora",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A modern document editor built for Markdown",
   "author": "Markora",
   "main": "dist-electron/main.js",
@@ -46,6 +46,10 @@
       "dist-electron/**/*"
     ],
     "icon": "public/markora-icon.png",
+    "afterPack": "scripts/linux-after-pack.mjs",
+    "appImage": {
+      "executableArgs": ["--no-sandbox", "--disable-setuid-sandbox"]
+    },
     "linux": {
       "target": "AppImage",
       "icon": "public/markora-icon.png",
