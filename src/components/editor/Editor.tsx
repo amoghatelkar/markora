@@ -14,6 +14,8 @@ import { useEditorStore } from '@/store/useEditorStore'
 import { markdownToHtml, htmlToMarkdown } from '@/lib/markdown'
 import { runFormatAction, createEditorCommands, getActiveBlockLabel } from '@/lib/editorFormat'
 import { Toolbar } from '@/components/shell/Toolbar'
+import { TableBubbleMenu } from '@/components/editor/TableBubbleMenu'
+import { TableInsertPicker } from '@/components/editor/TableInsertPicker'
 import './Editor.css'
 
 export function Editor() {
@@ -123,7 +125,12 @@ export function Editor() {
 
   return (
     <div className={`editor ${zenMode ? 'editor--zen' : ''} ${showMarkdownSource ? 'editor--source' : ''}`}>
-      {!showMarkdownSource && <Toolbar onFormat={handleFormat} />}
+      {!showMarkdownSource && (
+        <>
+          <TableInsertPicker variant="headless" />
+          <Toolbar onFormat={handleFormat} />
+        </>
+      )}
       <div className="editor-scroll">
         <div className="editor-canvas" style={canvasStyle}>
           <article className="editor-document">
@@ -143,7 +150,10 @@ export function Editor() {
                 />
               </div>
             ) : (
-              <EditorContent editor={editor} />
+              <>
+                <TableBubbleMenu editor={editor} />
+                <EditorContent editor={editor} />
+              </>
             )}
           </article>
         </div>

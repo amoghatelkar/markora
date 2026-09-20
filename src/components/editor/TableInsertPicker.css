@@ -1,0 +1,87 @@
+.table-insert-picker {
+  position: relative;
+  display: flex;
+}
+
+.table-insert-picker--headless {
+  display: none;
+}
+
+.toolbar-btn--active {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.table-insert-menu {
+  position: fixed;
+  z-index: var(--z-popover);
+  padding: var(--space-5);
+  background: var(--color-bg-elevated);
+  border: var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  min-width: 200px;
+}
+
+.table-insert-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+
+.table-insert-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  margin-bottom: var(--space-5);
+}
+
+.table-insert-cell {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface);
+  padding: 0;
+  cursor: pointer;
+  transition: background var(--duration-instant) var(--ease-out),
+    border-color var(--duration-instant) var(--ease-out);
+}
+
+.table-insert-cell--selected {
+  background: var(--color-accent-muted);
+  border-color: var(--color-accent);
+}
+
+.table-insert-cell:hover {
+  border-color: var(--color-accent);
+}
+
+.table-insert-header-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.table-insert-header-toggle input {
+  accent-color: var(--color-accent);
+}
+
+.table-insert-menu-trigger {
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.table-insert-menu-trigger:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}

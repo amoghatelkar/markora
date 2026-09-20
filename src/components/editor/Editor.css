@@ -175,6 +175,34 @@
   border-collapse: collapse;
   margin: 1em 0;
   font-size: var(--text-sm);
+  table-layout: fixed;
+}
+
+.editor-prose .tableWrapper {
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.editor-prose .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--color-accent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.editor-prose .column-resize-handle:hover,
+.editor-prose .resize-cursor {
+  opacity: 0.5;
+  pointer-events: auto;
+}
+
+.editor-prose .selectedCell {
+  background: var(--color-accent-muted);
 }
 
 .editor-prose th,

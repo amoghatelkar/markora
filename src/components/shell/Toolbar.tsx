@@ -9,8 +9,8 @@ import {
   ListOrdered,
   Quote,
   Minus,
-  Table,
 } from 'lucide-react'
+import { TableInsertPicker } from '@/components/editor/TableInsertPicker'
 import { useAppStore } from '@/store/useAppStore'
 import { useEditorStore } from '@/store/useEditorStore'
 import { Tooltip } from '@/components/ui/Tooltip'
@@ -27,6 +27,7 @@ export function Toolbar({ onFormat }: ToolbarProps) {
   const zenMode = useAppStore((s) => s.zenMode)
   const blockLabel = useEditorStore((s) => s.blockLabel)
   const commands = useEditorStore((s) => s.commands)
+  const openTableInsertPicker = useEditorStore((s) => s.openTableInsertPicker)
 
   if (zenMode) return null
 
@@ -111,9 +112,9 @@ export function Toolbar({ onFormat }: ToolbarProps) {
     },
     {
       id: 'table',
-      label: 'Table',
+      label: 'Table…',
       shortcut: formatShortcut('Mod+Alt+T'),
-      action: () => commands?.insertTable(),
+      action: () => openTableInsertPicker(),
     },
     { id: 'sep-1', label: '', separator: true },
     {
@@ -206,11 +207,7 @@ export function Toolbar({ onFormat }: ToolbarProps) {
             <Code size={15} strokeWidth={1.5} />
           </button>
         </Tooltip>
-        <Tooltip label="Table">
-          <button className="toolbar-btn" type="button" aria-label="Insert table" onClick={() => commands?.insertTable()}>
-            <Table size={15} strokeWidth={1.5} />
-          </button>
-        </Tooltip>
+        <TableInsertPicker />
         <Tooltip label="Horizontal rule">
           <button className="toolbar-btn" type="button" aria-label="Horizontal rule" onClick={() => commands?.insertHorizontalRule()}>
             <Minus size={15} strokeWidth={1.5} />

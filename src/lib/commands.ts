@@ -1,5 +1,6 @@
 import type { Command } from '@/types'
 import { useAppStore } from '@/store/useAppStore'
+import { useEditorStore } from '@/store/useEditorStore'
 
 export function getCommands(): Command[] {
   const store = useAppStore.getState()
@@ -57,7 +58,7 @@ export function getCommands(): Command[] {
       category: 'Insert',
       shortcut: 'Mod+Alt+T',
       keywords: ['table', 'grid'],
-      action: () => store.showToast('Table inserted'),
+      action: () => useEditorStore.getState().openTableInsertPicker(),
     },
     {
       id: 'insert-image',
