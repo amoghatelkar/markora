@@ -27,6 +27,8 @@ interface AppState {
   recentCommands: string[]
   openDialogOpen: boolean
   toast: string | null
+  tabHistory: string[]
+  tabHistoryIndex: number
 
   setTheme: (theme: Theme) => void
   toggleTheme: () => void
@@ -37,6 +39,8 @@ interface AppState {
   saveActiveDocumentAs: () => Promise<void>
   closeDocument: (id: string) => void
   setActiveDocument: (id: string) => void
+  navigateTabBack: () => void
+  navigateTabForward: () => void
   updateDocumentContent: (id: string, content: string) => void
   markDocumentSaved: (id: string) => void
   toggleSidebar: () => void
@@ -99,6 +103,38 @@ Use **bold**, *italic*, and \`inline code\` to format your text. Press \`⌘K\` 
 
 Explore the sidebar for document outline navigation. Toggle focus mode to minimize distractions.`
 
+function pruneTabHistory(documents: Document[], history: string[]) {
+  const openIds = new Set(documents.map((d) => d.id))
+  return history.filter((id) => openIds.has(id))
+}
+
+function activateDocument(
+  state: AppState,
+  id: string,
+  options?: { recordHistory?: boolean }
+): Partial<AppState> {
+  if (!state.documents.some((d) => d.id === id)) return {}
+  if (id === state.activeDocumentId) {
+    return { showWelcome: false }
+  }
+
+  if (options?.recordHistory === false) {
+    return { activeDocumentId: id, showWelcome: false }
+  }
+
+  const trimmed = state.tabHistory.slice(0, state.tabHistoryIndex + 1)
+  if (trimmed[trimmed.length - 1] !== id) {
+    trimmed.push(id)
+  }
+
+  return {
+    activeDocumentId: id,
+    showWelcome: false,
+    tabHistory: trimmed,
+    tabHistoryIndex: trimmed.length - 1,
+  }
+}
+
 export const useAppStore = create<AppState>((set, get) => ({
   theme: readStoredTheme(),
   documents: [],
@@ -116,6 +152,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   recentCommands: [],
   openDialogOpen: false,
   toast: null,
+  tabHistory: [],
+  tabHistoryIndex: -1,
 
   setTheme: (theme) => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -134,22 +172,26 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   newDocument: () => {
     const doc = createDocument()
-    set((s) => ({
-      documents: [...s.documents, doc],
-      activeDocumentId: doc.id,
-      showWelcome: false,
-      saveStatus: 'unsaved',
-    }))
+    set((s) => {
+      const documents = [...s.documents, doc]
+      return {
+        documents,
+        saveStatus: 'unsaved',
+        ...activateDocument({ ...s, documents }, doc.id),
+      }
+    })
   },
 
   openDocument: (title, content) => {
     const doc = createDocument(title, content ?? SAMPLE_CONTENT)
-    set((s) => ({
-      documents: [...s.documents, doc],
-      activeDocumentId: doc.id,
-      showWelcome: false,
-      saveStatus: 'saved',
-    }))
+    set((s) => {
+      const documents = [...s.documents, doc]
+      return {
+        documents,
+        saveStatus: 'saved',
+        ...activateDocument({ ...s, documents }, doc.id),
+      }
+    })
   },
 
   openDocumentFromSystem: async () => {
@@ -157,12 +199,14 @@ export const useAppStore = create<AppState>((set, get) => ({
     if (!file) return
     const doc = createDocument(titleFromOpenedFile(file), file.content, file.path)
     if (file.handle) setDocumentFileHandle(doc.id, file.handle)
-    set((s) => ({
-      documents: [...s.documents, doc],
-      activeDocumentId: doc.id,
-      showWelcome: false,
-      saveStatus: 'saved',
-    }))
+    set((s) => {
+      const documents = [...s.documents, doc]
+      return {
+        documents,
+        saveStatus: 'saved',
+        ...activateDocument({ ...s, documents }, doc.id),
+      }
+    })
     get().showToast(`Opened ${file.name}`)
   },
 
@@ -240,15 +284,46 @@ export const useAppStore = create<AppState>((set, get) => ({
         s.activeDocumentId === id
           ? docs.length > 0 ? docs[docs.length - 1].id : null
           : s.activeDocumentId
+      const tabHistory = pruneTabHistory(docs, s.tabHistory)
+      const tabHistoryIndex =
+        activeId === null ? -1 : Math.max(0, tabHistory.lastIndexOf(activeId))
       return {
         documents: docs,
         activeDocumentId: activeId,
         showWelcome: docs.length === 0,
+        tabHistory,
+        tabHistoryIndex,
       }
     })
   },
 
-  setActiveDocument: (id) => set({ activeDocumentId: id }),
+  setActiveDocument: (id) => set((s) => activateDocument(s, id)),
+
+  navigateTabBack: () =>
+    set((s) => {
+      if (s.tabHistoryIndex <= 0) return {}
+      const nextIndex = s.tabHistoryIndex - 1
+      const docId = s.tabHistory[nextIndex]
+      if (!docId || !s.documents.some((d) => d.id === docId)) return {}
+      return {
+        tabHistoryIndex: nextIndex,
+        activeDocumentId: docId,
+        showWelcome: false,
+      }
+    }),
+
+  navigateTabForward: () =>
+    set((s) => {
+      if (s.tabHistoryIndex < 0 || s.tabHistoryIndex >= s.tabHistory.length - 1) return {}
+      const nextIndex = s.tabHistoryIndex + 1
+      const docId = s.tabHistory[nextIndex]
+      if (!docId || !s.documents.some((d) => d.id === docId)) return {}
+      return {
+        tabHistoryIndex: nextIndex,
+        activeDocumentId: docId,
+        showWelcome: false,
+      }
+    }),
 
   updateDocumentContent: (id, content) => {
     set((s) => ({
