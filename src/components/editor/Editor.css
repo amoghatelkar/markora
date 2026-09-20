@@ -195,6 +195,14 @@
   transition: opacity var(--duration-fast) var(--ease-out);
 }
 
+[data-theme='light'] .editor-prose .column-resize-handle {
+  background: #171717;
+}
+
+[data-theme='dark'] .editor-prose .column-resize-handle {
+  background: #f5f0e8;
+}
+
 .editor-prose .column-resize-handle:hover,
 .editor-prose .resize-cursor {
   opacity: 0.5;
@@ -203,6 +211,14 @@
 
 .editor-prose .selectedCell {
   background: var(--color-accent-muted);
+}
+
+[data-theme='light'] .editor-prose .selectedCell {
+  background: rgba(23, 23, 23, 0.1);
+}
+
+[data-theme='dark'] .editor-prose .selectedCell {
+  background: rgba(245, 240, 232, 0.14);
 }
 
 .editor-prose th,

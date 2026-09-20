@@ -70,6 +70,11 @@ export function getMenus(): MenuDefinition[] {
           },
           disabled: !store.activeDocumentId,
         },
+        {
+          id: 'toggle-auto-save',
+          label: store.autoSaveEnabled ? 'Auto-save: On' : 'Auto-save: Off',
+          action: () => store.toggleAutoSave(),
+        },
         { id: 'sep-1', label: '', separator: true },
         {
           id: 'close-tab',

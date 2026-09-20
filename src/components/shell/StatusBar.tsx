@@ -24,8 +24,8 @@ export function StatusBar() {
         <span>{chars.toLocaleString()} characters</span>
       </div>
       <div className="statusbar-right">
-        <span>Markdown</span>
-        <span className="statusbar-sep">·</span>
+        <span className="statusbar-markdown-label">Markdown</span>
+        <span className="statusbar-sep statusbar-markdown-sep">·</span>
         <span className={saveStatus === 'saved' ? 'statusbar-saved' : ''}>
           {statusLabel}
         </span>
