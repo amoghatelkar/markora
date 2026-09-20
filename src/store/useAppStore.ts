@@ -1,6 +1,14 @@
 import { create } from 'zustand'
 import type { Document, EditorWidth, SaveStatus, Theme } from '@/types'
 import { extractOutline } from '@/lib/outline'
+import {
+  defaultSaveFileName,
+  openFileFromSystem,
+  saveFileAs,
+  saveToPath,
+  setDocumentFileHandle,
+  titleFromOpenedFile,
+} from '@/lib/fileAccess'
 
 interface AppState {
   theme: Theme
@@ -13,6 +21,7 @@ interface AppState {
   commandPaletteOpen: boolean
   showWelcome: boolean
   editorWidth: EditorWidth
+  editorZoom: number
   showMarkdownSource: boolean
   saveStatus: SaveStatus
   recentCommands: string[]
@@ -23,6 +32,9 @@ interface AppState {
   toggleTheme: () => void
   newDocument: () => void
   openDocument: (title: string, content?: string) => void
+  openDocumentFromSystem: () => Promise<void>
+  saveActiveDocument: () => Promise<void>
+  saveActiveDocumentAs: () => Promise<void>
   closeDocument: (id: string) => void
   setActiveDocument: (id: string) => void
   updateDocumentContent: (id: string, content: string) => void
@@ -34,6 +46,10 @@ interface AppState {
   toggleZenMode: () => void
   setCommandPaletteOpen: (open: boolean) => void
   setEditorWidth: (width: EditorWidth) => void
+  setEditorZoom: (zoom: number) => void
+  zoomIn: () => void
+  zoomOut: () => void
+  resetEditorZoom: () => void
   toggleMarkdownSource: () => void
   setSaveStatus: (status: SaveStatus) => void
   addRecentCommand: (id: string) => void
@@ -44,13 +60,14 @@ interface AppState {
 
 let docCounter = 0
 
-function createDocument(title?: string, content?: string): Document {
+function createDocument(title?: string, content?: string, path?: string): Document {
   docCounter++
   return {
     id: `doc-${docCounter}`,
     title: title ?? `Untitled ${docCounter}`,
     content: content ?? '',
     modified: false,
+    path,
   }
 }
 
@@ -93,6 +110,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   commandPaletteOpen: false,
   showWelcome: true,
   editorWidth: 'comfortable',
+  editorZoom: 100,
   showMarkdownSource: false,
   saveStatus: 'saved',
   recentCommands: [],
@@ -134,7 +152,88 @@ export const useAppStore = create<AppState>((set, get) => ({
     }))
   },
 
+  openDocumentFromSystem: async () => {
+    const file = await openFileFromSystem()
+    if (!file) return
+    const doc = createDocument(titleFromOpenedFile(file), file.content, file.path)
+    if (file.handle) setDocumentFileHandle(doc.id, file.handle)
+    set((s) => ({
+      documents: [...s.documents, doc],
+      activeDocumentId: doc.id,
+      showWelcome: false,
+      saveStatus: 'saved',
+    }))
+    get().showToast(`Opened ${file.name}`)
+  },
+
+  saveActiveDocument: async () => {
+    const id = get().activeDocumentId
+    if (!id) return
+    const doc = get().documents.find((d) => d.id === id)
+    if (!doc) return
+
+    if (!doc.path) {
+      await get().saveActiveDocumentAs()
+      return
+    }
+
+    set({ saveStatus: 'saving' })
+    try {
+      const path = await saveToPath(id, doc.path, doc.content, defaultSaveFileName(doc.title))
+      set((s) => ({
+        documents: s.documents.map((d) =>
+          d.id === id ? { ...d, path, modified: false } : d
+        ),
+        saveStatus: 'saved',
+      }))
+      get().showToast('Saved ✓')
+    } catch {
+      set({ saveStatus: 'unsaved' })
+      get().showToast('Could not save file')
+    }
+  },
+
+  saveActiveDocumentAs: async () => {
+    const id = get().activeDocumentId
+    if (!id) return
+    const doc = get().documents.find((d) => d.id === id)
+    if (!doc) return
+
+    set({ saveStatus: 'saving' })
+    try {
+      const suggested = defaultSaveFileName(doc.title)
+      const result = await saveFileAs(id, suggested, doc.content)
+      if (!result) {
+        set({ saveStatus: doc.modified ? 'unsaved' : 'saved' })
+        return
+      }
+      if (result.handle) setDocumentFileHandle(id, result.handle)
+      set((s) => ({
+        documents: s.documents.map((d) =>
+          d.id === id
+            ? {
+                ...d,
+                path: result.path,
+                title: titleFromOpenedFile({
+                  name: result.path,
+                  path: result.path,
+                  content: doc.content,
+                }),
+                modified: false,
+              }
+            : d
+        ),
+        saveStatus: 'saved',
+      }))
+      get().showToast('Saved ✓')
+    } catch {
+      set({ saveStatus: 'unsaved' })
+      get().showToast('Could not save file')
+    }
+  },
+
   closeDocument: (id) => {
+    setDocumentFileHandle(id, null)
     set((s) => {
       const docs = s.documents.filter((d) => d.id !== id)
       const activeId =
@@ -158,15 +257,6 @@ export const useAppStore = create<AppState>((set, get) => ({
       ),
       saveStatus: 'unsaved',
     }))
-
-    clearTimeout((window as unknown as { _saveTimer?: number })._saveTimer)
-    ;(window as unknown as { _saveTimer?: number })._saveTimer = window.setTimeout(() => {
-      set({ saveStatus: 'saving' })
-      setTimeout(() => {
-        get().markDocumentSaved(id)
-        get().showToast('Saved ✓')
-      }, 400)
-    }, 800)
   },
 
   markDocumentSaved: (id) => {
@@ -192,6 +282,17 @@ export const useAppStore = create<AppState>((set, get) => ({
   setCommandPaletteOpen: (open) => set({ commandPaletteOpen: open }),
 
   setEditorWidth: (width) => set({ editorWidth: width }),
+
+  setEditorZoom: (zoom) =>
+    set({ editorZoom: Math.min(200, Math.max(50, Math.round(zoom))) }),
+
+  zoomIn: () =>
+    set((s) => ({ editorZoom: Math.min(200, s.editorZoom + 10) })),
+
+  zoomOut: () =>
+    set((s) => ({ editorZoom: Math.max(50, s.editorZoom - 10) })),
+
+  resetEditorZoom: () => set({ editorZoom: 100 }),
 
   toggleMarkdownSource: () =>
     set((s) => ({ showMarkdownSource: !s.showMarkdownSource })),

@@ -1,9 +1,14 @@
-import { app, BrowserWindow, shell } from 'electron'
+import { app, BrowserWindow, shell, dialog, ipcMain } from 'electron'
 import { join, dirname } from 'path'
+import { readFile, writeFile } from 'fs/promises'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const isDev = !app.isPackaged
+
+const MARKDOWN_FILTERS = [
+  { name: 'Markdown', extensions: ['md', 'markdown', 'txt'] },
+]
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -36,6 +41,35 @@ function createWindow() {
     return { action: 'deny' }
   })
 }
+
+ipcMain.handle('dialog:openFile', async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog({
+    filters: MARKDOWN_FILTERS,
+    properties: ['openFile'],
+  })
+  if (canceled || !filePaths[0]) return null
+  const path = filePaths[0]
+  const content = await readFile(path, 'utf-8')
+  return { path, content }
+})
+
+ipcMain.handle('dialog:saveFile', async (_event, payload: { path: string; content: string }) => {
+  await writeFile(payload.path, payload.content, 'utf-8')
+  return { path: payload.path }
+})
+
+ipcMain.handle(
+  'dialog:saveFileAs',
+  async (_event, payload: { defaultPath: string; content: string }) => {
+    const { canceled, filePath } = await dialog.showSaveDialog({
+      defaultPath: payload.defaultPath,
+      filters: MARKDOWN_FILTERS,
+    })
+    if (canceled || !filePath) return null
+    await writeFile(filePath, payload.content, 'utf-8')
+    return { path: filePath }
+  }
+)
 
 app.whenReady().then(createWindow)
 

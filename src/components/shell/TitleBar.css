@@ -10,10 +10,6 @@
   -webkit-app-region: drag;
 }
 
-html[data-platform='darwin'] .titlebar {
-  padding-left: 80px;
-}
-
 .titlebar--minimal {
   opacity: 0.6;
   transition: opacity var(--duration-normal) var(--ease-out);
@@ -30,11 +26,7 @@ html[data-platform='darwin'] .titlebar {
 }
 
 .titlebar-icon {
-  border-radius: var(--radius-xs);
   flex-shrink: 0;
-  display: block;
-  background: transparent;
-  object-fit: contain;
 }
 
 .titlebar-logo {

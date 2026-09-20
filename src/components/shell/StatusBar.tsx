@@ -1,5 +1,6 @@
 import { useAppStore, useActiveDocument } from '@/store/useAppStore'
 import { countWords, countCharacters } from '@/lib/wordCount'
+import { EditorZoomControl } from './EditorZoomControl'
 import './StatusBar.css'
 
 export function StatusBar() {
@@ -28,6 +29,7 @@ export function StatusBar() {
         <span className={saveStatus === 'saved' ? 'statusbar-saved' : ''}>
           {statusLabel}
         </span>
+        <EditorZoomControl />
       </div>
     </footer>
   )

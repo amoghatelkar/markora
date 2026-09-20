@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef, type CSSProperties } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -14,17 +14,29 @@ import { useEditorStore } from '@/store/useEditorStore'
 import { markdownToHtml, htmlToMarkdown } from '@/lib/markdown'
 import { runFormatAction, createEditorCommands, getActiveBlockLabel } from '@/lib/editorFormat'
 import { Toolbar } from '@/components/shell/Toolbar'
+import { TableBubbleMenu } from '@/components/editor/TableBubbleMenu'
+import { TableInsertPicker } from '@/components/editor/TableInsertPicker'
 import './Editor.css'
 
 export function Editor() {
   const doc = useActiveDocument()
   const editorWidth = useAppStore((s) => s.editorWidth)
+  const editorZoom = useAppStore((s) => s.editorZoom)
   const showMarkdownSource = useAppStore((s) => s.showMarkdownSource)
   const updateDocumentContent = useAppStore((s) => s.updateDocumentContent)
   const zenMode = useAppStore((s) => s.zenMode)
   const registerCommands = useEditorStore((s) => s.registerCommands)
   const unregisterCommands = useEditorStore((s) => s.unregisterCommands)
   const setBlockLabel = useEditorStore((s) => s.setBlockLabel)
+  const sourceRef = useRef<HTMLTextAreaElement>(null)
+
+  const syncSourceHeight = useCallback(() => {
+    const el = sourceRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    const min = Math.max(320, Math.floor(window.innerHeight * 0.35))
+    el.style.height = `${Math.max(el.scrollHeight, min)}px`
+  }, [])
 
   const editor = useEditor({
     extensions: [
@@ -84,40 +96,76 @@ export function Editor() {
   }, [doc?.id, showMarkdownSource, editor, setBlockLabel])
 
   useEffect(() => {
+    if (!editor) return
+    editor.setEditable(!showMarkdownSource)
+  }, [editor, showMarkdownSource])
+
+  useEffect(() => {
     if (!editor || !doc || !showMarkdownSource) return
     const md = htmlToMarkdown(editor.getHTML())
     if (md !== doc.content) {
       updateDocumentContent(doc.id, md)
     }
-  }, [showMarkdownSource])
+  }, [showMarkdownSource, editor, doc?.id, updateDocumentContent])
+
+  useEffect(() => {
+    if (!showMarkdownSource) return
+    syncSourceHeight()
+  }, [showMarkdownSource, doc?.content, editorZoom, syncSourceHeight])
+
+  useEffect(() => {
+    if (!showMarkdownSource) return
+    const onResize = () => syncSourceHeight()
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [showMarkdownSource, syncSourceHeight])
 
   if (!doc) return null
 
   const widthVar = `--editor-width-${editorWidth}`
+  const canvasStyle: CSSProperties = {
+    maxWidth: `var(${widthVar})`,
+    zoom: editorZoom / 100,
+  }
 
   return (
     <div className={`editor ${zenMode ? 'editor--zen' : ''} ${showMarkdownSource ? 'editor--source' : ''}`}>
-      {!showMarkdownSource && <Toolbar onFormat={handleFormat} />}
+      {!showMarkdownSource && (
+        <>
+          <TableInsertPicker variant="headless" />
+          <Toolbar onFormat={handleFormat} />
+        </>
+      )}
       <div className="editor-scroll">
-        <div
-          className="editor-canvas"
-          style={{ maxWidth: `var(${widthVar})` }}
-        >
+        <div className="editor-canvas" style={canvasStyle}>
           <article className="editor-document">
-            {showMarkdownSource ? (
-              <div className="editor-source-wrap">
-                <div className="editor-source-label">Markdown</div>
-                <textarea
-                  className="editor-source"
-                  value={doc.content}
-                  onChange={(e) => updateDocumentContent(doc.id, e.target.value)}
-                  spellCheck={false}
-                  aria-label="Markdown source"
-                />
-              </div>
-            ) : (
+            <div
+              className="editor-source-wrap"
+              hidden={!showMarkdownSource}
+              aria-hidden={!showMarkdownSource}
+            >
+              <div className="editor-source-label">Markdown</div>
+              <textarea
+                ref={sourceRef}
+                className="editor-source"
+                value={doc.content}
+                onChange={(e) => {
+                  updateDocumentContent(doc.id, e.target.value)
+                  syncSourceHeight()
+                }}
+                spellCheck={false}
+                aria-label="Markdown source"
+                tabIndex={showMarkdownSource ? 0 : -1}
+              />
+            </div>
+            <div
+              className="editor-wysiwyg-wrap"
+              hidden={showMarkdownSource}
+              aria-hidden={showMarkdownSource}
+            >
+              <TableBubbleMenu editor={editor} enabled={!showMarkdownSource} />
               <EditorContent editor={editor} />
-            )}
+            </div>
           </article>
         </div>
       </div>

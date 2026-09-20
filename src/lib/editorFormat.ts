@@ -56,7 +56,19 @@ export function createEditorCommands(editor: Editor) {
     codeBlock: () => editor.chain().focus().toggleCodeBlock().run(),
     setParagraph: () => editor.chain().focus().setParagraph().run(),
     setHeading: (level: HeadingLevel) => editor.chain().focus().setHeading({ level }).run(),
-    insertTable: () => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
+    insertTable: (rows = 3, cols = 3, withHeaderRow = true) =>
+      editor.chain().focus().insertTable({ rows, cols, withHeaderRow }).run(),
+    addRowBefore: () => editor.chain().focus().addRowBefore().run(),
+    addRowAfter: () => editor.chain().focus().addRowAfter().run(),
+    deleteRow: () => editor.chain().focus().deleteRow().run(),
+    addColumnBefore: () => editor.chain().focus().addColumnBefore().run(),
+    addColumnAfter: () => editor.chain().focus().addColumnAfter().run(),
+    deleteColumn: () => editor.chain().focus().deleteColumn().run(),
+    deleteTable: () => editor.chain().focus().deleteTable().run(),
+    toggleHeaderRow: () => editor.chain().focus().toggleHeaderRow().run(),
+    toggleHeaderColumn: () => editor.chain().focus().toggleHeaderColumn().run(),
+    mergeCells: () => editor.chain().focus().mergeCells().run(),
+    splitCell: () => editor.chain().focus().splitCell().run(),
     insertImage: () => {
       const url = window.prompt('Image URL')
       if (url) editor.chain().focus().setImage({ src: url }).run()

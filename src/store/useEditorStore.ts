@@ -19,7 +19,18 @@ export interface EditorCommands {
   codeBlock: () => void
   setParagraph: () => void
   setHeading: (level: HeadingLevel) => void
-  insertTable: () => void
+  insertTable: (rows?: number, cols?: number, withHeaderRow?: boolean) => void
+  addRowBefore: () => void
+  addRowAfter: () => void
+  deleteRow: () => void
+  addColumnBefore: () => void
+  addColumnAfter: () => void
+  deleteColumn: () => void
+  deleteTable: () => void
+  toggleHeaderRow: () => void
+  toggleHeaderColumn: () => void
+  mergeCells: () => void
+  splitCell: () => void
   insertImage: () => void
   insertHorizontalRule: () => void
   getBlockLabel: () => string
@@ -28,15 +39,20 @@ export interface EditorCommands {
 interface EditorState {
   commands: EditorCommands | null
   blockLabel: string
+  tableInsertPickerNonce: number
   registerCommands: (commands: EditorCommands) => void
   unregisterCommands: () => void
   setBlockLabel: (label: string) => void
+  openTableInsertPicker: () => void
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
   commands: null,
   blockLabel: 'Paragraph',
+  tableInsertPickerNonce: 0,
   registerCommands: (commands) => set({ commands, blockLabel: commands.getBlockLabel() }),
   unregisterCommands: () => set({ commands: null, blockLabel: 'Paragraph' }),
   setBlockLabel: (label) => set({ blockLabel: label }),
+  openTableInsertPicker: () =>
+    set((s) => ({ tableInsertPickerNonce: s.tableInsertPickerNonce + 1 })),
 }))

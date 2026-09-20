@@ -1,5 +1,6 @@
 import type { Command } from '@/types'
 import { useAppStore } from '@/store/useAppStore'
+import { useEditorStore } from '@/store/useEditorStore'
 
 export function getCommands(): Command[] {
   const store = useAppStore.getState()
@@ -15,11 +16,33 @@ export function getCommands(): Command[] {
     },
     {
       id: 'open-document',
-      label: 'Open Document',
+      label: 'Open…',
       category: 'File',
       shortcut: 'Mod+O',
-      keywords: ['open', 'file'],
-      action: () => store.setOpenDialogOpen(true),
+      keywords: ['open', 'file', 'explorer'],
+      action: () => {
+        void store.openDocumentFromSystem()
+      },
+    },
+    {
+      id: 'save-document',
+      label: 'Save',
+      category: 'File',
+      shortcut: 'Mod+S',
+      keywords: ['save', 'write', 'disk'],
+      action: () => {
+        void store.saveActiveDocument()
+      },
+    },
+    {
+      id: 'save-document-as',
+      label: 'Save As…',
+      category: 'File',
+      shortcut: 'Mod+Shift+S',
+      keywords: ['save', 'export', 'copy'],
+      action: () => {
+        void store.saveActiveDocumentAs()
+      },
     },
     {
       id: 'toggle-markdown-source',
@@ -35,7 +58,7 @@ export function getCommands(): Command[] {
       category: 'Insert',
       shortcut: 'Mod+Alt+T',
       keywords: ['table', 'grid'],
-      action: () => store.showToast('Table inserted'),
+      action: () => useEditorStore.getState().openTableInsertPicker(),
     },
     {
       id: 'insert-image',
@@ -102,6 +125,30 @@ export function getCommands(): Command[] {
       category: 'Preferences',
       keywords: ['width', 'wide', 'broad'],
       action: () => store.setEditorWidth('wide'),
+    },
+    {
+      id: 'zoom-in',
+      label: 'Zoom In',
+      category: 'View',
+      shortcut: 'Mod+=',
+      keywords: ['zoom', 'larger', 'text'],
+      action: () => store.zoomIn(),
+    },
+    {
+      id: 'zoom-out',
+      label: 'Zoom Out',
+      category: 'View',
+      shortcut: 'Mod+-',
+      keywords: ['zoom', 'smaller', 'text'],
+      action: () => store.zoomOut(),
+    },
+    {
+      id: 'zoom-reset',
+      label: 'Reset Zoom',
+      category: 'View',
+      shortcut: 'Mod+0',
+      keywords: ['zoom', 'reset', '100'],
+      action: () => store.resetEditorZoom(),
     },
     {
       id: 'command-palette',
