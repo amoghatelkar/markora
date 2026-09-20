@@ -37,11 +37,11 @@ If no release exists yet, buttons show a notice instead of linking to a 404.
 
 After merging the Release workflow (`.github/workflows/release.yml`):
 
-**Important:** Bump `version` in the root `package.json` to match the tag before releasing (e.g. `0.1.1` → tag `v0.1.1`). Otherwise installer filenames may not match the tag.
+**Important:** Bump `version` in the root `package.json` to match the tag before releasing (e.g. `0.1.2` → tag `v0.1.2`). Otherwise installer filenames may not match the tag.
 
 ```bash
-git tag v0.1.1
-git push origin v0.1.1
+git tag v0.1.2
+git push origin v0.1.2
 ```
 
 GitHub Actions builds macOS, Windows, and Linux installers and attaches them to the release. Redeploy Vercel if needed; the site picks up assets automatically.
@@ -52,10 +52,10 @@ GitHub Actions builds macOS, Windows, and Linux installers and attaches them to 
 npm run build:desktop
 ```
 
-Create a GitHub release tagged `v0.1.0` and upload files from `release/`:
+Create a GitHub release tagged `v0.1.2` and upload files from `release/`:
 
-- `Markora-0.1.0.dmg`
-- `Markora-Setup-0.1.0.exe`
-- `Markora-0.1.0.AppImage`
+- `Markora-0.1.2.dmg`
+- `Markora-Setup-0.1.2.exe`
+- `Markora-0.1.2.AppImage`
 
 Update `APP_VERSION` in `src/config.ts` when the version changes (fallback copy only).

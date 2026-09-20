@@ -1,6 +1,6 @@
 {
   "name": "markora",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A modern document editor built for Markdown",
   "main": "dist-electron/main.js",
   "type": "module",
