@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   height: var(--titlebar-height);
-  padding: 0 var(--space-7) 0 0;
+  padding: 0 var(--space-7);
   border-bottom: var(--border-subtle);
   background: var(--color-bg-base);
   flex-shrink: 0;
@@ -26,12 +26,7 @@
 }
 
 .titlebar-icon {
-  border-radius: 22.37%;
   flex-shrink: 0;
-  display: block;
-  background: #0a0a0a;
-  object-fit: contain;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .titlebar-logo {

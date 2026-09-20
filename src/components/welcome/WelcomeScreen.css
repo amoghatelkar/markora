@@ -25,11 +25,6 @@
 .welcome-icon {
   margin-inline: auto;
   margin-bottom: var(--space-7);
-  border-radius: 22.37%;
-  display: block;
-  background: #0a0a0a;
-  object-fit: contain;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .welcome-title {
@@ -49,6 +44,7 @@
 
 .welcome-actions {
   display: flex;
+  width: 100%;
   gap: var(--space-5);
   justify-content: center;
   margin-bottom: var(--space-6);
@@ -64,6 +60,7 @@
 }
 
 .welcome-recent {
+  width: 100%;
   text-align: left;
   padding-top: var(--space-7);
   border-top: var(--border-subtle);

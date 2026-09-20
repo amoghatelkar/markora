@@ -23,15 +23,13 @@ export function StatusBar() {
         <span className="statusbar-sep">·</span>
         <span>{chars.toLocaleString()} characters</span>
       </div>
-      <div className="statusbar-center">
-        <EditorZoomControl />
-      </div>
       <div className="statusbar-right">
         <span>Markdown</span>
         <span className="statusbar-sep">·</span>
         <span className={saveStatus === 'saved' ? 'statusbar-saved' : ''}>
           {statusLabel}
         </span>
+        <EditorZoomControl />
       </div>
     </footer>
   )
