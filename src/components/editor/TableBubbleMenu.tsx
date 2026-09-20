@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import type { Editor } from '@tiptap/react'
-import { BubbleMenu } from '@tiptap/react'
 import {
   ArrowDown,
   ArrowLeft,
@@ -46,18 +46,59 @@ function MenuBtn({
 }
 
 export function TableBubbleMenu({ editor, enabled = true }: TableBubbleMenuProps) {
-  if (!editor || !enabled) return null
+  const [open, setOpen] = useState(false)
+  const [pos, setPos] = useState({ top: 0, left: 0 })
+
+  useEffect(() => {
+    if (!editor) {
+      setOpen(false)
+      return
+    }
+
+    const update = () => {
+      if (!enabled) {
+        setOpen(false)
+        return
+      }
+
+      const inTable = editor.isActive('table')
+      if (!inTable) {
+        setOpen(false)
+        return
+      }
+
+      const { from } = editor.state.selection
+      const coords = editor.view.coordsAtPos(from)
+      setPos({
+        top: Math.max(8, coords.top - 44),
+        left: Math.max(8, coords.left),
+      })
+      setOpen(true)
+    }
+
+    update()
+    editor.on('selectionUpdate', update)
+    editor.on('transaction', update)
+
+    return () => {
+      editor.off('selectionUpdate', update)
+      editor.off('transaction', update)
+    }
+  }, [editor, enabled])
+
+  if (!editor || !enabled || !open) return null
 
   const run = (fn: () => boolean) => () => {
     fn()
   }
 
-  return (
-    <BubbleMenu
-      editor={editor}
-      tippyOptions={{ duration: 120, placement: 'top' }}
-      shouldShow={({ editor: ed }) => ed.isActive('table')}
-      className="table-bubble-menu"
+  return createPortal(
+    <div
+      className="table-bubble-menu table-bubble-menu--portal"
+      role="toolbar"
+      aria-label="Table"
+      style={{ top: pos.top, left: pos.left }}
+      onMouseDown={(e) => e.preventDefault()}
     >
       <MenuBtn
         label="Add row above"
@@ -139,6 +180,7 @@ export function TableBubbleMenu({ editor, enabled = true }: TableBubbleMenuProps
       >
         <Trash2 size={14} />
       </MenuBtn>
-    </BubbleMenu>
+    </div>,
+    document.body
   )
 }

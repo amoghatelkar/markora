@@ -136,6 +136,7 @@ export function Editor() {
           <Toolbar onFormat={handleFormat} />
         </>
       )}
+      <TableBubbleMenu editor={editor} enabled={!showMarkdownSource} />
       <div className="editor-scroll">
         <div className="editor-canvas" style={canvasStyle}>
           <article className="editor-document">
@@ -163,7 +164,6 @@ export function Editor() {
               hidden={showMarkdownSource}
               aria-hidden={showMarkdownSource}
             >
-              <TableBubbleMenu editor={editor} enabled={!showMarkdownSource} />
               <EditorContent editor={editor} />
             </div>
           </article>
