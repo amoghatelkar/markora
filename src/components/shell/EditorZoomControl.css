@@ -30,8 +30,15 @@
 .editor-zoom-slider {
   width: 88px;
   height: 4px;
-  accent-color: var(--color-accent);
   cursor: pointer;
+}
+
+[data-theme='light'] .editor-zoom-slider {
+  accent-color: #171717;
+}
+
+[data-theme='dark'] .editor-zoom-slider {
+  accent-color: #f5f0e8;
 }
 
 .editor-zoom-value {
