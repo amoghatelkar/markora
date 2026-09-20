@@ -9,6 +9,7 @@ const RECENT_FILES = ['README.md', 'Design.md', 'Notes.md']
 export function WelcomeScreen() {
   const newDocument = useAppStore((s) => s.newDocument)
   const openDocument = useAppStore((s) => s.openDocument)
+  const openDocumentFromSystem = useAppStore((s) => s.openDocumentFromSystem)
   const setOpenDialogOpen = useAppStore((s) => s.setOpenDialogOpen)
 
   return (
@@ -22,8 +23,11 @@ export function WelcomeScreen() {
           <Button variant="primary" onClick={newDocument}>
             New Document
           </Button>
-          <Button variant="secondary" onClick={() => setOpenDialogOpen(true)}>
+          <Button variant="secondary" onClick={() => void openDocumentFromSystem()}>
             Open Document
+          </Button>
+          <Button variant="secondary" onClick={() => setOpenDialogOpen(true)}>
+            Open Sample
           </Button>
         </div>
 

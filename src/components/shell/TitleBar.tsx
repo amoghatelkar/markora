@@ -1,4 +1,4 @@
-import { PanelLeft, Search } from 'lucide-react'
+import { PanelLeft, Search, Menu } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { assetUrl } from '@/lib/assetUrl'
 import { useIsMobileLayout } from '@/hooks/useMediaQuery'
@@ -10,6 +10,7 @@ export function TitleBar() {
   const focusMode = useAppStore((s) => s.focusMode)
   const toggleSidebar = useAppStore((s) => s.toggleSidebar)
   const setCommandPaletteOpen = useAppStore((s) => s.setCommandPaletteOpen)
+  const setMobileMenuOpen = useAppStore((s) => s.setMobileMenuOpen)
   const isMobile = useIsMobileLayout()
 
   if (zenMode) return null
@@ -19,6 +20,14 @@ export function TitleBar() {
       <div className="titlebar-drag">
         {isMobile && (
           <div className="titlebar-mobile-actions">
+            <button
+              type="button"
+              className="titlebar-mobile-btn"
+              aria-label="Menu"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <Menu size={20} strokeWidth={1.75} />
+            </button>
             <button
               type="button"
               className="titlebar-mobile-btn"

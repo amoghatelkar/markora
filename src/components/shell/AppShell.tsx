@@ -11,6 +11,7 @@ import { CommandPalette } from '@/components/command-palette/CommandPalette'
 import { OpenDocumentDialog } from '@/components/dialogs/OpenDocumentDialog'
 import { ContextMenu, type ContextMenuItem } from '@/components/menus/ContextMenu'
 import { Toast } from '@/components/ui/Toast'
+import { MobileMenu } from './MobileMenu'
 import { useAppStore } from '@/store/useAppStore'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import './AppShell.css'
@@ -87,6 +88,7 @@ export function AppShell() {
       <StatusBar />
       <CommandPalette />
       <OpenDocumentDialog />
+      <MobileMenu />
       <Toast />
 
       {contextMenu && (

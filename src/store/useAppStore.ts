@@ -29,13 +29,18 @@ interface AppState {
   toast: string | null
   tabHistory: string[]
   tabHistoryIndex: number
+  mobileMenuOpen: boolean
+  autoSaveEnabled: boolean
+
+  setMobileMenuOpen: (open: boolean) => void
+  toggleAutoSave: () => void
 
   setTheme: (theme: Theme) => void
   toggleTheme: () => void
   newDocument: () => void
   openDocument: (title: string, content?: string) => void
   openDocumentFromSystem: () => Promise<void>
-  saveActiveDocument: () => Promise<void>
+  saveActiveDocument: (options?: { silent?: boolean }) => Promise<void>
   saveActiveDocumentAs: () => Promise<void>
   closeDocument: (id: string) => void
   setActiveDocument: (id: string) => void
@@ -76,6 +81,20 @@ function createDocument(title?: string, content?: string, path?: string): Docume
 }
 
 const THEME_KEY = 'markora-theme'
+const AUTO_SAVE_KEY = 'markora-auto-save'
+
+function readAutoSaveEnabled(): boolean {
+  try {
+    const v = localStorage.getItem(AUTO_SAVE_KEY)
+    if (v === '0') return false
+    if (v === '1') return true
+  } catch {
+    /* ignore */
+  }
+  return true
+}
+
+let autoSaveTimer: ReturnType<typeof setTimeout> | undefined
 
 function readStoredTheme(): Theme {
   try {
@@ -154,6 +173,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   toast: null,
   tabHistory: [],
   tabHistoryIndex: -1,
+  mobileMenuOpen: false,
+  autoSaveEnabled: readAutoSaveEnabled(),
 
   setTheme: (theme) => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -210,7 +231,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     get().showToast(`Opened ${file.name}`)
   },
 
-  saveActiveDocument: async () => {
+  saveActiveDocument: async (options) => {
     const id = get().activeDocumentId
     if (!id) return
     const doc = get().documents.find((d) => d.id === id)
@@ -230,10 +251,10 @@ export const useAppStore = create<AppState>((set, get) => ({
         ),
         saveStatus: 'saved',
       }))
-      get().showToast('Saved ✓')
+      if (!options?.silent) get().showToast('Saved ✓')
     } catch {
       set({ saveStatus: 'unsaved' })
-      get().showToast('Could not save file')
+      if (!options?.silent) get().showToast('Could not save file')
     }
   },
 
@@ -332,6 +353,32 @@ export const useAppStore = create<AppState>((set, get) => ({
       ),
       saveStatus: 'unsaved',
     }))
+
+    if (!get().autoSaveEnabled) return
+
+    const doc = get().documents.find((d) => d.id === id)
+    if (!doc?.path) return
+
+    if (autoSaveTimer) clearTimeout(autoSaveTimer)
+    autoSaveTimer = setTimeout(() => {
+      const active = get().activeDocumentId
+      const current = get().documents.find((d) => d.id === id)
+      if (!current?.path || active !== id) return
+      void get().saveActiveDocument({ silent: true })
+    }, 1500)
+  },
+
+  setMobileMenuOpen: (open) => set({ mobileMenuOpen: open }),
+
+  toggleAutoSave: () => {
+    const next = !get().autoSaveEnabled
+    try {
+      localStorage.setItem(AUTO_SAVE_KEY, next ? '1' : '0')
+    } catch {
+      /* ignore */
+    }
+    set({ autoSaveEnabled: next })
+    get().showToast(next ? 'Auto-save on' : 'Auto-save off')
   },
 
   markDocumentSaved: (id) => {
