@@ -8,6 +8,9 @@
 }
 
 .welcome-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   width: 100%;
   max-width: 420px;
@@ -20,8 +23,9 @@
 }
 
 .welcome-icon {
+  margin-inline: auto;
   margin-bottom: var(--space-7);
-  border-radius: var(--radius-lg);
+  border-radius: 22.37%;
   display: block;
   background: #0a0a0a;
   object-fit: contain;

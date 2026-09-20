@@ -3,15 +3,11 @@
   align-items: center;
   justify-content: space-between;
   height: var(--titlebar-height);
-  padding: 0 var(--space-7);
+  padding: 0 var(--space-7) 0 0;
   border-bottom: var(--border-subtle);
   background: var(--color-bg-base);
   flex-shrink: 0;
   -webkit-app-region: drag;
-}
-
-html[data-platform='darwin'] .titlebar {
-  padding-left: 80px;
 }
 
 .titlebar--minimal {
@@ -30,7 +26,7 @@ html[data-platform='darwin'] .titlebar {
 }
 
 .titlebar-icon {
-  border-radius: var(--radius-xs);
+  border-radius: 22.37%;
   flex-shrink: 0;
   display: block;
   background: #0a0a0a;
