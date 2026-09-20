@@ -1,8 +1,12 @@
 import { useAppStore } from '@/store/useAppStore'
 import { useEditorStore, type EditorCommands } from '@/store/useEditorStore'
 import { formatShortcut } from '@/lib/shortcuts'
+import { insertTableOfContents } from '@/lib/insertTableOfContents'
 
-type EditorAction = Exclude<keyof EditorCommands, 'setHeading' | 'getBlockLabel'>
+type EditorAction = Exclude<
+  keyof EditorCommands,
+  'setHeading' | 'getBlockLabel' | 'insertTableOfContents'
+>
 
 export interface MenuItem {
   id: string
@@ -183,6 +187,12 @@ export function getMenus(): MenuDefinition[] {
           label: 'Table…',
           shortcut: formatShortcut('Mod+Alt+T'),
           action: () => useEditorStore.getState().openTableInsertPicker(),
+        },
+        {
+          id: 'insert-toc',
+          label: 'Table of Contents',
+          action: () => insertTableOfContents(),
+          disabled: !store.activeDocumentId,
         },
         {
           id: 'insert-image',

@@ -1,5 +1,5 @@
-import { marked } from 'marked'
 import TurndownService from 'turndown'
+import { parseMarkdownWithHeadingIds } from '@/lib/markedHeadingIds'
 
 const turndown = new TurndownService({
   headingStyle: 'atx',
@@ -12,14 +12,9 @@ turndown.addRule('strikethrough', {
   replacement: (content) => `~~${content}~~`,
 })
 
-marked.setOptions({
-  gfm: true,
-  breaks: false,
-})
-
 export function markdownToHtml(markdown: string): string {
   if (!markdown.trim()) return ''
-  return marked.parse(markdown, { async: false }) as string
+  return parseMarkdownWithHeadingIds(markdown)
 }
 
 export function htmlToMarkdown(html: string): string {

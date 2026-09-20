@@ -1,5 +1,6 @@
 import type { Editor } from '@tiptap/react'
 import type { HeadingLevel } from '@/store/useEditorStore'
+import { markdownToHtml } from '@/lib/markdown'
 
 export function getActiveBlockLabel(editor: Editor): string {
   if (editor.isActive('heading', { level: 1 })) return 'Heading 1'
@@ -74,6 +75,10 @@ export function createEditorCommands(editor: Editor) {
       if (url) editor.chain().focus().setImage({ src: url }).run()
     },
     insertHorizontalRule: () => editor.chain().focus().setHorizontalRule().run(),
+    insertTableOfContents: (markdown: string) => {
+      const html = markdownToHtml(markdown)
+      editor.chain().focus().insertContent(`${html}<p></p>`).run()
+    },
     getBlockLabel: () => getActiveBlockLabel(editor),
   }
 }

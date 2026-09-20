@@ -12,6 +12,7 @@ import Placeholder from '@tiptap/extension-placeholder'
 import { useAppStore, useActiveDocument } from '@/store/useAppStore'
 import { useEditorStore } from '@/store/useEditorStore'
 import { markdownToHtml, htmlToMarkdown } from '@/lib/markdown'
+import { HeadingIds } from '@/lib/tiptapHeadingIds'
 import { runFormatAction, createEditorCommands, getActiveBlockLabel } from '@/lib/editorFormat'
 import { Toolbar } from '@/components/shell/Toolbar'
 import { TableBubbleMenu } from '@/components/editor/TableBubbleMenu'
@@ -27,6 +28,7 @@ export function Editor() {
   const zenMode = useAppStore((s) => s.zenMode)
   const registerCommands = useEditorStore((s) => s.registerCommands)
   const unregisterCommands = useEditorStore((s) => s.unregisterCommands)
+  const registerSourceInsertText = useEditorStore((s) => s.registerSourceInsertText)
   const setBlockLabel = useEditorStore((s) => s.setBlockLabel)
   const sourceRef = useRef<HTMLTextAreaElement>(null)
 
@@ -53,6 +55,7 @@ export function Editor() {
       Placeholder.configure({
         placeholder: 'Start writing…',
       }),
+      HeadingIds,
     ],
     content: markdownToHtml(doc?.content ?? ''),
     editorProps: {
@@ -88,6 +91,30 @@ export function Editor() {
 
     return () => unregisterCommands()
   }, [editor, registerCommands, unregisterCommands, setBlockLabel])
+
+  useEffect(() => {
+    registerSourceInsertText((text) => {
+      const el = sourceRef.current
+      const activeId = useAppStore.getState().activeDocumentId
+      if (!el || !activeId) return
+      const activeDoc = useAppStore.getState().documents.find((d) => d.id === activeId)
+      if (!activeDoc) return
+      const start = el.selectionStart ?? activeDoc.content.length
+      const end = el.selectionEnd ?? start
+      const before = activeDoc.content.slice(0, start)
+      const after = activeDoc.content.slice(end)
+      const needsGap = before.length > 0 && !before.endsWith('\n\n')
+      const insertion = `${needsGap ? '\n\n' : ''}${text}`
+      updateDocumentContent(activeId, before + insertion + after)
+      requestAnimationFrame(() => {
+        const pos = start + insertion.length
+        el.focus()
+        el.setSelectionRange(pos, pos)
+        syncSourceHeight()
+      })
+    })
+    return () => registerSourceInsertText(null)
+  }, [registerSourceInsertText, updateDocumentContent, syncSourceHeight])
 
   useEffect(() => {
     if (!editor || !doc || showMarkdownSource) return

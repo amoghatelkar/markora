@@ -33,6 +33,7 @@ export interface EditorCommands {
   splitCell: () => void
   insertImage: () => void
   insertHorizontalRule: () => void
+  insertTableOfContents: (markdown: string) => void
   getBlockLabel: () => string
 }
 
@@ -40,19 +41,28 @@ interface EditorState {
   commands: EditorCommands | null
   blockLabel: string
   tableInsertPickerNonce: number
+  sourceInsertText: ((text: string) => void) | null
   registerCommands: (commands: EditorCommands) => void
   unregisterCommands: () => void
   setBlockLabel: (label: string) => void
   openTableInsertPicker: () => void
+  registerSourceInsertText: (fn: ((text: string) => void) | null) => void
+  insertTableOfContentsInSource: (markdown: string) => void
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
   commands: null,
   blockLabel: 'Paragraph',
   tableInsertPickerNonce: 0,
+  sourceInsertText: null,
   registerCommands: (commands) => set({ commands, blockLabel: commands.getBlockLabel() }),
   unregisterCommands: () => set({ commands: null, blockLabel: 'Paragraph' }),
   setBlockLabel: (label) => set({ blockLabel: label }),
   openTableInsertPicker: () =>
     set((s) => ({ tableInsertPickerNonce: s.tableInsertPickerNonce + 1 })),
+  registerSourceInsertText: (fn) => set({ sourceInsertText: fn }),
+  insertTableOfContentsInSource: (markdown) => {
+    const fn = useEditorStore.getState().sourceInsertText
+    fn?.(markdown)
+  },
 }))
