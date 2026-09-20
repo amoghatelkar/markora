@@ -1,6 +1,7 @@
 import type { Command } from '@/types'
 import { useAppStore } from '@/store/useAppStore'
 import { useEditorStore } from '@/store/useEditorStore'
+import { insertTableOfContents } from '@/lib/insertTableOfContents'
 
 export function getCommands(): Command[] {
   const store = useAppStore.getState()
@@ -59,6 +60,13 @@ export function getCommands(): Command[] {
       shortcut: 'Mod+Alt+T',
       keywords: ['table', 'grid'],
       action: () => useEditorStore.getState().openTableInsertPicker(),
+    },
+    {
+      id: 'insert-toc',
+      label: 'Insert Table of Contents',
+      category: 'Insert',
+      keywords: ['toc', 'table of contents', 'outline', 'headings'],
+      action: () => insertTableOfContents(),
     },
     {
       id: 'insert-image',

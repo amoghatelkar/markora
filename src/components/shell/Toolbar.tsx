@@ -16,6 +16,7 @@ import { useEditorStore } from '@/store/useEditorStore'
 import { Tooltip } from '@/components/ui/Tooltip'
 import { ToolbarDropdown } from '@/components/ui/ToolbarDropdown'
 import { formatShortcut } from '@/lib/shortcuts'
+import { insertTableOfContents } from '@/lib/insertTableOfContents'
 import './Toolbar.css'
 
 interface ToolbarProps {
@@ -115,6 +116,11 @@ export function Toolbar({ onFormat }: ToolbarProps) {
       label: 'Table…',
       shortcut: formatShortcut('Mod+Alt+T'),
       action: () => openTableInsertPicker(),
+    },
+    {
+      id: 'toc',
+      label: 'Table of Contents',
+      action: () => insertTableOfContents(),
     },
     { id: 'sep-1', label: '', separator: true },
     {
