@@ -17,6 +17,7 @@ import './TableBubbleMenu.css'
 
 interface TableBubbleMenuProps {
   editor: Editor | null
+  enabled?: boolean
 }
 
 function MenuBtn({
@@ -44,8 +45,8 @@ function MenuBtn({
   )
 }
 
-export function TableBubbleMenu({ editor }: TableBubbleMenuProps) {
-  if (!editor) return null
+export function TableBubbleMenu({ editor, enabled = true }: TableBubbleMenuProps) {
+  if (!editor || !enabled) return null
 
   const run = (fn: () => boolean) => () => {
     fn()

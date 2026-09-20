@@ -232,6 +232,15 @@
   height: 0;
 }
 
+.editor-source-wrap[hidden],
+.editor-wysiwyg-wrap[hidden] {
+  display: none !important;
+}
+
+.editor-wysiwyg-wrap {
+  width: 100%;
+}
+
 .editor-source-wrap {
   display: flex;
   flex-direction: column;

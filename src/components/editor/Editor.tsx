@@ -96,12 +96,17 @@ export function Editor() {
   }, [doc?.id, showMarkdownSource, editor, setBlockLabel])
 
   useEffect(() => {
+    if (!editor) return
+    editor.setEditable(!showMarkdownSource)
+  }, [editor, showMarkdownSource])
+
+  useEffect(() => {
     if (!editor || !doc || !showMarkdownSource) return
     const md = htmlToMarkdown(editor.getHTML())
     if (md !== doc.content) {
       updateDocumentContent(doc.id, md)
     }
-  }, [showMarkdownSource])
+  }, [showMarkdownSource, editor, doc?.id, updateDocumentContent])
 
   useEffect(() => {
     if (!showMarkdownSource) return
@@ -134,27 +139,33 @@ export function Editor() {
       <div className="editor-scroll">
         <div className="editor-canvas" style={canvasStyle}>
           <article className="editor-document">
-            {showMarkdownSource ? (
-              <div className="editor-source-wrap">
-                <div className="editor-source-label">Markdown</div>
-                <textarea
-                  ref={sourceRef}
-                  className="editor-source"
-                  value={doc.content}
-                  onChange={(e) => {
-                    updateDocumentContent(doc.id, e.target.value)
-                    syncSourceHeight()
-                  }}
-                  spellCheck={false}
-                  aria-label="Markdown source"
-                />
-              </div>
-            ) : (
-              <>
-                <TableBubbleMenu editor={editor} />
-                <EditorContent editor={editor} />
-              </>
-            )}
+            <div
+              className="editor-source-wrap"
+              hidden={!showMarkdownSource}
+              aria-hidden={!showMarkdownSource}
+            >
+              <div className="editor-source-label">Markdown</div>
+              <textarea
+                ref={sourceRef}
+                className="editor-source"
+                value={doc.content}
+                onChange={(e) => {
+                  updateDocumentContent(doc.id, e.target.value)
+                  syncSourceHeight()
+                }}
+                spellCheck={false}
+                aria-label="Markdown source"
+                tabIndex={showMarkdownSource ? 0 : -1}
+              />
+            </div>
+            <div
+              className="editor-wysiwyg-wrap"
+              hidden={showMarkdownSource}
+              aria-hidden={showMarkdownSource}
+            >
+              <TableBubbleMenu editor={editor} enabled={!showMarkdownSource} />
+              <EditorContent editor={editor} />
+            </div>
           </article>
         </div>
       </div>
