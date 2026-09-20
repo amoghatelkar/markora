@@ -151,6 +151,22 @@ export function getCommands(): Command[] {
       action: () => store.resetEditorZoom(),
     },
     {
+      id: 'tab-back',
+      label: 'Previous Tab',
+      category: 'View',
+      shortcut: 'Mod+[',
+      keywords: ['tab', 'back', 'history'],
+      action: () => useAppStore.getState().navigateTabBack(),
+    },
+    {
+      id: 'tab-forward',
+      label: 'Next Tab',
+      category: 'View',
+      shortcut: 'Mod+]',
+      keywords: ['tab', 'forward', 'history'],
+      action: () => useAppStore.getState().navigateTabForward(),
+    },
+    {
       id: 'command-palette',
       label: 'Command Palette',
       category: 'General',

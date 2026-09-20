@@ -63,9 +63,12 @@
   gap: var(--space-3);
   height: 28px;
   padding: 0 var(--space-5);
+  border: 1px solid transparent;
   border-radius: var(--radius-sm);
   font-size: var(--text-sm);
+  font-family: inherit;
   color: var(--color-text-tertiary);
+  background: transparent;
   cursor: pointer;
   transition: background var(--duration-fast) var(--ease-out),
     color var(--duration-fast) var(--ease-out);

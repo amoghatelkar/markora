@@ -9,6 +9,11 @@
   box-shadow: var(--shadow-lg);
 }
 
+.table-bubble-menu--portal {
+  position: fixed;
+  z-index: var(--z-popover);
+}
+
 .table-bubble-btn {
   display: flex;
   align-items: center;
