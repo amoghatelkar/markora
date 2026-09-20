@@ -175,9 +175,13 @@
               <article class="install-card">
                 <h4>Linux</h4>
                 <ol>
-                  <li>Right-click AppImage → <strong>Properties</strong> → <strong>Allow executing file as program</strong>.</li>
-                  <li>Double-click to launch.</li>
+                  <li>In a terminal: <code>chmod +x Markora-*.AppImage</code></li>
+                  <li>Run: <code>./Markora-*.AppImage</code> (or enable “Allow executing” in file properties).</li>
                 </ol>
+                <p class="install-help-note">
+                  Older builds only: if you see a <strong>chrome-sandbox</strong> error, run
+                  <code>./Markora-*.AppImage --no-sandbox</code> or download the latest release.
+                </p>
               </article>
             </div>
           </div>

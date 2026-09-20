@@ -48,7 +48,8 @@
     "linux": {
       "target": "AppImage",
       "icon": "public/markora-icon.png",
-      "artifactName": "Markora-${version}.${ext}"
+      "artifactName": "Markora-${version}.${ext}",
+      "executableArgs": ["--no-sandbox", "--disable-setuid-sandbox"]
     },
     "mac": {
       "target": "dmg",

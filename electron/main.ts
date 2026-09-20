@@ -6,6 +6,12 @@ import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const isDev = !app.isPackaged
 
+// AppImages mount under /tmp and cannot use Chromium's setuid chrome-sandbox (mode 4755).
+if (process.platform === 'linux') {
+  app.commandLine.appendSwitch('no-sandbox')
+  app.commandLine.appendSwitch('disable-setuid-sandbox')
+}
+
 const MARKDOWN_FILTERS = [
   { name: 'Markdown', extensions: ['md', 'markdown', 'txt'] },
 ]
