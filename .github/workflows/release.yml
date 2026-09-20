@@ -20,13 +20,11 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npx tsc -p tsconfig.electron.json
-      - run: npx electron-builder --mac --publish never
+      - name: Build macOS (unsigned)
+        run: npx electron-builder --mac --publish never
         env:
-          CSC_LINK: ${{ secrets.CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          # Empty CSC_LINK in env breaks ad-hoc signing; use package.json identity "-".
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
       - uses: actions/upload-artifact@v4
         with:
           name: mac

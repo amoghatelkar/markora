@@ -2,6 +2,7 @@
   "name": "markora",
   "version": "0.1.2",
   "description": "A modern document editor built for Markdown",
+  "author": "Markora",
   "main": "dist-electron/main.js",
   "type": "module",
   "scripts": {
