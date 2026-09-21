@@ -44,10 +44,53 @@
 
 .welcome-actions {
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
   width: 100%;
-  gap: var(--space-5);
-  justify-content: center;
+  gap: var(--space-4);
   margin-bottom: var(--space-6);
+}
+
+.welcome-actions-primary {
+  width: 100%;
+  height: 42px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.welcome-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.welcome-actions-row .btn {
+  width: 100%;
+  height: 38px;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+}
+
+.welcome-actions-row .btn--secondary {
+  background: var(--color-bg-surface);
+}
+
+.welcome-actions-row .btn--ghost {
+  border: var(--border-default);
+  background: transparent;
+}
+
+.welcome-actions-row .btn--ghost:hover {
+  background: var(--color-bg-hover);
+  border-color: var(--color-border-default);
+}
+
+@media (max-width: 380px) {
+  .welcome-actions-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .welcome-shortcuts {
