@@ -1,0 +1,16 @@
+.export-menu .toolbar-dropdown-trigger {
+  height: auto;
+  min-height: 22px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.export-menu .toolbar-dropdown-trigger:hover,
+.export-menu .toolbar-dropdown-trigger--open {
+  color: var(--color-text-primary);
+}
+
+.export-menu .toolbar-dropdown-label {
+  max-width: none;
+}

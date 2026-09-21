@@ -2,6 +2,7 @@ import type { Command } from '@/types'
 import { useAppStore } from '@/store/useAppStore'
 import { useEditorStore } from '@/store/useEditorStore'
 import { insertTableOfContents } from '@/lib/insertTableOfContents'
+import { exportActiveDocument } from '@/lib/exportActions'
 
 export function getCommands(): Command[] {
   const store = useAppStore.getState()
@@ -76,11 +77,32 @@ export function getCommands(): Command[] {
       action: () => store.showToast('Image insertion'),
     },
     {
+      id: 'export-markdown',
+      label: 'Export as Markdown',
+      category: 'Export',
+      keywords: ['export', 'markdown', 'md', 'download'],
+      action: () => exportActiveDocument('markdown'),
+    },
+    {
+      id: 'export-html',
+      label: 'Export as HTML',
+      category: 'Export',
+      keywords: ['export', 'html', 'web'],
+      action: () => exportActiveDocument('html'),
+    },
+    {
+      id: 'export-text',
+      label: 'Export as Plain Text',
+      category: 'Export',
+      keywords: ['export', 'text', 'txt'],
+      action: () => exportActiveDocument('text'),
+    },
+    {
       id: 'export-pdf',
-      label: 'Export PDF',
+      label: 'Export as PDF',
       category: 'Export',
       keywords: ['pdf', 'export', 'print'],
-      action: () => store.showToast('Exporting PDF…'),
+      action: () => exportActiveDocument('pdf'),
     },
     {
       id: 'toggle-sidebar',
