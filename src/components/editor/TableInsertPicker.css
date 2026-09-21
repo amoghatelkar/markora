@@ -49,31 +49,33 @@
     border-color var(--duration-instant) var(--ease-out);
 }
 
-.table-insert-cell--selected {
-  background: var(--color-accent-muted);
-  border-color: var(--color-accent);
-}
-
-[data-theme='light'] .table-insert-cell--selected {
-  background: rgba(23, 23, 23, 0.12);
+/* Neutral selection (not theme accent purple) — menu is portaled to document.body */
+html[data-theme='light'] .table-insert-cell--selected {
+  background: rgba(23, 23, 23, 0.14);
   border-color: #171717;
 }
 
-[data-theme='dark'] .table-insert-cell--selected {
-  background: rgba(245, 240, 232, 0.16);
+html[data-theme='dark'] .table-insert-cell--selected {
+  background: rgba(245, 240, 232, 0.18);
   border-color: #f5f0e8;
 }
 
-.table-insert-cell:hover {
-  border-color: var(--color-accent);
-}
-
-[data-theme='light'] .table-insert-cell:hover {
+html[data-theme='light'] .table-insert-cell:hover {
   border-color: #171717;
 }
 
-[data-theme='dark'] .table-insert-cell:hover {
+html[data-theme='dark'] .table-insert-cell:hover {
   border-color: #f5f0e8;
+}
+
+html[data-theme='light'] .table-insert-cell:focus-visible {
+  outline: 2px solid rgba(23, 23, 23, 0.45);
+  outline-offset: 1px;
+}
+
+html[data-theme='dark'] .table-insert-cell:focus-visible {
+  outline: 2px solid rgba(245, 240, 232, 0.55);
+  outline-offset: 1px;
 }
 
 .table-insert-header-toggle {
@@ -86,11 +88,11 @@
   user-select: none;
 }
 
-[data-theme='light'] .table-insert-header-toggle input {
+html[data-theme='light'] .table-insert-header-toggle input {
   accent-color: #171717;
 }
 
-[data-theme='dark'] .table-insert-header-toggle input {
+html[data-theme='dark'] .table-insert-header-toggle input {
   accent-color: #f5f0e8;
 }
 

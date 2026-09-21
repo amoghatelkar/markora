@@ -209,15 +209,11 @@
   pointer-events: auto;
 }
 
-.editor-prose .selectedCell {
-  background: var(--color-accent-muted);
-}
-
-[data-theme='light'] .editor-prose .selectedCell {
+html[data-theme='light'] .editor-prose .selectedCell {
   background: rgba(23, 23, 23, 0.1);
 }
 
-[data-theme='dark'] .editor-prose .selectedCell {
+html[data-theme='dark'] .editor-prose .selectedCell {
   background: rgba(245, 240, 232, 0.14);
 }
 
