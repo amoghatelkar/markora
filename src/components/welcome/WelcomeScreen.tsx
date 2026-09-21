@@ -20,15 +20,17 @@ export function WelcomeScreen() {
         <p className="welcome-subtitle">Your Markdown workspace.</p>
 
         <div className="welcome-actions">
-          <Button variant="primary" onClick={newDocument}>
+          <Button className="welcome-actions-primary" variant="primary" onClick={newDocument}>
             New Document
           </Button>
-          <Button variant="secondary" onClick={() => void openDocumentFromSystem()}>
-            Open Document
-          </Button>
-          <Button variant="secondary" onClick={() => setOpenDialogOpen(true)}>
-            Open Sample
-          </Button>
+          <div className="welcome-actions-row">
+            <Button variant="secondary" onClick={() => void openDocumentFromSystem()}>
+              Open Document
+            </Button>
+            <Button variant="ghost" onClick={() => setOpenDialogOpen(true)}>
+              Open Sample
+            </Button>
+          </div>
         </div>
 
         <div className="welcome-shortcuts">

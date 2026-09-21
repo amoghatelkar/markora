@@ -176,15 +176,6 @@ html[data-layout='mobile'] .welcome-content {
   padding: var(--space-9) var(--space-7);
 }
 
-html[data-layout='mobile'] .welcome-actions {
-  flex-direction: column;
-  width: 100%;
-}
-
-html[data-layout='mobile'] .welcome-actions .btn {
-  width: 100%;
-}
-
 html[data-layout='mobile'] .cmd-overlay {
   align-items: flex-end;
   padding: 0;
