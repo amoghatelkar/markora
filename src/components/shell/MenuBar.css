@@ -1,3 +1,7 @@
+html[data-platform='darwin']:not([data-layout='mobile']) .menubar {
+  padding-left: 76px;
+}
+
 .menubar {
   display: flex;
   align-items: center;
