@@ -3,6 +3,7 @@ import { useAppStore } from '@/store/useAppStore'
 import { assetUrl } from '@/lib/assetUrl'
 import { useIsMobileLayout } from '@/hooks/useMediaQuery'
 import { ViewControls } from './ViewControls'
+import { ExportMenu } from './ExportMenu'
 import './TitleBar.css'
 
 export function TitleBar() {
@@ -44,6 +45,7 @@ export function TitleBar() {
             >
               <Search size={20} strokeWidth={1.75} />
             </button>
+            <ExportMenu variant="mobile" />
           </div>
         )}
         <img src={assetUrl('markora-icon.png')} alt="" className="titlebar-icon" width={18} height={18} />

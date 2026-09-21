@@ -161,6 +161,18 @@ html[data-layout='mobile'] .statusbar-markdown-sep {
   display: none;
 }
 
+html[data-layout='mobile'] .export-menu {
+  display: none;
+}
+
+html[data-layout='mobile'] .statusbar-left {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 html[data-layout='mobile'] .editor-zoom {
   margin-left: var(--space-3);
   padding-left: var(--space-3);
