@@ -1,19 +1,11 @@
 import type { OutlineItem } from '@/types'
+import { extractTocHeadings } from '@/lib/tableOfContents'
 
 export function extractOutline(content: string): OutlineItem[] {
-  const items: OutlineItem[] = []
-  const lines = content.split('\n')
-
-  for (const line of lines) {
-    const match = line.match(/^(#{1,6})\s+(.+)$/)
-    if (match) {
-      items.push({
-        id: `heading-${items.length}`,
-        level: match[1].length,
-        text: match[2].trim(),
-      })
-    }
-  }
-
-  return items
+  return extractTocHeadings(content).map((heading, index) => ({
+    id: `heading-${index}`,
+    level: heading.level,
+    text: heading.text,
+    slug: heading.slug,
+  }))
 }

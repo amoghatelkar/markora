@@ -2,6 +2,7 @@ import { useRef, useCallback } from 'react'
 import { useIsMobileLayout } from '@/hooks/useMediaQuery'
 import { Search } from 'lucide-react'
 import { useAppStore, useOutline } from '@/store/useAppStore'
+import { navigateToOutlineHeading } from '@/lib/outlineNavigation'
 import './Sidebar.css'
 
 export function Sidebar() {
@@ -56,7 +57,10 @@ export function Sidebar() {
                 className="sidebar-outline-item"
                 type="button"
                 style={{ paddingLeft: `${(item.level - 1) * 12 + 12}px` }}
-                onClick={() => isMobile && setSidebarOpen(false)}
+                onClick={() => {
+                  navigateToOutlineHeading(item.slug)
+                  if (isMobile) setSidebarOpen(false)
+                }}
               >
                 {item.text}
               </button>

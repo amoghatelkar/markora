@@ -39,3 +39,30 @@ export function buildTableOfContentsMarkdown(headings: TocHeading[]): string {
 
   return `${lines.join('\n')}\n`
 }
+
+/** Character range of the markdown line for a heading slug (for source view scroll). */
+export function findHeadingLineCharRange(
+  markdown: string,
+  slug: string
+): { start: number; end: number } | null {
+  const used = new Map<string, number>()
+  const lines = markdown.split('\n')
+  let offset = 0
+
+  for (const line of lines) {
+    const lineStart = offset
+    const lineEnd = offset + line.length
+    offset = lineEnd + 1
+
+    const match = line.match(/^(#{1,6})\s+(.+)$/)
+    if (!match) continue
+
+    const text = plainHeadingText(match[2].trim())
+    if (!text || TOC_HEADING_RE.test(text)) continue
+
+    const lineSlug = uniqueHeadingSlug(text, used)
+    if (lineSlug === slug) return { start: lineStart, end: lineEnd }
+  }
+
+  return null
+}

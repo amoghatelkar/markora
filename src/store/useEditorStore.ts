@@ -48,6 +48,8 @@ interface EditorState {
   openTableInsertPicker: () => void
   registerSourceInsertText: (fn: ((text: string) => void) | null) => void
   insertTableOfContentsInSource: (markdown: string) => void
+  scrollToHeading: ((slug: string) => void) | null
+  registerScrollToHeading: (fn: ((slug: string) => void) | null) => void
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
@@ -65,4 +67,6 @@ export const useEditorStore = create<EditorState>((set) => ({
     const fn = useEditorStore.getState().sourceInsertText
     fn?.(markdown)
   },
+  scrollToHeading: null,
+  registerScrollToHeading: (fn) => set({ scrollToHeading: fn }),
 }))

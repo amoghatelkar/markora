@@ -14,6 +14,7 @@ export interface OutlineItem {
   id: string
   level: number
   text: string
+  slug: string
 }
 
 export interface Command {
