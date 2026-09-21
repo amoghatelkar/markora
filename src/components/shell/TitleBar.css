@@ -38,7 +38,7 @@
   color: var(--color-text-secondary);
 }
 
-/* macOS hiddenInset title bar — keep icon/title clear of traffic lights */
-html[data-platform='darwin']:not([data-layout='mobile']) .titlebar {
+/* macOS Electron only (hiddenInset) — not Windows, Linux, or browser */
+html[data-runtime='electron'][data-platform='darwin']:not([data-layout='mobile']) .titlebar {
   padding-left: 76px;
 }

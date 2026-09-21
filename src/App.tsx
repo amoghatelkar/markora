@@ -1,14 +1,10 @@
 import { useEffect } from 'react'
 import { AppShell } from '@/components/shell/AppShell'
 import { useAppStore } from '@/store/useAppStore'
+import { applyDocumentPlatformAttributes } from '@/lib/platform'
 
-function isMacPlatform(): boolean {
-  const platform = window.markora?.platform ?? navigator.platform
-  return platform === 'darwin' || /Mac|iPhone|iPad|iPod/i.test(platform)
-}
-
-if (typeof document !== 'undefined' && isMacPlatform()) {
-  document.documentElement.setAttribute('data-platform', 'darwin')
+if (typeof document !== 'undefined') {
+  applyDocumentPlatformAttributes()
 }
 
 export function App() {
@@ -17,9 +13,7 @@ export function App() {
 
   useEffect(() => {
     setTheme(theme)
-    if (isMacPlatform()) {
-      document.documentElement.setAttribute('data-platform', 'darwin')
-    }
+    applyDocumentPlatformAttributes()
   }, [setTheme, theme])
 
   return <AppShell />

@@ -1,4 +1,4 @@
-html[data-platform='darwin']:not([data-layout='mobile']) .menubar {
+html[data-runtime='electron'][data-platform='darwin']:not([data-layout='mobile']) .menubar {
   padding-left: 76px;
 }
 
