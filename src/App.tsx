@@ -1,6 +1,11 @@
 import { useEffect } from 'react'
 import { AppShell } from '@/components/shell/AppShell'
 import { useAppStore } from '@/store/useAppStore'
+import { applyDocumentPlatformAttributes } from '@/lib/platform'
+
+if (typeof document !== 'undefined') {
+  applyDocumentPlatformAttributes()
+}
 
 export function App() {
   const setTheme = useAppStore((s) => s.setTheme)
@@ -8,10 +13,7 @@ export function App() {
 
   useEffect(() => {
     setTheme(theme)
-    const platform = window.markora?.platform ?? navigator.platform.toLowerCase()
-    if (platform.includes('mac')) {
-      document.documentElement.setAttribute('data-platform', 'darwin')
-    }
+    applyDocumentPlatformAttributes()
   }, [setTheme, theme])
 
   return <AppShell />
