@@ -40,9 +40,11 @@ export function TableInsertPicker({ variant = 'icon', onInserted }: TableInsertP
     setOpen(true)
   }, [])
 
+  // Menu bar / command palette open one shared picker; toolbar uses its own instance.
   useEffect(() => {
-    if (pickerNonce > 0) openAtTrigger()
-  }, [pickerNonce, openAtTrigger])
+    if (variant !== 'headless' || pickerNonce === 0) return
+    openAtTrigger()
+  }, [pickerNonce, openAtTrigger, variant])
 
   useEffect(() => {
     if (!open) return
