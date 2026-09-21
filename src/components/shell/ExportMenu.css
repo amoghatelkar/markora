@@ -1,0 +1,96 @@
+.export-menu .toolbar-dropdown-trigger {
+  height: auto;
+  min-height: 22px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.export-menu .toolbar-dropdown-trigger:hover,
+.export-menu .toolbar-dropdown-trigger--open {
+  color: var(--color-text-primary);
+}
+
+.export-menu .toolbar-dropdown-label {
+  max-width: none;
+}
+
+.export-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: var(--space-5);
+  padding-bottom: max(var(--space-5), env(safe-area-inset-bottom));
+}
+
+.export-sheet {
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-bg-elevated);
+  border: var(--border-default);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: var(--shadow-lg);
+  max-height: min(70vh, 420px);
+  overflow: auto;
+}
+
+.export-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-6) var(--space-7);
+  border-bottom: var(--border-subtle);
+}
+
+.export-sheet-title {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.export-sheet-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+}
+
+.export-sheet-close:active {
+  background: var(--color-bg-hover);
+}
+
+.export-sheet-list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-4);
+}
+
+.export-sheet-item {
+  width: 100%;
+  padding: var(--space-5) var(--space-6);
+  text-align: left;
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-md);
+}
+
+.export-sheet-item:active:not(:disabled) {
+  background: var(--color-bg-hover);
+}
+
+.export-sheet-item:disabled {
+  opacity: 0.4;
+}
+
+.export-sheet-separator {
+  height: 1px;
+  margin: var(--space-3) var(--space-4);
+  background: var(--color-border-subtle);
+}

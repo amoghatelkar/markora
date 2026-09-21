@@ -2,6 +2,7 @@ import { useAppStore } from '@/store/useAppStore'
 import { useEditorStore, type EditorCommands } from '@/store/useEditorStore'
 import { formatShortcut } from '@/lib/shortcuts'
 import { insertTableOfContents } from '@/lib/insertTableOfContents'
+import { exportActiveDocument } from '@/lib/exportActions'
 
 type EditorAction = Exclude<
   keyof EditorCommands,
@@ -78,6 +79,31 @@ export function getMenus(): MenuDefinition[] {
           id: 'toggle-auto-save',
           label: store.autoSaveEnabled ? 'Auto-save: On' : 'Auto-save: Off',
           action: () => store.toggleAutoSave(),
+        },
+        { id: 'sep-export', label: '', separator: true },
+        {
+          id: 'export-markdown',
+          label: 'Export as Markdown…',
+          action: () => exportActiveDocument('markdown'),
+          disabled: !store.activeDocumentId,
+        },
+        {
+          id: 'export-html',
+          label: 'Export as HTML…',
+          action: () => exportActiveDocument('html'),
+          disabled: !store.activeDocumentId,
+        },
+        {
+          id: 'export-text',
+          label: 'Export as Plain Text…',
+          action: () => exportActiveDocument('text'),
+          disabled: !store.activeDocumentId,
+        },
+        {
+          id: 'export-pdf',
+          label: 'Export as PDF…',
+          action: () => exportActiveDocument('pdf'),
+          disabled: !store.activeDocumentId,
         },
         { id: 'sep-1', label: '', separator: true },
         {

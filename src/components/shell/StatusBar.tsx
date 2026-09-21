@@ -1,6 +1,7 @@
 import { useAppStore, useActiveDocument } from '@/store/useAppStore'
 import { countWords, countCharacters } from '@/lib/wordCount'
 import { EditorZoomControl } from './EditorZoomControl'
+import { ExportMenu } from './ExportMenu'
 import './StatusBar.css'
 
 export function StatusBar() {
@@ -24,6 +25,8 @@ export function StatusBar() {
         <span>{chars.toLocaleString()} characters</span>
       </div>
       <div className="statusbar-right">
+        <ExportMenu />
+        <span className="statusbar-sep">·</span>
         <span className="statusbar-markdown-label">Markdown</span>
         <span className="statusbar-sep statusbar-markdown-sep">·</span>
         <span className={saveStatus === 'saved' ? 'statusbar-saved' : ''}>
