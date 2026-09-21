@@ -17,6 +17,12 @@ import { runFormatAction, createEditorCommands, getActiveBlockLabel } from '@/li
 import { Toolbar } from '@/components/shell/Toolbar'
 import { TableBubbleMenu } from '@/components/editor/TableBubbleMenu'
 import { TableInsertPicker } from '@/components/editor/TableInsertPicker'
+import { findHeadingLineCharRange } from '@/lib/tableOfContents'
+import {
+  flashHeadingElement,
+  OUTLINE_FLASH_MS,
+  scrollElementIntoEditorView,
+} from '@/lib/outlineNavigation'
 import './Editor.css'
 
 export function Editor() {
@@ -29,6 +35,7 @@ export function Editor() {
   const registerCommands = useEditorStore((s) => s.registerCommands)
   const unregisterCommands = useEditorStore((s) => s.unregisterCommands)
   const registerSourceInsertText = useEditorStore((s) => s.registerSourceInsertText)
+  const registerScrollToHeading = useEditorStore((s) => s.registerScrollToHeading)
   const setBlockLabel = useEditorStore((s) => s.setBlockLabel)
   const sourceRef = useRef<HTMLTextAreaElement>(null)
 
@@ -115,6 +122,47 @@ export function Editor() {
     })
     return () => registerSourceInsertText(null)
   }, [registerSourceInsertText, updateDocumentContent, syncSourceHeight])
+
+  useEffect(() => {
+    const scrollToHeading = (slug: string) => {
+      const state = useAppStore.getState()
+      const activeDoc = state.documents.find((d) => d.id === state.activeDocumentId)
+      if (!activeDoc) return
+
+      if (state.showMarkdownSource) {
+        const el = sourceRef.current
+        const range = findHeadingLineCharRange(activeDoc.content, slug)
+        if (!el || !range) return
+        el.focus()
+        el.setSelectionRange(range.start, range.end)
+        const linesBefore = activeDoc.content.slice(0, range.start).split('\n').length - 1
+        const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 22
+        el.scrollTop = Math.max(0, linesBefore * lineHeight - el.clientHeight / 2)
+        window.setTimeout(() => {
+          const caret = el.selectionEnd ?? range.end
+          el.setSelectionRange(caret, caret)
+        }, OUTLINE_FLASH_MS)
+        return
+      }
+
+      if (!editor) return
+      const heading = editor.view.dom.querySelector(
+        `#${CSS.escape(slug)}`
+      ) as HTMLElement | null
+      if (!heading) return
+
+      scrollElementIntoEditorView(heading)
+      flashHeadingElement(heading)
+
+      const pos = editor.view.posAtDOM(heading, 0)
+      if (pos >= 0) {
+        editor.chain().focus().setTextSelection(pos + 1).run()
+      }
+    }
+
+    registerScrollToHeading(scrollToHeading)
+    return () => registerScrollToHeading(null)
+  }, [editor, registerScrollToHeading])
 
   useEffect(() => {
     if (!editor || !doc || showMarkdownSource) return

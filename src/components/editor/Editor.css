@@ -221,6 +221,36 @@
   background: rgba(245, 240, 232, 0.14);
 }
 
+@keyframes outline-heading-flash-keyframes {
+  0% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+  12% {
+    background-color: var(--outline-flash-bg);
+    box-shadow: var(--outline-flash-ring);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+html[data-theme='light'] .editor-prose {
+  --outline-flash-bg: rgba(23, 23, 23, 0.14);
+  --outline-flash-ring: 0 0 0 3px rgba(23, 23, 23, 0.08);
+}
+
+html[data-theme='dark'] .editor-prose {
+  --outline-flash-bg: rgba(245, 240, 232, 0.2);
+  --outline-flash-ring: 0 0 0 3px rgba(245, 240, 232, 0.1);
+}
+
+.editor-prose :is(h1, h2, h3, h4, h5, h6).outline-heading-flash {
+  border-radius: var(--radius-sm);
+  animation: outline-heading-flash-keyframes 2.6s var(--ease-out);
+}
+
 .editor-prose th,
 .editor-prose td {
   border: var(--border-default);
