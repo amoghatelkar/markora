@@ -4,9 +4,20 @@ function applyElectronDocumentAttributes() {
   const root = document.documentElement
   root.setAttribute('data-runtime', 'electron')
   root.setAttribute('data-platform', process.platform)
+  if (process.platform === 'darwin') {
+    root.classList.add('markora-macos-desktop')
+  }
 }
 
-applyElectronDocumentAttributes()
+function runWhenDocumentReady(fn: () => void) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fn, { once: true })
+  } else {
+    fn()
+  }
+}
+
+runWhenDocumentReady(applyElectronDocumentAttributes)
 
 contextBridge.exposeInMainWorld('markora', {
   platform: process.platform,
