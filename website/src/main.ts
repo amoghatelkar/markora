@@ -22,9 +22,8 @@ function renderDownloadCard(option: DownloadOption, recommended: boolean, unavai
 
   const href = unavailable ? RELEASES_PAGE : option.url
   const btnClass = unavailable ? 'btn btn-download btn-download--muted' : 'btn btn-download'
-  const btnText = unavailable
-    ? 'View releases on GitHub'
-    : `Download ${option.fileName}`
+  const btnText = unavailable ? 'View releases on GitHub' : `Download for ${option.label}`
+  const ariaLabel = unavailable ? undefined : `Download ${option.fileName}`
 
   const linkAttrs = unavailable
     ? 'target="_blank" rel="noopener noreferrer"'
@@ -38,7 +37,7 @@ function renderDownloadCard(option: DownloadOption, recommended: boolean, unavai
         <p>${option.description}</p>
       </div>
     </div>
-    <a class="${btnClass}" href="${href}" ${linkAttrs}>
+    <a class="${btnClass}" href="${href}" ${linkAttrs}${ariaLabel ? ` aria-label="${ariaLabel}"` : ''}>
       ${btnText}
     </a>
   `
