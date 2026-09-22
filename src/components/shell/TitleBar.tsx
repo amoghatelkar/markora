@@ -1,8 +1,8 @@
 import { PanelLeft, Search, Menu } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { assetUrl } from '@/lib/assetUrl'
-import { isMacOsDesktopApp } from '@/lib/platform'
 import { useIsMobileLayout } from '@/hooks/useMediaQuery'
+import { useMacElectronChrome } from '@/hooks/useMacElectronChrome'
 import { ViewControls } from './ViewControls'
 import { ExportMenu } from './ExportMenu'
 import './TitleBar.css'
@@ -14,15 +14,17 @@ export function TitleBar() {
   const setCommandPaletteOpen = useAppStore((s) => s.setCommandPaletteOpen)
   const setMobileMenuOpen = useAppStore((s) => s.setMobileMenuOpen)
   const isMobile = useIsMobileLayout()
-  const macDesktop = isMacOsDesktopApp() && !isMobile
+  const macChrome = useMacElectronChrome()
 
   if (zenMode) return null
 
   return (
     <header
-      className={`titlebar ${focusMode ? 'titlebar--minimal' : ''} ${macDesktop ? 'titlebar--mac-desktop' : ''}`}
+      className={`titlebar ${focusMode ? 'titlebar--minimal' : ''} ${macChrome ? 'titlebar--mac-desktop' : ''}`}
     >
-      <div className="titlebar-drag">
+      <div className="titlebar-leading">
+        <div className="titlebar-mac-gutter" aria-hidden="true" />
+        <div className="titlebar-drag">
         {isMobile && (
           <div className="titlebar-mobile-actions">
             <button
@@ -58,6 +60,7 @@ export function TitleBar() {
         ) : (
           <span className="titlebar-logo">Markora</span>
         )}
+        </div>
       </div>
       <ViewControls />
     </header>

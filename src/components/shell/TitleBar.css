@@ -19,10 +19,27 @@
   opacity: 1;
 }
 
+.titlebar-leading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+}
+
+.titlebar-mac-gutter {
+  display: none;
+  flex: 0 0 var(--mac-traffic-light-inset);
+  width: var(--mac-traffic-light-inset);
+  min-width: var(--mac-traffic-light-inset);
+  height: 1px;
+  -webkit-app-region: drag;
+}
+
 .titlebar-drag {
   display: flex;
   align-items: center;
   gap: var(--space-4);
+  min-width: 0;
 }
 
 .titlebar-icon {
@@ -38,8 +55,15 @@
   color: var(--color-text-secondary);
 }
 
-/* macOS Electron only (hiddenInset) — not Windows, Linux, or browser */
+/* macOS Electron only (hiddenInset) — gutter reserves space for traffic lights */
+.titlebar.titlebar--mac-desktop .titlebar-mac-gutter,
+html.markora-macos-desktop:not([data-layout='mobile']) .titlebar-mac-gutter,
+html[data-runtime='electron'][data-platform='darwin']:not([data-layout='mobile']) .titlebar-mac-gutter {
+  display: block;
+}
+
 .titlebar.titlebar--mac-desktop,
+html.markora-macos-desktop:not([data-layout='mobile']) .titlebar,
 html[data-runtime='electron'][data-platform='darwin']:not([data-layout='mobile']) .titlebar {
-  padding-left: var(--mac-traffic-light-inset);
+  padding-left: var(--space-7);
 }
