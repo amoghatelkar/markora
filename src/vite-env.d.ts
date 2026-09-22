@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+declare const __MARKORA_VERSION__: string
+
 interface MarkoraOpenResult {
   path: string
   content: string

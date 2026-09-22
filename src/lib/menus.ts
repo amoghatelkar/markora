@@ -1,4 +1,5 @@
 import { useAppStore } from '@/store/useAppStore'
+import { APP_VERSION } from '@/lib/appVersion'
 import { useEditorStore, type EditorCommands } from '@/store/useEditorStore'
 import { formatShortcut } from '@/lib/shortcuts'
 import { insertTableOfContents } from '@/lib/insertTableOfContents'
@@ -431,6 +432,12 @@ export function getMenus(): MenuDefinition[] {
           id: 'keyboard-shortcuts',
           label: 'Keyboard Shortcuts',
           action: () => store.showToast('Press ⌘K to open the command palette'),
+        },
+        { id: 'help-sep-about', label: '', separator: true },
+        {
+          id: 'about-markora',
+          label: 'About Markora',
+          action: () => store.showToast(`Markora ${APP_VERSION}`),
         },
       ],
     },
