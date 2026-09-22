@@ -126,10 +126,11 @@ async function init() {
   setPrimaryFromGrid()
 
   const versionEl = document.getElementById('app-version')
+  if (versionEl) versionEl.textContent = APP_VERSION
+
   const latest = await resolveDownloads()
 
   if (latest) {
-    if (versionEl) versionEl.textContent = latest.version
     if (releasesLink) releasesLink.href = latest.releasesPage
     mountDownloads(latest.downloads, false)
     return
