@@ -17,6 +17,7 @@ function runWhenDocumentReady(fn: () => void) {
   }
 }
 
+applyElectronDocumentAttributes()
 runWhenDocumentReady(applyElectronDocumentAttributes)
 
 contextBridge.exposeInMainWorld('markora', {

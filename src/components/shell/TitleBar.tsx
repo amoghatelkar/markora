@@ -23,7 +23,20 @@ export function TitleBar() {
       className={`titlebar ${focusMode ? 'titlebar--minimal' : ''} ${macChrome ? 'titlebar--mac-desktop' : ''}`}
     >
       <div className="titlebar-leading">
-        <div className="titlebar-mac-gutter" aria-hidden="true" />
+        <div
+          className="titlebar-mac-gutter"
+          aria-hidden="true"
+          style={
+            macChrome
+              ? {
+                  display: 'block',
+                  width: 'var(--mac-traffic-light-inset)',
+                  minWidth: 'var(--mac-traffic-light-inset)',
+                  flex: '0 0 var(--mac-traffic-light-inset)',
+                }
+              : undefined
+          }
+        />
         <div className="titlebar-drag">
         {isMobile && (
           <div className="titlebar-mobile-actions">
