@@ -1,4 +1,4 @@
-import { GITHUB_REPO, RELEASES_PAGE, type DownloadOption, type OSType } from './config'
+import { APP_VERSION, GITHUB_REPO, RELEASES_PAGE, type DownloadOption, type OSType } from './config'
 import buildData from './release-data.json'
 
 interface GitHubAsset {
@@ -112,7 +112,7 @@ export function getBuildTimeDownloads(): {
 
   return {
     downloads,
-    version: release.version,
+    version: APP_VERSION,
     releasesPage: release.pageUrl,
   }
 }
