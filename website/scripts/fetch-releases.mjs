@@ -37,21 +37,48 @@ async function fetchJson(url) {
   return res.json()
 }
 
-async function resolveRelease(siteVersion) {
-  const latest = await fetchJson(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`)
-  const siteTag = `v${siteVersion}`
-
-  if (latest?.tag_name) {
-    const latestVer = latest.tag_name.replace(/^v/, '')
-    if (compareVersion(latestVer, siteVersion) >= 0) return latest
+function syntheticRelease(siteVersion) {
+  const tag = `v${siteVersion}`
+  const base = `https://github.com/${GITHUB_REPO}/releases/download/${tag}`
+  return {
+    tag_name: tag,
+    html_url: `https://github.com/${GITHUB_REPO}/releases/tag/${tag}`,
+    assets: [
+      {
+        name: `Markora-${siteVersion}.dmg`,
+        browser_download_url: `${base}/Markora-${siteVersion}.dmg`,
+      },
+      {
+        name: `Markora-Setup-${siteVersion}.exe`,
+        browser_download_url: `${base}/Markora-Setup-${siteVersion}.exe`,
+      },
+      {
+        name: `Markora-${siteVersion}.AppImage`,
+        browser_download_url: `${base}/Markora-${siteVersion}.AppImage`,
+      },
+    ],
   }
+}
+
+async function resolveRelease(siteVersion) {
+  const siteTag = `v${siteVersion}`
 
   const byTag = await fetchJson(
     `https://api.github.com/repos/${GITHUB_REPO}/releases/tags/${siteTag}`
   )
   if (byTag?.tag_name) return byTag
 
-  return latest
+  const latest = await fetchJson(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`)
+  const latestVer = latest?.tag_name?.replace(/^v/, '') ?? ''
+
+  // Website package.json is the source of truth for the marketed version.
+  if (compareVersion(siteVersion, latestVer) > 0) {
+    return syntheticRelease(siteVersion)
+  }
+
+  if (latest?.tag_name) return latest
+
+  return syntheticRelease(siteVersion)
 }
 
 function pickWindowsAsset(assets) {
@@ -93,7 +120,8 @@ function card(icon, label, description, asset) {
                 href="${asset.browser_download_url}"
                 target="_blank"
                 rel="noopener noreferrer"
-              >Download ${asset.name}</a>
+                aria-label="Download ${asset.name}"
+              >Download for ${label}</a>
             </article>`
 }
 

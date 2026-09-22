@@ -1,4 +1,11 @@
-import { APP_VERSION, GITHUB_REPO, RELEASES_PAGE, type DownloadOption, type OSType } from './config'
+import {
+  APP_VERSION,
+  GITHUB_REPO,
+  RELEASES_PAGE,
+  getDownloadOptions,
+  type DownloadOption,
+  type OSType,
+} from './config'
 import buildData from './release-data.json'
 
 interface GitHubAsset {
@@ -102,6 +109,14 @@ export function getBuildTimeDownloads(): {
   const release = buildData.release
   if (!release) return null
 
+  if (release.version !== APP_VERSION) {
+    return {
+      downloads: getDownloadOptions(APP_VERSION),
+      version: APP_VERSION,
+      releasesPage: `https://github.com/${GITHUB_REPO}/releases/tag/v${APP_VERSION}`,
+    }
+  }
+
   const downloads: DownloadOption[] = []
   for (const id of ['mac', 'windows', 'linux'] as OSType[]) {
     const asset = release.assets[id]
@@ -110,10 +125,16 @@ export function getBuildTimeDownloads(): {
 
   if (downloads.length === 0) return null
 
+  const marketedTag = `v${APP_VERSION}`
+  const releasesPage =
+    release.version === APP_VERSION
+      ? release.pageUrl
+      : `https://github.com/${GITHUB_REPO}/releases/tag/${marketedTag}`
+
   return {
     downloads,
     version: APP_VERSION,
-    releasesPage: release.pageUrl,
+    releasesPage,
   }
 }
 
