@@ -11,10 +11,19 @@ export function App() {
   const setTheme = useAppStore((s) => s.setTheme)
   const theme = useAppStore((s) => s.theme)
 
+  const openDocumentFromElectron = useAppStore((s) => s.openDocumentFromElectron)
+
   useEffect(() => {
     setTheme(theme)
     applyDocumentPlatformAttributes()
   }, [setTheme, theme])
+
+  useEffect(() => {
+    const unsubscribe = window.markora?.onOpenDocument?.((file) => {
+      openDocumentFromElectron(file)
+    })
+    return () => unsubscribe?.()
+  }, [openDocumentFromElectron])
 
   return <AppShell />
 }

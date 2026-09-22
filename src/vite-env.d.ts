@@ -14,6 +14,7 @@ interface MarkoraAPI {
   openFile?: () => Promise<MarkoraOpenResult | null>
   saveFile?: (path: string, content: string) => Promise<{ path: string }>
   saveFileAs?: (defaultPath: string, content: string) => Promise<{ path: string } | null>
+  onOpenDocument?: (callback: (file: { path: string; content: string }) => void) => () => void
 }
 
 interface FileSystemHandlePermissionDescriptor {
