@@ -8,8 +8,11 @@ export function applyDocumentPlatformAttributes(): void {
   const electronPlatform = window.markora?.platform
 
   if (!electronPlatform) {
-    root.removeAttribute('data-runtime')
-    root.removeAttribute('data-platform')
+    // Preload may have set these before React loads; do not strip on Electron.
+    if (root.getAttribute('data-runtime') !== 'electron') {
+      root.removeAttribute('data-runtime')
+      root.removeAttribute('data-platform')
+    }
     return
   }
 

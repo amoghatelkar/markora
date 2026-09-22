@@ -1,5 +1,13 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
+function applyElectronDocumentAttributes() {
+  const root = document.documentElement
+  root.setAttribute('data-runtime', 'electron')
+  root.setAttribute('data-platform', process.platform)
+}
+
+applyElectronDocumentAttributes()
+
 contextBridge.exposeInMainWorld('markora', {
   platform: process.platform,
   openFile: () => ipcRenderer.invoke('dialog:openFile') as Promise<{ path: string; content: string } | null>,
