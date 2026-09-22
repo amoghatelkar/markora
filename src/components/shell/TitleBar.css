@@ -39,6 +39,7 @@
 }
 
 /* macOS Electron only (hiddenInset) — not Windows, Linux, or browser */
+.titlebar.titlebar--mac-desktop,
 html[data-runtime='electron'][data-platform='darwin']:not([data-layout='mobile']) .titlebar {
-  padding-left: 76px;
+  padding-left: var(--mac-traffic-light-inset);
 }

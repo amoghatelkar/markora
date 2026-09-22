@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useAppStore } from '@/store/useAppStore'
 import { getMenus, type MenuDefinition } from '@/lib/menus'
+import { useIsMobileLayout } from '@/hooks/useMediaQuery'
+import { isMacOsDesktopApp } from '@/lib/platform'
 import './MenuBar.css'
 
 export function MenuBar() {
@@ -10,6 +12,8 @@ export function MenuBar() {
   const barRef = useRef<HTMLElement>(null)
 
   const menus = getMenus()
+  const isMobile = useIsMobileLayout()
+  const macDesktop = isMacOsDesktopApp() && !isMobile
 
   const closeMenu = useCallback(() => setOpenMenuId(null), [])
 
@@ -47,7 +51,11 @@ export function MenuBar() {
   }
 
   return (
-    <nav className="menubar" aria-label="Application menu" ref={barRef}>
+    <nav
+      className={`menubar ${macDesktop ? 'menubar--mac-desktop' : ''}`}
+      aria-label="Application menu"
+      ref={barRef}
+    >
       {menus.map((menu) => (
         <div key={menu.id} className="menubar-group">
           <button

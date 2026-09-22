@@ -1,6 +1,7 @@
 import { PanelLeft, Search, Menu } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { assetUrl } from '@/lib/assetUrl'
+import { isMacOsDesktopApp } from '@/lib/platform'
 import { useIsMobileLayout } from '@/hooks/useMediaQuery'
 import { ViewControls } from './ViewControls'
 import { ExportMenu } from './ExportMenu'
@@ -13,11 +14,14 @@ export function TitleBar() {
   const setCommandPaletteOpen = useAppStore((s) => s.setCommandPaletteOpen)
   const setMobileMenuOpen = useAppStore((s) => s.setMobileMenuOpen)
   const isMobile = useIsMobileLayout()
+  const macDesktop = isMacOsDesktopApp() && !isMobile
 
   if (zenMode) return null
 
   return (
-    <header className={`titlebar ${focusMode ? 'titlebar--minimal' : ''}`}>
+    <header
+      className={`titlebar ${focusMode ? 'titlebar--minimal' : ''} ${macDesktop ? 'titlebar--mac-desktop' : ''}`}
+    >
       <div className="titlebar-drag">
         {isMobile && (
           <div className="titlebar-mobile-actions">

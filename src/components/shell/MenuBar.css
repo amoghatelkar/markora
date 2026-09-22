@@ -1,5 +1,6 @@
+.menubar.menubar--mac-desktop,
 html[data-runtime='electron'][data-platform='darwin']:not([data-layout='mobile']) .menubar {
-  padding-left: 76px;
+  padding-left: var(--mac-traffic-light-inset);
 }
 
 .menubar {
