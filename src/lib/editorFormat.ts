@@ -1,6 +1,7 @@
 import type { Editor } from '@tiptap/react'
 import type { HeadingLevel } from '@/store/useEditorStore'
 import { markdownToHtml } from '@/lib/markdown'
+import { promptForText } from '@/store/usePromptStore'
 
 export function getActiveBlockLabel(editor: Editor): string {
   if (editor.isActive('heading', { level: 1 })) return 'Heading 1'
@@ -22,7 +23,9 @@ export function runFormatAction(editor: Editor, action: string) {
     case 'italic': chain.toggleItalic().run(); break
     case 'strike': chain.toggleStrike().run(); break
     case 'code': chain.toggleCode().run(); break
-    case 'link': chain.setLink({ href: 'https://' }).run(); break
+    case 'link':
+      void promptForLink(editor)
+      break
     case 'bulletList': chain.toggleBulletList().run(); break
     case 'orderedList': chain.toggleOrderedList().run(); break
     case 'blockquote': chain.toggleBlockquote().run(); break
@@ -39,6 +42,23 @@ export function runFormatAction(editor: Editor, action: string) {
   }
 }
 
+async function promptForLink(editor: Editor) {
+  const previous = editor.getAttributes('link').href as string | undefined
+  const url = await promptForText({
+    title: editor.isActive('link') ? 'Edit link' : 'Insert link',
+    label: 'URL',
+    defaultValue: previous ?? 'https://',
+    placeholder: 'https://example.com',
+  })
+  if (url === null) return
+  const trimmed = url.trim()
+  if (!trimmed) {
+    editor.chain().focus().extendMarkRange('link').unsetLink().run()
+    return
+  }
+  editor.chain().focus().extendMarkRange('link').setLink({ href: trimmed }).run()
+}
+
 export function createEditorCommands(editor: Editor) {
   return {
     undo: () => editor.commands.undo(),
@@ -50,7 +70,9 @@ export function createEditorCommands(editor: Editor) {
     italic: () => editor.chain().focus().toggleItalic().run(),
     strike: () => editor.chain().focus().toggleStrike().run(),
     code: () => editor.chain().focus().toggleCode().run(),
-    link: () => editor.chain().focus().setLink({ href: 'https://' }).run(),
+    link: () => {
+      void promptForLink(editor)
+    },
     bulletList: () => editor.chain().focus().toggleBulletList().run(),
     orderedList: () => editor.chain().focus().toggleOrderedList().run(),
     blockquote: () => editor.chain().focus().toggleBlockquote().run(),
@@ -71,8 +93,13 @@ export function createEditorCommands(editor: Editor) {
     mergeCells: () => editor.chain().focus().mergeCells().run(),
     splitCell: () => editor.chain().focus().splitCell().run(),
     insertImage: () => {
-      const url = window.prompt('Image URL')
-      if (url) editor.chain().focus().setImage({ src: url }).run()
+      void promptForText({
+        title: 'Insert image',
+        label: 'Image URL',
+        placeholder: 'https://example.com/image.png',
+      }).then((url) => {
+        if (url) editor.chain().focus().setImage({ src: url }).run()
+      })
     },
     insertHorizontalRule: () => editor.chain().focus().setHorizontalRule().run(),
     insertTableOfContents: (markdown: string) => {

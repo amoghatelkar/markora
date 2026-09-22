@@ -1,0 +1,27 @@
+.prompt-dialog {
+  max-width: 400px;
+}
+
+.prompt-dialog-message {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  margin: calc(var(--space-7) * -1) 0 var(--space-7);
+}
+
+.prompt-dialog-field {
+  display: block;
+  margin-bottom: var(--space-8);
+}
+
+.prompt-dialog-label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.prompt-dialog-input {
+  margin-bottom: 0;
+}

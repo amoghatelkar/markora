@@ -1,12 +1,24 @@
+import { confirmAction } from '@/store/usePromptStore'
+
 export interface OpenedFile {
   name: string
   path: string
   content: string
 }
 
-const fileHandles = new Map<string, FileSystemFileHandle>()
+export type FileWriteOptions = {
+  /** When false, skip in-app confirm and never call requestPermission (for auto-save). */
+  interactive?: boolean
+}
 
-export function setDocumentFileHandle(documentId: string, handle: FileSystemFileHandle | null) {
+type WritableFileHandle = FileSystemFileHandle & {
+  queryPermission?: (descriptor?: { mode?: 'read' | 'readwrite' }) => Promise<PermissionState>
+  requestPermission?: (descriptor?: { mode?: 'read' | 'readwrite' }) => Promise<PermissionState>
+}
+
+const fileHandles = new Map<string, WritableFileHandle>()
+
+export function setDocumentFileHandle(documentId: string, handle: WritableFileHandle | null) {
   if (handle) fileHandles.set(documentId, handle)
   else fileHandles.delete(documentId)
 }
@@ -29,7 +41,7 @@ export function titleFromOpenedFile(file: OpenedFile) {
 }
 
 export async function openFileFromSystem(): Promise<
-  (OpenedFile & { handle?: FileSystemFileHandle }) | null
+  (OpenedFile & { handle?: WritableFileHandle }) | null
 > {
   if (window.markora?.openFile) {
     const result = await window.markora.openFile()
@@ -55,6 +67,7 @@ export async function openFileFromSystem(): Promise<
           },
         ],
       })
+      await requestWritePermissionIfPossible(handle)
       const file = await handle.getFile()
       const content = await file.text()
       return { name: file.name, path: file.name, content, handle }
@@ -84,7 +97,57 @@ export async function openFileFromSystem(): Promise<
   })
 }
 
-async function writeWithHandle(handle: FileSystemFileHandle, content: string) {
+async function queryWritePermission(handle: WritableFileHandle) {
+  if (typeof handle.queryPermission !== 'function') return 'granted' as PermissionState
+  return handle.queryPermission({ mode: 'readwrite' })
+}
+
+/** Request permission while the open/save picker user gesture may still be active. */
+async function requestWritePermissionIfPossible(handle: WritableFileHandle) {
+  if (typeof handle.requestPermission !== 'function') return
+  const current = await queryWritePermission(handle)
+  if (current === 'granted') return
+  try {
+    await handle.requestPermission({ mode: 'readwrite' })
+  } catch {
+    /* ignore — interactive save will prompt in-app */
+  }
+}
+
+export async function ensureWritePermission(
+  handle: WritableFileHandle,
+  fileName: string,
+  options: FileWriteOptions = {}
+): Promise<boolean> {
+  const interactive = options.interactive ?? true
+  const current = await queryWritePermission(handle)
+  if (current === 'granted') return true
+  if (current === 'denied') return false
+  if (!interactive) return false
+
+  const ok = await confirmAction({
+    title: `Save changes to ${fileName}?`,
+    message: 'Markora will update this file on your device when you save or auto-save.',
+    confirmLabel: 'Save changes',
+    cancelLabel: 'Cancel',
+  })
+  if (!ok) return false
+
+  if (typeof handle.requestPermission !== 'function') return true
+
+  const result = await handle.requestPermission({ mode: 'readwrite' })
+  return result === 'granted'
+}
+
+async function writeWithHandle(
+  handle: WritableFileHandle,
+  content: string,
+  fileName: string,
+  options?: FileWriteOptions
+) {
+  if (!(await ensureWritePermission(handle, fileName, options))) {
+    throw new Error('Write permission not granted')
+  }
   const writable = await handle.createWritable()
   await writable.write(content)
   await writable.close()
@@ -94,7 +157,8 @@ export async function saveToPath(
   documentId: string,
   path: string,
   content: string,
-  fileName: string
+  fileName: string,
+  options?: FileWriteOptions
 ): Promise<string> {
   if (window.markora?.saveFile) {
     const saved = await window.markora.saveFile(path, content)
@@ -103,7 +167,7 @@ export async function saveToPath(
 
   const handle = getDocumentFileHandle(documentId)
   if (handle) {
-    await writeWithHandle(handle, content)
+    await writeWithHandle(handle, content, fileNameFromPath(fileName), options)
     return path
   }
 
@@ -115,7 +179,7 @@ export async function saveFileAs(
   _documentId: string,
   suggestedName: string,
   content: string
-): Promise<{ path: string; handle?: FileSystemFileHandle } | null> {
+): Promise<{ path: string; handle?: WritableFileHandle } | null> {
   if (window.markora?.saveFileAs) {
     const result = await window.markora.saveFileAs(suggestedName, content)
     if (!result) return null
@@ -133,7 +197,8 @@ export async function saveFileAs(
           },
         ],
       })
-      await writeWithHandle(handle, content)
+      await requestWritePermissionIfPossible(handle)
+      await writeWithHandle(handle, content, suggestedName, { interactive: true })
       const file = await handle.getFile()
       return { path: file.name, handle }
     } catch (err) {

@@ -9,6 +9,7 @@ import { Editor } from '@/components/editor/Editor'
 import { WelcomeScreen } from '@/components/welcome/WelcomeScreen'
 import { CommandPalette } from '@/components/command-palette/CommandPalette'
 import { OpenDocumentDialog } from '@/components/dialogs/OpenDocumentDialog'
+import { PromptDialog } from '@/components/dialogs/PromptDialog'
 import { ContextMenu, type ContextMenuItem } from '@/components/menus/ContextMenu'
 import { Toast } from '@/components/ui/Toast'
 import { MobileMenu } from './MobileMenu'
@@ -88,6 +89,7 @@ export function AppShell() {
       <StatusBar />
       <CommandPalette />
       <OpenDocumentDialog />
+      <PromptDialog />
       <MobileMenu />
       <Toast />
 
