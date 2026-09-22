@@ -57,13 +57,20 @@
 
 /* macOS — gutter reserves space for traffic lights (Electron hiddenInset) */
 .titlebar.titlebar--mac .titlebar-mac-gutter,
-html.markora-macos:not([data-layout='mobile']) .titlebar-mac-gutter,
-html[data-platform='darwin']:not([data-layout='mobile']) .titlebar-mac-gutter {
+html.markora-macos:not([data-layout='mobile']):not(.markora-fullscreen) .titlebar-mac-gutter,
+html[data-platform='darwin']:not([data-layout='mobile']):not(.markora-fullscreen) .titlebar-mac-gutter {
   display: block;
 }
 
 .titlebar.titlebar--mac,
-html.markora-macos:not([data-layout='mobile']) .titlebar,
-html[data-platform='darwin']:not([data-layout='mobile']) .titlebar {
+html.markora-macos:not([data-layout='mobile']):not(.markora-fullscreen) .titlebar,
+html[data-platform='darwin']:not([data-layout='mobile']):not(.markora-fullscreen) .titlebar {
   padding-left: var(--space-7);
+}
+
+html.markora-fullscreen .titlebar-mac-gutter {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  flex: 0 0 0 !important;
 }

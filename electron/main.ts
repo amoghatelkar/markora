@@ -16,6 +16,10 @@ const MARKDOWN_FILTERS = [
   { name: 'Markdown', extensions: ['md', 'markdown', 'txt'] },
 ]
 
+function notifyFullscreen(win: BrowserWindow) {
+  win.webContents.send('markora:fullscreen-changed', win.isFullScreen())
+}
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 1280,
@@ -35,6 +39,10 @@ function createWindow() {
 
   win.once('ready-to-show', () => win.show())
 
+  win.on('enter-full-screen', () => notifyFullscreen(win))
+  win.on('leave-full-screen', () => notifyFullscreen(win))
+  win.webContents.on('did-finish-load', () => notifyFullscreen(win))
+
   if (isDev) {
     win.loadURL('http://localhost:5173')
     win.webContents.openDevTools({ mode: 'detach' })
@@ -50,6 +58,11 @@ function createWindow() {
     return { action: 'deny' }
   })
 }
+
+ipcMain.handle('markora:isFullscreen', (event) => {
+  const win = BrowserWindow.fromWebContents(event.sender)
+  return win?.isFullScreen() ?? false
+})
 
 ipcMain.handle('dialog:openFile', async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog({

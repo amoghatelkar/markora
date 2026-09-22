@@ -1,9 +1,3 @@
-.menubar.menubar--mac,
-html.markora-macos:not([data-layout='mobile']) .menubar,
-html[data-platform='darwin']:not([data-layout='mobile']) .menubar {
-  padding-left: var(--mac-traffic-light-inset);
-}
-
 .menubar {
   display: flex;
   align-items: center;

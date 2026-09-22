@@ -23,6 +23,14 @@ runWhenDocumentReady(applyElectronDocumentAttributes)
 
 contextBridge.exposeInMainWorld('markora', {
   platform: process.platform,
+  isFullscreen: () => ipcRenderer.invoke('markora:isFullscreen') as Promise<boolean>,
+  onFullscreenChanged: (callback: (full: boolean) => void) => {
+    const listener = (_event: unknown, full: boolean) => callback(full)
+    ipcRenderer.on('markora:fullscreen-changed', listener)
+    return () => {
+      ipcRenderer.removeListener('markora:fullscreen-changed', listener)
+    }
+  },
   openFile: () => ipcRenderer.invoke('dialog:openFile') as Promise<{ path: string; content: string } | null>,
   saveFile: (path: string, content: string) =>
     ipcRenderer.invoke('dialog:saveFile', { path, content }) as Promise<{ path: string }>,

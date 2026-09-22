@@ -9,6 +9,8 @@ interface MarkoraOpenResult {
 
 interface MarkoraAPI {
   platform: string
+  isFullscreen?: () => Promise<boolean>
+  onFullscreenChanged?: (callback: (full: boolean) => void) => () => void
   openFile?: () => Promise<MarkoraOpenResult | null>
   saveFile?: (path: string, content: string) => Promise<{ path: string }>
   saveFileAs?: (defaultPath: string, content: string) => Promise<{ path: string } | null>

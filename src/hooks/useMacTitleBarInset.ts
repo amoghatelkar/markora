@@ -1,8 +1,10 @@
 import { useIsMobileLayout } from '@/hooks/useMediaQuery'
+import { useFullscreen } from '@/hooks/useFullscreen'
 import { isMacPlatform } from '@/lib/platform'
 
-/** Extra left inset for macOS window controls (desktop layout only). */
+/** Extra left inset for macOS window traffic lights (windowed desktop only). */
 export function useMacTitleBarInset(): boolean {
   const isMobile = useIsMobileLayout()
-  return isMacPlatform() && !isMobile
+  const fullscreen = useFullscreen()
+  return isMacPlatform() && !isMobile && !fullscreen
 }
