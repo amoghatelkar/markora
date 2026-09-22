@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useAppStore } from '@/store/useAppStore'
 import { getMenus, type MenuDefinition } from '@/lib/menus'
-import { useMacElectronChrome } from '@/hooks/useMacElectronChrome'
+import { useMacTitleBarInset } from '@/hooks/useMacTitleBarInset'
 import './MenuBar.css'
 
 export function MenuBar() {
@@ -11,7 +11,7 @@ export function MenuBar() {
   const barRef = useRef<HTMLElement>(null)
 
   const menus = getMenus()
-  const macChrome = useMacElectronChrome()
+  const macTitleInset = useMacTitleBarInset()
 
   const closeMenu = useCallback(() => setOpenMenuId(null), [])
 
@@ -50,7 +50,7 @@ export function MenuBar() {
 
   return (
     <nav
-      className={`menubar ${macChrome ? 'menubar--mac-desktop' : ''}`}
+      className={`menubar ${macTitleInset ? 'menubar--mac' : ''}`}
       aria-label="Application menu"
       ref={barRef}
     >

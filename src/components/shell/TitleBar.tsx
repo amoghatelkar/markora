@@ -2,7 +2,7 @@ import { PanelLeft, Search, Menu } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { assetUrl } from '@/lib/assetUrl'
 import { useIsMobileLayout } from '@/hooks/useMediaQuery'
-import { useMacElectronChrome } from '@/hooks/useMacElectronChrome'
+import { useMacTitleBarInset } from '@/hooks/useMacTitleBarInset'
 import { ViewControls } from './ViewControls'
 import { ExportMenu } from './ExportMenu'
 import './TitleBar.css'
@@ -14,20 +14,20 @@ export function TitleBar() {
   const setCommandPaletteOpen = useAppStore((s) => s.setCommandPaletteOpen)
   const setMobileMenuOpen = useAppStore((s) => s.setMobileMenuOpen)
   const isMobile = useIsMobileLayout()
-  const macChrome = useMacElectronChrome()
+  const macTitleInset = useMacTitleBarInset()
 
   if (zenMode) return null
 
   return (
     <header
-      className={`titlebar ${focusMode ? 'titlebar--minimal' : ''} ${macChrome ? 'titlebar--mac-desktop' : ''}`}
+      className={`titlebar ${focusMode ? 'titlebar--minimal' : ''} ${macTitleInset ? 'titlebar--mac' : ''}`}
     >
       <div className="titlebar-leading">
         <div
           className="titlebar-mac-gutter"
           aria-hidden="true"
           style={
-            macChrome
+            macTitleInset
               ? {
                   display: 'block',
                   width: 'var(--mac-traffic-light-inset)',

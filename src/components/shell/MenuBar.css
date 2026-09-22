@@ -1,6 +1,6 @@
-.menubar.menubar--mac-desktop,
-html.markora-macos-desktop:not([data-layout='mobile']) .menubar,
-html[data-runtime='electron'][data-platform='darwin']:not([data-layout='mobile']) .menubar {
+.menubar.menubar--mac,
+html.markora-macos:not([data-layout='mobile']) .menubar,
+html[data-platform='darwin']:not([data-layout='mobile']) .menubar {
   padding-left: var(--mac-traffic-light-inset);
 }
 

@@ -1,50 +1,40 @@
-/** Electron renderer on macOS (works without preload / markora bridge). */
-export function isElectronMacRenderer(): boolean {
+/** macOS (desktop app, browser, or Electron). */
+export function isMacPlatform(): boolean {
   if (typeof navigator === 'undefined') return false
-  if (!/Electron/i.test(navigator.userAgent)) return false
   const platform = navigator.platform?.toLowerCase() ?? ''
-  const ua = navigator.userAgent.toLowerCase()
-  return platform.includes('mac') || ua.includes('macintosh')
+  const ua = navigator.userAgent
+  return platform.includes('mac') || /Macintosh|Mac OS X/i.test(ua)
 }
 
-/** True only in the packaged/desktop Electron app on macOS (traffic-light inset). */
+/** @deprecated Use isMacPlatform() for layout; kept for callers that meant desktop Electron. */
 export function isMacOsDesktopApp(): boolean {
-  if (isElectronMacRenderer()) return true
-
-  if (typeof document !== 'undefined') {
-    const root = document.documentElement
-    if (root.classList.contains('markora-macos-desktop')) return true
-    if (
-      root.getAttribute('data-runtime') === 'electron' &&
-      root.getAttribute('data-platform') === 'darwin'
-    ) {
-      return true
-    }
-  }
-
-  return window.markora?.platform === 'darwin'
+  return isMacPlatform()
 }
 
-/** Call before React mounts so macOS inset CSS applies on first paint. */
-export function ensureMacElectronDocumentClass(): void {
-  if (!isElectronMacRenderer()) return
+/** Apply macOS layout attributes before first paint (title bar traffic-light gutter). */
+export function ensureMacDocumentAttributes(): void {
+  if (!isMacPlatform()) return
   const root = document.documentElement
-  root.classList.add('markora-macos-desktop')
-  root.setAttribute('data-runtime', 'electron')
   root.setAttribute('data-platform', 'darwin')
+  root.classList.add('markora-macos')
 }
+
+/** @deprecated Alias for ensureMacDocumentAttributes */
+export const ensureMacElectronDocumentClass = ensureMacDocumentAttributes
 
 export function applyDocumentPlatformAttributes(): void {
-  ensureMacElectronDocumentClass()
+  ensureMacDocumentAttributes()
 
   const root = document.documentElement
   const electronPlatform = window.markora?.platform
 
   if (!electronPlatform) {
-    if (root.getAttribute('data-runtime') !== 'electron') {
+    if (root.getAttribute('data-runtime') === 'electron') {
       root.removeAttribute('data-runtime')
+    }
+    if (!isMacPlatform()) {
       root.removeAttribute('data-platform')
-      root.classList.remove('markora-macos-desktop')
+      root.classList.remove('markora-macos')
     }
     return
   }
@@ -52,8 +42,6 @@ export function applyDocumentPlatformAttributes(): void {
   root.setAttribute('data-runtime', 'electron')
   root.setAttribute('data-platform', electronPlatform)
   if (electronPlatform === 'darwin') {
-    root.classList.add('markora-macos-desktop')
-  } else {
-    root.classList.remove('markora-macos-desktop')
+    root.classList.add('markora-macos')
   }
 }
