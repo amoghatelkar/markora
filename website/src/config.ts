@@ -1,5 +1,5 @@
 /** Keep in sync with root package.json version and GitHub release tags. */
-export const APP_VERSION = '0.1.10'
+export const APP_VERSION = '0.1.11'
 
 export const GITHUB_REPO = 'amoghatelkar/markora'
 
