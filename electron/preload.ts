@@ -5,7 +5,8 @@ function applyElectronDocumentAttributes() {
   root.setAttribute('data-runtime', 'electron')
   root.setAttribute('data-platform', process.platform)
   if (process.platform === 'darwin') {
-    root.classList.add('markora-macos-desktop')
+    root.classList.add('markora-macos')
+    root.setAttribute('data-platform', 'darwin')
   }
 }
 

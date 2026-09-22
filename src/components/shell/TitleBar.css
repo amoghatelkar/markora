@@ -55,15 +55,15 @@
   color: var(--color-text-secondary);
 }
 
-/* macOS Electron only (hiddenInset) — gutter reserves space for traffic lights */
-.titlebar.titlebar--mac-desktop .titlebar-mac-gutter,
-html.markora-macos-desktop:not([data-layout='mobile']) .titlebar-mac-gutter,
-html[data-runtime='electron'][data-platform='darwin']:not([data-layout='mobile']) .titlebar-mac-gutter {
+/* macOS — gutter reserves space for traffic lights (Electron hiddenInset) */
+.titlebar.titlebar--mac .titlebar-mac-gutter,
+html.markora-macos:not([data-layout='mobile']) .titlebar-mac-gutter,
+html[data-platform='darwin']:not([data-layout='mobile']) .titlebar-mac-gutter {
   display: block;
 }
 
-.titlebar.titlebar--mac-desktop,
-html.markora-macos-desktop:not([data-layout='mobile']) .titlebar,
-html[data-runtime='electron'][data-platform='darwin']:not([data-layout='mobile']) .titlebar {
+.titlebar.titlebar--mac,
+html.markora-macos:not([data-layout='mobile']) .titlebar,
+html[data-platform='darwin']:not([data-layout='mobile']) .titlebar {
   padding-left: var(--space-7);
 }
