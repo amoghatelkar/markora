@@ -3,6 +3,7 @@ import type { Document, EditorWidth, SaveStatus, Theme } from '@/types'
 import { extractOutline } from '@/lib/outline'
 import {
   defaultSaveFileName,
+  ensureWritePermission,
   openFileFromSystem,
   saveFileAs,
   saveToPath,
@@ -219,7 +220,10 @@ export const useAppStore = create<AppState>((set, get) => ({
     const file = await openFileFromSystem()
     if (!file) return
     const doc = createDocument(titleFromOpenedFile(file), file.content, file.path)
-    if (file.handle) setDocumentFileHandle(doc.id, file.handle)
+    if (file.handle) {
+      setDocumentFileHandle(doc.id, file.handle)
+      await ensureWritePermission(file.handle, file.name, { interactive: true })
+    }
     set((s) => {
       const documents = [...s.documents, doc]
       return {
@@ -244,7 +248,13 @@ export const useAppStore = create<AppState>((set, get) => ({
 
     set({ saveStatus: 'saving' })
     try {
-      const path = await saveToPath(id, doc.path, doc.content, defaultSaveFileName(doc.title))
+      const path = await saveToPath(
+        id,
+        doc.path,
+        doc.content,
+        defaultSaveFileName(doc.title),
+        { interactive: !options?.silent }
+      )
       set((s) => ({
         documents: s.documents.map((d) =>
           d.id === id ? { ...d, path, modified: false } : d
