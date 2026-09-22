@@ -87,6 +87,39 @@ function markdownToPlainText(markdown: string): string {
   return (doc.body.textContent ?? '').replace(/\n{3,}/g, '\n\n').trim()
 }
 
+/** Print without window.open (blocked in Electron and often blank with noopener). */
+function printHtmlDocument(html: string): void {
+  const iframe = document.createElement('iframe')
+  iframe.setAttribute('title', 'Print preview')
+  iframe.setAttribute('aria-hidden', 'true')
+  iframe.style.cssText =
+    'position:fixed;right:0;bottom:0;width:0;height:0;border:0;opacity:0;pointer-events:none;'
+  document.body.appendChild(iframe)
+
+  const frameWindow = iframe.contentWindow
+  const frameDoc = iframe.contentDocument ?? frameWindow?.document
+  if (!frameWindow || !frameDoc) {
+    iframe.remove()
+    throw new Error('Could not create print preview')
+  }
+
+  frameDoc.open()
+  frameDoc.write(html)
+  frameDoc.close()
+
+  let printed = false
+  const runPrint = () => {
+    if (printed) return
+    printed = true
+    frameWindow.focus()
+    frameWindow.print()
+    window.setTimeout(() => iframe.remove(), 1000)
+  }
+
+  iframe.addEventListener('load', () => runPrint(), { once: true })
+  window.setTimeout(() => runPrint(), 1200)
+}
+
 export function exportDocument(
   title: string,
   content: string,
@@ -113,24 +146,16 @@ export function exportDocument(
       return { ok: true }
     }
     case 'pdf': {
-      const html = buildStandaloneHtml(title, content)
-      const win = window.open('', '_blank', 'noopener,noreferrer')
-      if (!win) {
-        return { ok: false, reason: 'Allow pop-ups to export PDF, or use Print from the HTML export.' }
+      try {
+        const html = buildStandaloneHtml(title, content)
+        printHtmlDocument(html)
+        return { ok: true }
+      } catch {
+        return {
+          ok: false,
+          reason: 'Could not open print preview. Try Export as HTML and print from your browser.',
+        }
       }
-      win.document.open()
-      win.document.write(html)
-      win.document.close()
-      const printWhenReady = () => {
-        win.focus()
-        win.print()
-      }
-      if (win.document.readyState === 'complete') {
-        requestAnimationFrame(printWhenReady)
-      } else {
-        win.addEventListener('load', printWhenReady, { once: true })
-      }
-      return { ok: true }
     }
     default:
       return { ok: false, reason: 'Unknown format' }
