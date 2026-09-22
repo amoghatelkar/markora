@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-09-22T19:42:00.000Z",
+  "generatedAt": "2026-09-22T19:48:00.000Z",
   "release": {
-    "tag": "v0.1.11",
-    "version": "0.1.11",
-    "pageUrl": "https://github.com/amoghatelkar/markora/releases/tag/v0.1.11",
+    "tag": "v0.2.0",
+    "version": "0.2.0",
+    "pageUrl": "https://github.com/amoghatelkar/markora/releases/tag/v0.2.0",
     "assets": {
       "mac": {
-        "name": "Markora-0.1.11.dmg",
-        "browser_download_url": "https://github.com/amoghatelkar/markora/releases/download/v0.1.11/Markora-0.1.11.dmg"
+        "name": "Markora-0.2.0.dmg",
+        "browser_download_url": "https://github.com/amoghatelkar/markora/releases/download/v0.2.0/Markora-0.2.0.dmg"
       },
       "windows": {
-        "name": "Markora-Setup-0.1.11.exe",
-        "browser_download_url": "https://github.com/amoghatelkar/markora/releases/download/v0.1.11/Markora-Setup-0.1.11.exe"
+        "name": "Markora-Setup-0.2.0.exe",
+        "browser_download_url": "https://github.com/amoghatelkar/markora/releases/download/v0.2.0/Markora-Setup-0.2.0.exe"
       },
       "linux": {
-        "name": "Markora-0.1.11.AppImage",
-        "browser_download_url": "https://github.com/amoghatelkar/markora/releases/download/v0.1.11/Markora-0.1.11.AppImage"
+        "name": "Markora-0.2.0.AppImage",
+        "browser_download_url": "https://github.com/amoghatelkar/markora/releases/download/v0.2.0/Markora-0.2.0.AppImage"
       }
     }
   }
