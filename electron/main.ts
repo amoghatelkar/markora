@@ -39,9 +39,13 @@ function createWindow() {
 
   win.once('ready-to-show', () => win.show())
 
-  win.on('enter-full-screen', () => notifyFullscreen(win))
-  win.on('leave-full-screen', () => notifyFullscreen(win))
-  win.webContents.on('did-finish-load', () => notifyFullscreen(win))
+  const onFullscreenMaybeChanged = () => notifyFullscreen(win)
+  win.on('enter-full-screen', onFullscreenMaybeChanged)
+  win.on('leave-full-screen', onFullscreenMaybeChanged)
+  win.on('resize', onFullscreenMaybeChanged)
+  win.on('maximize', onFullscreenMaybeChanged)
+  win.on('unmaximize', onFullscreenMaybeChanged)
+  win.webContents.on('did-finish-load', onFullscreenMaybeChanged)
 
   if (isDev) {
     win.loadURL('http://localhost:5173')

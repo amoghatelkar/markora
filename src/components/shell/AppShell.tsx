@@ -15,10 +15,12 @@ import { Toast } from '@/components/ui/Toast'
 import { MobileMenu } from './MobileMenu'
 import { useAppStore } from '@/store/useAppStore'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { useFullscreen } from '@/hooks/useFullscreen'
 import './AppShell.css'
 
 export function AppShell() {
   useKeyboardShortcuts()
+  useFullscreen()
   const isMobile = useIsMobileLayout()
 
   const showWelcome = useAppStore((s) => s.showWelcome)

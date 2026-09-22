@@ -9,35 +9,45 @@ function setFullscreenDocumentClass(full: boolean) {
   document.documentElement.classList.toggle('markora-fullscreen', full)
 }
 
+async function readElectronFullscreen(): Promise<boolean> {
+  try {
+    return (await window.markora?.isFullscreen?.()) === true
+  } catch {
+    return false
+  }
+}
+
 /** Window fullscreen (browser API + Electron macOS native fullscreen). */
 export function useFullscreen(): boolean {
   const [fullscreen, setFullscreen] = useState(false)
 
   useEffect(() => {
+    let cancelled = false
+
     const update = (full: boolean) => {
+      if (cancelled) return
       setFullscreen(full)
       setFullscreenDocumentClass(full)
     }
 
-    const readDom = () => update(readDocumentFullscreen())
+    const sync = async () => {
+      const full = readDocumentFullscreen() || (await readElectronFullscreen())
+      update(full)
+    }
 
-    readDom()
-    document.addEventListener('fullscreenchange', readDom)
-    document.addEventListener('webkitfullscreenchange', readDom)
+    void sync()
+
+    document.addEventListener('fullscreenchange', () => void sync())
+    document.addEventListener('webkitfullscreenchange', () => void sync())
+    window.addEventListener('resize', () => void sync())
 
     let unsubscribe: (() => void) | undefined
-
-    void window.markora?.isFullscreen?.().then((full) => {
-      if (typeof full === 'boolean') update(full)
-    })
-
     if (window.markora?.onFullscreenChanged) {
-      unsubscribe = window.markora.onFullscreenChanged(update)
+      unsubscribe = window.markora.onFullscreenChanged((full) => update(full))
     }
 
     return () => {
-      document.removeEventListener('fullscreenchange', readDom)
-      document.removeEventListener('webkitfullscreenchange', readDom)
+      cancelled = true
       unsubscribe?.()
       setFullscreenDocumentClass(false)
     }

@@ -8,6 +8,7 @@
   background: var(--color-bg-base);
   flex-shrink: 0;
   -webkit-app-region: drag;
+  position: relative;
 }
 
 .titlebar--minimal {
@@ -19,20 +20,30 @@
   opacity: 1;
 }
 
-.titlebar-leading {
-  display: flex;
+/* Desktop: brand centered in the title bar; controls stay on the right */
+.titlebar--centered {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  min-width: 0;
-  flex: 1;
+  padding: 0 var(--space-7);
 }
 
-.titlebar-mac-gutter {
-  display: none;
-  flex: 0 0 var(--mac-traffic-light-inset);
-  width: var(--mac-traffic-light-inset);
-  min-width: var(--mac-traffic-light-inset);
-  height: 1px;
-  -webkit-app-region: drag;
+.titlebar--centered .titlebar-brand {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.titlebar--centered .titlebar-end {
+  grid-column: 3;
+  justify-self: end;
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
 }
 
 .titlebar-drag {
@@ -55,22 +66,8 @@
   color: var(--color-text-secondary);
 }
 
-/* macOS — gutter reserves space for traffic lights (Electron hiddenInset) */
-.titlebar.titlebar--mac .titlebar-mac-gutter,
-html.markora-macos:not([data-layout='mobile']):not(.markora-fullscreen) .titlebar-mac-gutter,
-html[data-platform='darwin']:not([data-layout='mobile']):not(.markora-fullscreen) .titlebar-mac-gutter {
-  display: block;
-}
-
-.titlebar.titlebar--mac,
-html.markora-macos:not([data-layout='mobile']):not(.markora-fullscreen) .titlebar,
-html[data-platform='darwin']:not([data-layout='mobile']):not(.markora-fullscreen) .titlebar {
-  padding-left: var(--space-7);
-}
-
-html.markora-fullscreen .titlebar-mac-gutter {
-  display: none !important;
-  width: 0 !important;
-  min-width: 0 !important;
-  flex: 0 0 0 !important;
+.titlebar-end {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }

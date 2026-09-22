@@ -2,7 +2,6 @@ import { PanelLeft, Search, Menu } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { assetUrl } from '@/lib/assetUrl'
 import { useIsMobileLayout } from '@/hooks/useMediaQuery'
-import { useMacTitleBarInset } from '@/hooks/useMacTitleBarInset'
 import { ViewControls } from './ViewControls'
 import { ExportMenu } from './ExportMenu'
 import './TitleBar.css'
@@ -14,30 +13,16 @@ export function TitleBar() {
   const setCommandPaletteOpen = useAppStore((s) => s.setCommandPaletteOpen)
   const setMobileMenuOpen = useAppStore((s) => s.setMobileMenuOpen)
   const isMobile = useIsMobileLayout()
-  const macTitleInset = useMacTitleBarInset()
 
   if (zenMode) return null
 
+  const centered = !isMobile
+
   return (
     <header
-      className={`titlebar ${focusMode ? 'titlebar--minimal' : ''} ${macTitleInset ? 'titlebar--mac' : ''}`}
+      className={`titlebar ${focusMode ? 'titlebar--minimal' : ''} ${centered ? 'titlebar--centered' : ''}`}
     >
-      <div className="titlebar-leading">
-        <div
-          className="titlebar-mac-gutter"
-          aria-hidden="true"
-          style={
-            macTitleInset
-              ? {
-                  display: 'block',
-                  width: 'var(--mac-traffic-light-inset)',
-                  minWidth: 'var(--mac-traffic-light-inset)',
-                  flex: '0 0 var(--mac-traffic-light-inset)',
-                }
-              : undefined
-          }
-        />
-        <div className="titlebar-drag">
+      <div className="titlebar-brand titlebar-drag">
         {isMobile && (
           <div className="titlebar-mobile-actions">
             <button
@@ -73,9 +58,10 @@ export function TitleBar() {
         ) : (
           <span className="titlebar-logo">Markora</span>
         )}
-        </div>
       </div>
-      <ViewControls />
+      <div className="titlebar-end">
+        <ViewControls />
+      </div>
     </header>
   )
 }
