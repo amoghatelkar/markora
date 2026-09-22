@@ -2,6 +2,7 @@ import { PanelLeft, Search, Menu } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { assetUrl } from '@/lib/assetUrl'
 import { useIsMobileLayout } from '@/hooks/useMediaQuery'
+import { isMacPlatform } from '@/lib/platform'
 import { ViewControls } from './ViewControls'
 import { ExportMenu } from './ExportMenu'
 import './TitleBar.css'
@@ -16,7 +17,7 @@ export function TitleBar() {
 
   if (zenMode) return null
 
-  const centered = !isMobile
+  const centered = !isMobile && isMacPlatform()
 
   return (
     <header
@@ -53,7 +54,7 @@ export function TitleBar() {
           </div>
         )}
         <img src={assetUrl('markora-icon.png')} alt="" className="titlebar-icon" width={18} height={18} />
-        {import.meta.env.BASE_URL === '/app/' ? (
+        {import.meta.env.BASE_URL === '/app/' && !window.markora ? (
           <a className="titlebar-logo" href="/">Markora</a>
         ) : (
           <span className="titlebar-logo">Markora</span>

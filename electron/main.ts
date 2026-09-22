@@ -1,10 +1,12 @@
 import { app, BrowserWindow, shell, dialog, ipcMain } from 'electron'
-import { join, dirname } from 'path'
+import { join, dirname, extname } from 'path'
 import { readFile, writeFile } from 'fs/promises'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const isDev = !app.isPackaged
+
+const TEXT_EXTENSIONS = new Set(['.md', '.markdown', '.txt'])
 
 // AppImages mount under /tmp and cannot use Chromium's setuid chrome-sandbox (mode 4755).
 if (process.platform === 'linux') {
@@ -16,8 +18,40 @@ const MARKDOWN_FILTERS = [
   { name: 'Markdown', extensions: ['md', 'markdown', 'txt'] },
 ]
 
+let pendingOpenPath: string | null = null
+
+function isTextDocumentPath(filePath: string) {
+  const ext = extname(filePath).toLowerCase()
+  if (!TEXT_EXTENSIONS.has(ext)) return false
+  const lower = filePath.toLowerCase()
+  // Ignore accidental opens of files inside the app bundle (e.g. dist/index.html, icons).
+  if (lower.includes('.app/contents/') || lower.includes('app.asar')) return false
+  return true
+}
+
+function textDocumentPathFromArgv(argv: string[]) {
+  return argv.find((arg) => !arg.startsWith('-') && isTextDocumentPath(arg)) ?? null
+}
+
+async function readTextFile(path: string): Promise<string | null> {
+  if (!isTextDocumentPath(path)) return null
+  const buf = await readFile(path)
+  if (buf.includes(0)) return null
+  return buf.toString('utf-8')
+}
+
 function notifyFullscreen(win: BrowserWindow) {
   win.webContents.send('markora:fullscreen-changed', win.isFullScreen())
+}
+
+async function openPathInWindow(win: BrowserWindow, filePath: string) {
+  try {
+    const content = await readTextFile(filePath)
+    if (content === null) return
+    win.webContents.send('markora:open-document', { path: filePath, content })
+  } catch {
+    /* ignore unreadable files */
+  }
 }
 
 function createWindow() {
@@ -45,14 +79,11 @@ function createWindow() {
   win.on('resize', onFullscreenMaybeChanged)
   win.on('maximize', onFullscreenMaybeChanged)
   win.on('unmaximize', onFullscreenMaybeChanged)
-  win.webContents.on('did-finish-load', onFullscreenMaybeChanged)
 
-  if (isDev) {
-    win.loadURL('http://localhost:5173')
-    win.webContents.openDevTools({ mode: 'detach' })
-  } else {
-    win.loadFile(join(__dirname, '../dist/index.html'))
-  }
+  win.webContents.on('will-navigate', (event, url) => {
+    const current = win.webContents.getURL()
+    if (url !== current) event.preventDefault()
+  })
 
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('blob:') || url === 'about:blank') {
@@ -61,7 +92,35 @@ function createWindow() {
     shell.openExternal(url)
     return { action: 'deny' }
   })
+
+  if (isDev) {
+    win.loadURL('http://localhost:5173')
+    win.webContents.openDevTools({ mode: 'detach' })
+  } else {
+    const indexHtml = join(app.getAppPath(), 'dist', 'index.html')
+    void win.loadFile(indexHtml)
+  }
+
+  win.webContents.on('did-finish-load', () => {
+    onFullscreenMaybeChanged()
+    if (pendingOpenPath) {
+      void openPathInWindow(win, pendingOpenPath)
+      pendingOpenPath = null
+    }
+  })
+
+  return win
 }
+
+app.on('will-finish-launching', () => {
+  app.on('open-file', (event, filePath) => {
+    event.preventDefault()
+    if (!isTextDocumentPath(filePath)) return
+    pendingOpenPath = filePath
+    const win = BrowserWindow.getAllWindows()[0]
+    if (win) void openPathInWindow(win, filePath)
+  })
+})
 
 ipcMain.handle('markora:isFullscreen', (event) => {
   const win = BrowserWindow.fromWebContents(event.sender)
@@ -75,7 +134,8 @@ ipcMain.handle('dialog:openFile', async () => {
   })
   if (canceled || !filePaths[0]) return null
   const path = filePaths[0]
-  const content = await readFile(path, 'utf-8')
+  const content = await readTextFile(path)
+  if (content === null) return null
   return { path, content }
 })
 
@@ -97,7 +157,11 @@ ipcMain.handle(
   }
 )
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  const fromArgv = textDocumentPathFromArgv(process.argv.slice(1))
+  if (fromArgv) pendingOpenPath = fromArgv
+  createWindow()
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()

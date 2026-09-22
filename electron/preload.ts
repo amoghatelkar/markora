@@ -36,4 +36,11 @@ contextBridge.exposeInMainWorld('markora', {
     ipcRenderer.invoke('dialog:saveFile', { path, content }) as Promise<{ path: string }>,
   saveFileAs: (defaultPath: string, content: string) =>
     ipcRenderer.invoke('dialog:saveFileAs', { defaultPath, content }) as Promise<{ path: string } | null>,
+  onOpenDocument: (callback: (file: { path: string; content: string }) => void) => {
+    const listener = (_event: unknown, file: { path: string; content: string }) => callback(file)
+    ipcRenderer.on('markora:open-document', listener)
+    return () => {
+      ipcRenderer.removeListener('markora:open-document', listener)
+    }
+  },
 })

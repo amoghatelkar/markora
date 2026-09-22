@@ -5,6 +5,7 @@ import {
   defaultSaveFileName,
   ensureWritePermission,
   openFileFromSystem,
+  type OpenedFile,
   saveFileAs,
   saveToPath,
   setDocumentFileHandle,
@@ -41,6 +42,7 @@ interface AppState {
   newDocument: () => void
   openDocument: (title: string, content?: string) => void
   openDocumentFromSystem: () => Promise<void>
+  openDocumentFromElectron: (file: { path: string; content: string }) => void
   saveActiveDocument: (options?: { silent?: boolean }) => Promise<void>
   saveActiveDocumentAs: () => Promise<void>
   closeDocument: (id: string) => void
@@ -219,20 +221,30 @@ export const useAppStore = create<AppState>((set, get) => ({
   openDocumentFromSystem: async () => {
     const file = await openFileFromSystem()
     if (!file) return
-    const doc = createDocument(titleFromOpenedFile(file), file.content, file.path)
+    get().openDocumentFromElectron({ path: file.path, content: file.content })
     if (file.handle) {
-      setDocumentFileHandle(doc.id, file.handle)
-      await ensureWritePermission(file.handle, file.name, { interactive: true })
+      const docId = get().activeDocumentId
+      if (docId) {
+        setDocumentFileHandle(docId, file.handle)
+        await ensureWritePermission(file.handle, file.name, { interactive: true })
+      }
     }
+  },
+
+  openDocumentFromElectron: (file) => {
+    const name = file.path.split(/[/\\]/).pop() ?? file.path
+    const opened: OpenedFile = { name, path: file.path, content: file.content }
+    const doc = createDocument(titleFromOpenedFile(opened), file.content, file.path)
     set((s) => {
       const documents = [...s.documents, doc]
       return {
         documents,
         saveStatus: 'saved',
+        showWelcome: false,
         ...activateDocument({ ...s, documents }, doc.id),
       }
     })
-    get().showToast(`Opened ${file.name}`)
+    get().showToast(`Opened ${name}`)
   },
 
   saveActiveDocument: async (options) => {
