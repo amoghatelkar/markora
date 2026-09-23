@@ -1,6 +1,6 @@
 {
   "name": "Markora",
-  "install": "npm ci && npm ci --prefix website",
+  "install": "npm ci\nnpm ci --prefix website",
   "terminals": [
     {
       "name": "Markora dev server",
