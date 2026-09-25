@@ -29,7 +29,7 @@ Open http://localhost:5173
 
 The site loads **real download URLs** from the GitHub API:
 
-`GET /repos/amoghatelkar/markora/releases/latest`
+`GET /repos/opensourceapp-org/markora/releases/latest`
 
 If no release exists yet, buttons show a notice instead of linking to a 404.
 

@@ -48,7 +48,7 @@ npm run build
 
 ## Desktop app
 
-Download installers from [GitHub Releases](https://github.com/amoghatelkar/markora/releases/latest) or the [website](https://markora.opensourceapp.org/#download).
+Download installers from [GitHub Releases](https://github.com/opensourceapp-org/markora/releases/latest) or the [website](https://markora.opensourceapp.org/#download).
 
 **macOS without Terminal:** open the `.dmg`, copy Markora to Applications, then **right-click → Open → Open** the first time only. Step-by-step for all platforms: [docs/DESKTOP_INSTALL.md](docs/DESKTOP_INSTALL.md).
 
