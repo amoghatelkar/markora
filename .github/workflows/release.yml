@@ -18,6 +18,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npm run icons
       - run: npm run build
       - run: npx tsc -p tsconfig.electron.json
       - name: Build macOS (unsigned)
@@ -39,6 +40,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npm run icons
       - run: npm run build
       - run: npx tsc -p tsconfig.electron.json
       - run: npx electron-builder --win --publish never
@@ -59,6 +61,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npm run icons
       - run: npm run build
       - run: npx tsc -p tsconfig.electron.json
       - run: npx electron-builder --linux --publish never
