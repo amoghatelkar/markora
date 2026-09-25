@@ -1,7 +1,7 @@
 /** Keep in sync with root package.json version and GitHub release tags. */
 export const APP_VERSION = '0.2.2'
 
-export const GITHUB_REPO = 'amoghatelkar/markora'
+export const GITHUB_REPO = 'opensourceapp-org/markora'
 
 export const RELEASES_PAGE = `https://github.com/${GITHUB_REPO}/releases`
 

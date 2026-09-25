@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const GITHUB_REPO = 'amoghatelkar/markora'
+const GITHUB_REPO = 'opensourceapp-org/markora'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const outPath = join(root, 'src/release-data.json')
 const indexPath = join(root, 'index.html')

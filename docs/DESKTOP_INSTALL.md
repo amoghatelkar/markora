@@ -1,10 +1,10 @@
 # Installing Markora (no Terminal)
 
-Markora desktop builds are open source and distributed from [GitHub Releases](https://github.com/amoghatelkar/markora/releases/latest). Until installers are signed with paid certificates (see [CODE_SIGNING.md](./CODE_SIGNING.md)), each operating system shows a one-time security prompt. You can clear it **using only menus and dialogs** — no command line required.
+Markora desktop builds are open source and distributed from [GitHub Releases](https://github.com/opensourceapp-org/markora/releases/latest). Until installers are signed with paid certificates (see [CODE_SIGNING.md](./CODE_SIGNING.md)), each operating system shows a one-time security prompt. You can clear it **using only menus and dialogs** — no command line required.
 
 ## macOS (recommended steps)
 
-1. Download **`Markora-*.dmg`** from [Releases](https://github.com/amoghatelkar/markora/releases/latest). The file should be **about 100 MB**. If it is only a few kilobytes, the download failed — try again in another browser.
+1. Download **`Markora-*.dmg`** from [Releases](https://github.com/opensourceapp-org/markora/releases/latest). The file should be **about 100 MB**. If it is only a few kilobytes, the download failed — try again in another browser.
 2. Double-click the `.dmg` to open it.
 3. Drag **Markora** into **Applications**.
 4. Open **Finder** → **Applications**.
