@@ -18,8 +18,10 @@ export function ExportMenu({ variant = 'statusbar' }: ExportMenuProps) {
   const [sheetOpen, setSheetOpen] = useState(false)
   const items = getExportMenuItems(hasDocument)
 
-  const showStatusbar = variant === 'statusbar' && !isMobileLayout
+  const showStatusbarDropdown = variant === 'statusbar' && !isMobileLayout
+  const showStatusbarMobile = variant === 'statusbar' && isMobileLayout
   const showMobileTrigger = variant === 'mobile' && isMobileLayout
+  const showMobileSheet = isMobileLayout && (showMobileTrigger || showStatusbarMobile)
 
   useEffect(() => {
     if (!sheetOpen) return
@@ -31,7 +33,7 @@ export function ExportMenu({ variant = 'statusbar' }: ExportMenuProps) {
   }, [sheetOpen])
 
   const mobileSheet =
-    sheetOpen && showMobileTrigger
+    sheetOpen && showMobileSheet
       ? createPortal(
           <div
             className="export-sheet-overlay"
@@ -83,6 +85,25 @@ export function ExportMenu({ variant = 'statusbar' }: ExportMenuProps) {
         )
       : null
 
+  if (showStatusbarMobile) {
+    return (
+      <>
+        <button
+          type="button"
+          className="export-menu-mobile-btn"
+          aria-label="Export document"
+          aria-haspopup="dialog"
+          aria-expanded={sheetOpen}
+          onClick={() => setSheetOpen(true)}
+        >
+          <Download size={14} strokeWidth={1.75} />
+          <span>Export</span>
+        </button>
+        {mobileSheet}
+      </>
+    )
+  }
+
   if (showMobileTrigger) {
     return (
       <>
@@ -99,7 +120,7 @@ export function ExportMenu({ variant = 'statusbar' }: ExportMenuProps) {
     )
   }
 
-  if (!showStatusbar) return null
+  if (!showStatusbarDropdown) return null
 
   return (
     <div className="export-menu">
