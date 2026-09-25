@@ -5,6 +5,7 @@ import {
   Italic,
   Strikethrough,
   Code,
+  SquareCode,
   List,
   ListOrdered,
   Quote,
@@ -173,8 +174,8 @@ export function Toolbar({ onFormat }: ToolbarProps) {
             <Strikethrough size={15} strokeWidth={1.5} />
           </button>
         </Tooltip>
-        <Tooltip label="Code" shortcut="⌘E">
-          <button className="toolbar-btn" type="button" aria-label="Code" onClick={() => format('code')}>
+        <Tooltip label="Inline code" shortcut="⌘E">
+          <button className="toolbar-btn" type="button" aria-label="Inline code" onClick={() => format('code')}>
             <Code size={15} strokeWidth={1.5} />
           </button>
         </Tooltip>
@@ -210,7 +211,7 @@ export function Toolbar({ onFormat }: ToolbarProps) {
         </Tooltip>
         <Tooltip label="Code block">
           <button className="toolbar-btn" type="button" aria-label="Code block" onClick={() => format('codeBlock')}>
-            <Code size={15} strokeWidth={1.5} />
+            <SquareCode size={15} strokeWidth={1.5} />
           </button>
         </Tooltip>
         <TableInsertPicker />
