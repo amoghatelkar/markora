@@ -1,4 +1,11 @@
-import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
+import {
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  type ReactNode,
+} from 'react'
 import { createPortal } from 'react-dom'
 import { ChevronDown } from 'lucide-react'
 import './ToolbarDropdown.css'
@@ -20,17 +27,39 @@ interface ToolbarDropdownProps {
   icon?: ReactNode
 }
 
-function getMenuPosition(trigger: HTMLDivElement) {
+const MENU_GAP_PX = 4
+const MENU_FALLBACK_HEIGHT_PX = 220
+
+function getMenuPosition(trigger: HTMLDivElement, menuEl: HTMLDivElement | null) {
   const rect = trigger.getBoundingClientRect()
+  const menuHeight = Math.max(menuEl?.offsetHeight ?? 0, MENU_FALLBACK_HEIGHT_PX)
+  const spaceBelow = window.innerHeight - rect.bottom
+  const spaceAbove = rect.top
+  const openUpward = spaceBelow < menuHeight + MENU_GAP_PX && spaceAbove > spaceBelow
+
+  if (openUpward) {
+    return {
+      placement: 'top' as const,
+      bottom: window.innerHeight - rect.top + MENU_GAP_PX,
+      left: rect.left,
+    }
+  }
+
   return {
-    top: rect.bottom + 4,
+    placement: 'bottom' as const,
+    top: rect.bottom + MENU_GAP_PX,
     left: rect.left,
   }
 }
 
 export function ToolbarDropdown({ label, items, 'aria-label': ariaLabel, icon }: ToolbarDropdownProps) {
   const [open, setOpen] = useState(false)
-  const [menuPos, setMenuPos] = useState({ top: 0, left: 0 })
+  const [menuPos, setMenuPos] = useState<{
+    placement: 'top' | 'bottom'
+    top?: number
+    bottom?: number
+    left: number
+  }>({ placement: 'bottom', left: 0, top: 0 })
   const ref = useRef<HTMLDivElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -38,7 +67,7 @@ export function ToolbarDropdown({ label, items, 'aria-label': ariaLabel, icon }:
 
   const updateMenuPosition = useCallback(() => {
     if (!ref.current) return
-    setMenuPos(getMenuPosition(ref.current))
+    setMenuPos(getMenuPosition(ref.current, menuRef.current))
   }, [])
 
   useEffect(() => {
@@ -71,6 +100,11 @@ export function ToolbarDropdown({ label, items, 'aria-label': ariaLabel, icon }:
     }
   }, [open, close, updateMenuPosition])
 
+  useLayoutEffect(() => {
+    if (!open) return
+    updateMenuPosition()
+  }, [open, items, updateMenuPosition])
+
   const handleItemClick = (item: ToolbarDropdownItem) => {
     if (item.disabled || item.separator) return
     item.action?.()
@@ -81,9 +115,15 @@ export function ToolbarDropdown({ label, items, 'aria-label': ariaLabel, icon }:
     ? createPortal(
         <div
           ref={menuRef}
-          className="toolbar-dropdown-menu toolbar-dropdown-menu--portal animate-slide-down"
+          className={`toolbar-dropdown-menu toolbar-dropdown-menu--portal ${
+            menuPos.placement === 'top' ? 'animate-slide-up' : 'animate-slide-down'
+          }`}
           role="menu"
-          style={{ top: menuPos.top, left: menuPos.left }}
+          style={
+            menuPos.placement === 'top'
+              ? { bottom: menuPos.bottom, left: menuPos.left, top: 'auto' }
+              : { top: menuPos.top, left: menuPos.left, bottom: 'auto' }
+          }
         >
           {items.map((item) =>
             item.separator ? (
