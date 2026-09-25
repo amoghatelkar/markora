@@ -1,6 +1,6 @@
 {
   "name": "markora",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A modern document editor built for Markdown",
   "author": "Markora",
   "main": "dist-electron/main.js",
