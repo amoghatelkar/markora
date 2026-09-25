@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+declare module 'turndown-plugin-gfm'
+
 declare const __MARKORA_VERSION__: string
 
 interface MarkoraOpenResult {

@@ -33,6 +33,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "turndown": "^7.2.4",
+    "turndown-plugin-gfm": "^1.0.2",
     "zustand": "^5.0.3"
   },
   "build": {
@@ -48,13 +49,19 @@
     "icon": "build/icon.png",
     "afterPack": "scripts/linux-after-pack.mjs",
     "appImage": {
-      "executableArgs": ["--no-sandbox", "--disable-setuid-sandbox"]
+      "executableArgs": [
+        "--no-sandbox",
+        "--disable-setuid-sandbox"
+      ]
     },
     "linux": {
       "target": "AppImage",
       "icon": "build/icon.png",
       "artifactName": "Markora-${version}.${ext}",
-      "executableArgs": ["--no-sandbox", "--disable-setuid-sandbox"]
+      "executableArgs": [
+        "--no-sandbox",
+        "--disable-setuid-sandbox"
+      ]
     },
     "mac": {
       "target": "dmg",
